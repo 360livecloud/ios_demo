@@ -1,0 +1,204 @@
+precision mediump float;
+
+varying highp vec2 textureCoordinate;
+uniform sampler2D inputImageTexture;    //输入图像
+
+varying mediump vec2 textureCoordinate2;
+uniform sampler2D inputImageTexture2;   //查找表
+
+uniform mediump float aspectRatio;        //高比宽
+uniform mediump vec2 center[9];           //圆的中心
+//uniform mediump vec2 normm[9];            //水平向量，从左到右
+uniform mediump float radius[9];          //圆的半径（横轴）
+uniform mediump float vertHorzRatio[9];   //椭圆的纵轴与横轴之比
+
+uniform mediump float x_scale[9];         //x方向变形系数，从0到1
+uniform mediump float y_scale[9];         //x方向变形系数，从0到1
+
+uniform mediump float left_compress_ratio[9]; //左半径压缩率
+uniform mediump float right_compress_ratio[9];//右半径压缩率
+
+uniform lowp float ommit_up_down[9];      //是否忽略中心点以上或以下的像素
+
+uniform mediump float lut_row[18];        //不同微整形查找表的行坐标
+uniform highp float arrRotateNormm[4];    //转换到x轴平行于两眼连线坐标系的旋转矩阵
+uniform highp float arrInverseRotateNormm[4];//上一个矩阵的逆矩阵
+
+void main()
+{
+    highp vec2 srcPt = vec2(textureCoordinate.x, textureCoordinate.y * aspectRatio);  //当前点坐标
+
+    //计算旋转矩阵
+//    highp vec2 normm_img = vec2(normm[0].x, normm[0].y * aspectRatio);//纹理坐标系转换到归一化坐标系
+//    highp float len = length(normm_img);
+//    highp float cosNormm = normm_img.x / len;
+//    highp float sinNormm = normm_img.y / len;
+//    highp mat2 rotateNormm  = mat2(cosNormm, -sinNormm,
+//                                     sinNormm, cosNormm);
+//
+//    highp mat2 inverseRotateNormm = mat2(cosNormm, sinNormm,
+//                                          -sinNormm, cosNormm);
+    
+    highp mat2 rotateNormm  = mat2(arrRotateNormm[0], arrRotateNormm[2],  //矩阵按列存储
+                                   arrRotateNormm[1], arrRotateNormm[3]);
+    
+    highp mat2 inverseRotateNormm = mat2(arrInverseRotateNormm[0], arrInverseRotateNormm[2],//矩阵按列存储
+                                         arrInverseRotateNormm[1], arrInverseRotateNormm[3]);
+
+    srcPt = rotateNormm * srcPt; //源坐标转化到转正坐标系下
+
+
+   //----------------------0到3分别对应瘦脸、小脸、额头和瘦头---------------------
+
+   //源坐标转化到以当前圆心为原点的坐标系
+   highp vec2 trans_cord = vec2(srcPt.x - center[0].x, srcPt.y - center[0].y);
+   mediump float dist = length(vec2(trans_cord.x, trans_cord.y / vertHorzRatio[0]));
+
+   //基于查找表的方法
+   mediump float fHeadDistRadiusRatio = dist / radius[0];
+
+   mediump float x_sum_scale = 1.0e-6;
+   mediump float y_sum_scale = 1.0e-6;
+
+   if(fHeadDistRadiusRatio < 2.0 && fHeadDistRadiusRatio > 0.05) //只处理两倍半径以内的像素
+   {
+       mediump float fDistance = clamp(fHeadDistRadiusRatio * 0.5, 0.0, 1.0);//当前点的到圆心的归一化距离（圆心对应0.0，圆周对应0.5）
+
+       mediump float ang = atan(trans_cord.y / abs(trans_cord.x)); //当前点和圆心的连线与X轴的夹角（-pi/2 ~ pi/2）
+       ang = ang + 1.570796; // 加PI/2，范围变为0到PI
+
+       mediump float fAngle = clamp(ang * 0.3183098, 0.0, 1.0);  //夹角归一化 0.3183098 = 1/PI
+       mediump vec4 vecAngleRatio = texture2D(inputImageTexture2, vec2(fAngle, lut_row[0])); //角度查找表
+       mediump vec4 vecDistanceRatio = texture2D(inputImageTexture2, vec2(fDistance, lut_row[1])); //距离查找表
+
+       vecDistanceRatio = vecDistanceRatio / fHeadDistRadiusRatio; //距离缩放倍率要除以距离值
+       mediump vec4 vecRatio = vecDistanceRatio * vecAngleRatio;
+
+       x_sum_scale = vecRatio.r * x_scale[0] +
+                     vecRatio.g * x_scale[1] +
+                     vecRatio.b * x_scale[2] +
+                     vecRatio.a * x_scale[3];
+
+       y_sum_scale = vecRatio.r * y_scale[0] +
+                     vecRatio.g * y_scale[1] +
+                     vecRatio.b * y_scale[2] +
+                     vecRatio.a * y_scale[3];
+
+       trans_cord.x = trans_cord.x * (1.0 + x_sum_scale);
+       trans_cord.y = trans_cord.y * (1.0 + y_sum_scale);
+
+       //将当前的坐标转换到原坐标系
+       srcPt.x= trans_cord.x + center[0].x;
+       srcPt.y= trans_cord.y + center[0].y;
+   }
+
+    //只处理头两倍半径以内的像素
+    if(fHeadDistRadiusRatio < 2.0)
+    {
+        //----------------------7到8分别对应鼻子和嘴(有左右压缩率的不同)---------------------
+        lowp int nLutRow = 18;
+
+        for(lowp int i = 8 ; i >= 7; i--)
+        {
+            nLutRow = nLutRow - 2;
+
+           //源坐标转化到以当前圆心为原点的坐标系
+           highp vec2 trans_cord = vec2(srcPt.x - center[i].x, srcPt.y - center[i].y);
+
+           //计算当前点到圆心的距离
+           mediump float dist = 0.0;
+           if(trans_cord.x > 0.0){
+               dist = length(vec2(trans_cord.x * right_compress_ratio[i], trans_cord.y / vertHorzRatio[i]));
+           }else{
+               dist = length(vec2(trans_cord.x * left_compress_ratio[i], trans_cord.y / vertHorzRatio[i]));
+           }
+
+           //基于查找表的方法
+           mediump float fDistRadiusRatio = dist / radius[i];
+           if(fDistRadiusRatio < 2.0 && fDistRadiusRatio > 0.05) //只计算距离2倍半径的像素
+           {
+               mediump float fDistance = clamp(fDistRadiusRatio * 0.5, 0.0, 1.0);//当前点的到圆心的归一化距离（圆心对应0.0，圆周对应0.5）
+               mediump float ang = atan(trans_cord.y / abs(trans_cord.x)); //当前点和圆心的连线与X轴的夹角（-pi/2 ~ pi/2）
+               ang = ang + 1.570796; // 加PI/2，范围变为0到PI
+
+               mediump float fAngle = clamp(ang * 0.3183098, 0.0, 1.0);  //夹角归一化 0.3183098 = 1/PI
+               mediump float fAngleRatio = texture2D(inputImageTexture2, vec2(fAngle, lut_row[nLutRow])).r; //角度查找表
+               mediump float fDistanceRatio = texture2D(inputImageTexture2, vec2(fDistance, lut_row[nLutRow + 1])).r; //距离查找表
+
+               fDistanceRatio = fDistanceRatio / fDistRadiusRatio;  //距离缩放倍率要除以距离值
+
+               mediump float fRatio = fDistanceRatio * fAngleRatio;
+               trans_cord.x = trans_cord.x * (1.0 +  fRatio * x_scale[i]);
+               trans_cord.y = trans_cord.y * (1.0 +  fRatio * y_scale[i]);
+
+               //将当前的坐标转换到原坐标系
+               srcPt.x= trans_cord.x + center[i].x;
+               srcPt.y= trans_cord.y + center[i].y;
+           }
+        }//for
+
+
+        //----------------------4到6分别对应左眼、右眼和下巴(左右压缩率都是1.0)---------------------
+        lowp int nInRange = 0; //当前点是否在处理区域内
+        for(lowp int i = 6 ; i >= 4; i--)
+        {
+           //计算当前点到圆心的距离
+           mediump float dist = length(vec2(srcPt.x - center[i].x ,
+                                           (srcPt.y - center[i].y) / vertHorzRatio[i]));
+           mediump float fDistRadiusRatio = dist / radius[i];
+           if(fDistRadiusRatio < 2.0) //只计算距离2倍半径的像素
+           {
+             nInRange = 1;
+           }
+        }//for
+
+        if(nInRange > 0)
+        {
+            nLutRow = 14;
+            for(lowp int i = 6 ; i >= 4; i--)
+            {
+                nLutRow = nLutRow - 2;
+
+               //源坐标转化到以当前圆心为原点的坐标系
+               highp vec2 trans_cord = vec2(srcPt.x - center[i].x, srcPt.y - center[i].y);
+               if(ommit_up_down[i] * trans_cord.y < 0.0)
+               {
+                   continue;
+               }
+
+               //计算当前点到圆心的距离
+               mediump float dist = length(vec2(trans_cord.x , trans_cord.y / vertHorzRatio[i]));
+
+               //基于查找表的方法
+               mediump float fDistRadiusRatio = dist / radius[i];
+               if(fDistRadiusRatio < 2.0 && fDistRadiusRatio > 0.05) //只计算距离2倍半径的像素
+               {
+                   mediump float fDistance = clamp(fDistRadiusRatio * 0.5, 0.0, 1.0);//当前点的到圆心的归一化距离（圆心对应0.0，圆周对应0.5）
+                   mediump float ang = atan(trans_cord.y / abs(trans_cord.x)); //当前点和圆心的连线与X轴的夹角（-pi/2 ~ pi/2）
+                   ang = ang + 1.570796; // 加PI/2，范围变为0到PI
+
+                   mediump float fAngle = clamp(ang * 0.3183098, 0.0, 1.0);  //夹角归一化 0.3183098 = 1/PI
+                   mediump float fAngleRatio = texture2D(inputImageTexture2, vec2(fAngle, lut_row[nLutRow])).r; //角度查找表
+                   mediump float fDistanceRatio = texture2D(inputImageTexture2, vec2(fDistance, lut_row[nLutRow + 1])).r; //距离查找表
+
+                   fDistanceRatio = fDistanceRatio / fDistRadiusRatio;  //距离缩放倍率要除以距离值
+
+                   mediump float fRatio = fDistanceRatio * fAngleRatio;
+                   trans_cord.x = trans_cord.x * (1.0 +  fRatio * x_scale[i]);
+                   trans_cord.y = trans_cord.y * (1.0 +  fRatio * y_scale[i]);
+
+                   //将当前的坐标转换到原坐标系
+                   srcPt.x= trans_cord.x + center[i].x;
+                   srcPt.y= trans_cord.y + center[i].y;
+               }
+            }//for
+        }
+    }//if(fHeadDistRadiusRatio < 2.0)
+
+
+    //从转正坐标系回到原坐标系
+    srcPt = inverseRotateNormm * srcPt;
+    srcPt.y = srcPt.y / aspectRatio;
+
+    gl_FragColor = texture2D(inputImageTexture, srcPt);
+}

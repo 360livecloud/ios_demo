@@ -1,0 +1,6 @@
+framework module QHVCEditKit {
+  umbrella header "QHVCEditKit.h"
+
+  export *
+  module * { export * }
+}

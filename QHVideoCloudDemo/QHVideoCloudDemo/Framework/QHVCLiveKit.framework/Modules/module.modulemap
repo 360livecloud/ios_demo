@@ -1,0 +1,6 @@
+framework module QHVCLiveKit {
+  umbrella header "QHVCLiveKit.h"
+
+  export *
+  module * { export * }
+}

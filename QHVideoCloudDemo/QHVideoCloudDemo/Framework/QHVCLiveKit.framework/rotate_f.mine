@@ -1,0 +1,78 @@
+   precision highp float;
+
+    varying highp vec2 textureCoordinate;
+    uniform sampler2D inputImageTexture; //输入图像
+
+    varying highp vec2 textureCoordinate2;
+    uniform sampler2D inputImageTexture2; //查找表
+    
+    uniform highp float aspectRatio; //高比宽
+    uniform highp vec2 center; //圆的中心
+    uniform highp vec2 normm;  //额头的水平向量，从左到右
+    uniform highp float radius; //圆的半径（横轴）
+    uniform highp float vertHorzRatio; //椭圆的纵轴与横轴之比
+
+    uniform highp float x_scale;  //x方向变形系数，从0到1
+    uniform highp float y_scale;  //x方向变形系数，从0到1
+
+    uniform highp float x_ratio; //x方向的比例系数
+    uniform highp float y_ratio; //y方向的比例系数
+    
+    void main()
+    {
+       //计算旋转矩阵
+       highp vec2 normm_img = vec2(normm.x, normm.y * aspectRatio);//纹理坐标系转换到归一化坐标系
+       highp float len = length(normm_img);
+       highp vec4 trans_mat = vec4(normm_img.x / len, normm_img.y / len,  -1.0 * normm_img.y / len, normm_img.x / len);
+
+       //将当前点转化到以圆心为原点，且x轴平行于normm_img的坐标系
+       highp vec2 sub_cord = vec2(textureCoordinate.x - center.x, (textureCoordinate.y - center.y) * aspectRatio);
+       highp vec2 trans_cord = vec2(0.0, 0.0);
+       trans_cord.x= trans_mat.r * sub_cord.x + trans_mat.g * sub_cord.y;
+       trans_cord.y= trans_mat.b * sub_cord.x + trans_mat.a * sub_cord.y;
+
+       highp float dist = length(vec2(trans_cord.x, trans_cord.y / vertHorzRatio));
+
+       //基于查找表的方法
+       if(dist < radius)
+       {
+          highp float percent = texture2D(inputImageTexture2, vec2(dist / radius, 0.75)).r;
+          if(percent > 1.0e-6)
+          {
+              highp float rotateAngle = percent * x_ratio * x_scale;
+              highp float cosValue = cos(rotateAngle);
+              highp float sinValue = sin(rotateAngle);
+              highp mat2 rotateMat = mat2(cosValue, -sinValue,
+                                          sinValue, cosValue);
+              trans_cord = rotateMat * trans_cord;
+
+              //将当前的坐标转换到原坐标系
+              highp vec2 textureCoordinateToUse;
+              textureCoordinateToUse.x= trans_mat.r * trans_cord.x + trans_mat.b * trans_cord.y;
+              textureCoordinateToUse.y= trans_mat.g * trans_cord.x + trans_mat.a * trans_cord.y;
+              textureCoordinateToUse.x= textureCoordinateToUse.x + center.x;
+              textureCoordinateToUse.y= textureCoordinateToUse.y / aspectRatio + center.y;
+
+              //当前像素的新像素值
+              gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);
+          }
+          else
+          {
+            gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+          }
+       }
+       else
+       {
+          gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+       }
+
+        dist = dist / radius;
+        if(dist < 0.04)
+        {
+            gl_FragColor = vec4(0.7, 0.0, 0.0, 1.0);
+        }
+        else if(dist < 1.01 && dist > 0.99)
+        {
+            gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+        }
+    }

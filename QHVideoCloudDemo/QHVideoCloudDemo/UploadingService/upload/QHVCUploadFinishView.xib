@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" userLabel="QHVCUploadFinishView" customClass="QHVCUploadFinishView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.20000000000000001" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="7rD-uM-afO" userLabel="bg_view">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pUE-Rd-uGe" userLabel="close">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <connections>
+                        <action selector="close:" destination="iN0-l3-epB" eventType="touchUpInside" id="5BZ-2x-HlO"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Wuw-XZ-xhb" userLabel="finish_view">
+                    <rect key="frame" x="52.5" y="150" width="270" height="130"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="上传成功" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UCz-Cp-W72">
+                            <rect key="frame" x="10" y="87" width="250" height="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="upload_sucess" translatesAutoresizingMaskIntoConstraints="NO" id="Abh-nW-gBC">
+                            <rect key="frame" x="115" y="30" width="40" height="40"/>
+                        </imageView>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstItem="Abh-nW-gBC" firstAttribute="top" secondItem="Wuw-XZ-xhb" secondAttribute="top" constant="30" id="6y4-ds-mqa"/>
+                        <constraint firstAttribute="width" constant="270" id="FdR-zf-ChB"/>
+                        <constraint firstAttribute="trailing" secondItem="UCz-Cp-W72" secondAttribute="trailing" constant="10" id="PzF-PL-AQp"/>
+                        <constraint firstItem="UCz-Cp-W72" firstAttribute="leading" secondItem="Wuw-XZ-xhb" secondAttribute="leading" constant="10" id="Wqa-gh-N4O"/>
+                        <constraint firstItem="Abh-nW-gBC" firstAttribute="centerX" secondItem="Wuw-XZ-xhb" secondAttribute="centerX" id="lBE-co-zBf"/>
+                        <constraint firstAttribute="bottom" secondItem="UCz-Cp-W72" secondAttribute="bottom" constant="25" id="lIP-Cw-Ohd"/>
+                        <constraint firstAttribute="height" constant="130" id="vbm-0W-7sl"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="7rD-uM-afO" secondAttribute="bottom" id="ELF-R4-dCi"/>
+                <constraint firstItem="Wuw-XZ-xhb" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="150" id="XTR-ZR-9xZ"/>
+                <constraint firstAttribute="trailing" secondItem="pUE-Rd-uGe" secondAttribute="trailing" id="Yox-qw-kOs"/>
+                <constraint firstAttribute="bottom" secondItem="pUE-Rd-uGe" secondAttribute="bottom" id="bNd-vx-Bhk"/>
+                <constraint firstItem="7rD-uM-afO" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="i2G-qp-Hc6"/>
+                <constraint firstItem="Wuw-XZ-xhb" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="k0c-gO-4b9"/>
+                <constraint firstItem="7rD-uM-afO" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="lgN-mq-Lv1"/>
+                <constraint firstItem="pUE-Rd-uGe" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="nu0-8B-vYF"/>
+                <constraint firstItem="pUE-Rd-uGe" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="q0j-iO-uoG"/>
+                <constraint firstAttribute="trailing" secondItem="7rD-uM-afO" secondAttribute="trailing" id="wBq-La-vga"/>
+            </constraints>
+            <connections>
+                <outlet property="_finishImageView" destination="Abh-nW-gBC" id="A7O-Ub-mlq"/>
+                <outlet property="_finishLabel" destination="UCz-Cp-W72" id="UZc-KC-NPk"/>
+            </connections>
+            <point key="canvasLocation" x="33.5" y="53.5"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="upload_sucess" width="40" height="40"/>
+    </resources>
+</document>

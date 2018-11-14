@@ -1,0 +1,106 @@
+[
+   {
+      "name" : "version",
+      "value" : 1
+   },
+   {
+      "name" : "BigEye",
+      "vert_horz_ratio" : 1.0,
+      "x_ratio" : -0.3,
+      "x_scale" : 0.0,
+      "y_ratio" : -0.3,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_big_eye.png"
+   },
+   {
+      "name" : "Forehead",
+      "vert_horz_ratio" : 1.0,
+      "x_ratio" : 0.2,
+      "x_scale" : 0.0,
+      "y_ratio" : 0.2,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_forehead.png"
+   },
+   {
+      "name" : "Head",
+      "vert_horz_ratio" : 1.0,
+      "x_ratio" : 0.25,
+      "x_scale" : 0.0,
+      "y_ratio" : 0.0,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_head.png"
+   },
+   {
+      "name" : "Jaw",
+      "vert_horz_ratio" : 0.7,
+      "x_ratio" : 0.0,
+      "x_scale" : 0.0,
+      "y_ratio" : 3.0,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_jaw.png"
+   },
+   {
+      "name" : "Mouth",
+      "vert_horz_ratio" : 0.5,
+      "x_ratio" : -1.5,
+      "x_scale" : 0.0,
+      "y_ratio" : -1.5,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_mouth.png"
+   },
+   {
+      "name" : "Nose",
+      "vert_horz_ratio" : 0.6,
+      "x_ratio" : -1.0,
+      "x_scale" : 0.0,
+      "y_ratio" : -1.2,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_nose.png"
+   },
+   {
+      "name" : "SlimFace",
+      "vert_horz_ratio" : 1.0,
+      "x_ratio" : 1.25,
+      "x_scale" : 0.0,
+      "y_ratio" : 0.0,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_slim_face.png"
+   },
+   {
+      "name" : "SmallFace",
+      "vert_horz_ratio" : 1.0,
+      "x_ratio" : 0.8,
+      "x_scale" : 0.0,
+      "y_ratio" : 0.6,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_small_face.png"
+   },
+   {
+      "name" : "MoveEye",
+      "vert_horz_ratio" : 0.6,
+      "x_ratio" : 0.25,
+      "x_scale" : 0.0,
+      "y_ratio" : 0.0,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_move_eye.png"
+   },
+   {
+      "name" : "RotateEye",
+      "vert_horz_ratio" : 0.5,
+      "x_ratio" : 0.15,
+      "x_scale" : 0.0,
+      "y_ratio" : 0.0,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_rotate_eye.png"
+   },
+   {
+      "name" : "RotateEyebrow",
+      "vert_horz_ratio" : 0.3,
+      "x_ratio" : 0.2,
+      "x_scale" : 0.0,
+      "y_ratio" : 0.0,
+      "y_scale" : 0.0,
+      "lut_file_path" : "lut_rotate_eyebrow.png"
+   }
+]
+

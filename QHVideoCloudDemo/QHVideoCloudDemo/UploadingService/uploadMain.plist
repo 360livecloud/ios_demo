@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>image</key>
+		<string>upload_access_key</string>
+		<key>title</key>
+		<string>AccessKey</string>
+		<key>value</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>upload_secret_key</string>
+		<key>title</key>
+		<string>SecretKey</string>
+		<key>value</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>live_bid</string>
+		<key>title</key>
+		<string>BusinessId 业务标识</string>
+		<key>value</key>
+		<string>demo</string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>live_cid</string>
+		<key>title</key>
+		<string>ChannelId 渠道标识</string>
+		<key>value</key>
+		<string>demo_1</string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>upload_bucket</string>
+		<key>title</key>
+		<string>Bucket 空间名称</string>
+		<key>value</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>live_url</string>
+		<key>title</key>
+		<string>URL 上传文件路径</string>
+		<key>value</key>
+		<string></string>
+	</dict>
+</array>
+</plist>

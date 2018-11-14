@@ -1,0 +1,129 @@
+   precision highp float;
+
+    varying highp vec2 textureCoordinate;
+    uniform sampler2D inputImageTexture; //输入图像
+
+    varying highp vec2 textureCoordinate2;
+    uniform sampler2D inputImageTexture2; //查找表
+
+    //纹理坐标系X和Y的取值范围都是0到1，归一化坐标系X的取值范围是0到1，而Y的取值范围是0到height/width
+    //下面的变量只有radius对应归一化坐标系，其余都对应纹理坐标系
+    uniform highp float aspectRatio; //高比宽
+    uniform highp vec2 center; //圆的中心
+    uniform highp vec2 normm;  //额头的水平向量，从左到右
+    uniform highp float radius; //圆的半径（横轴）
+
+    //下面的变量是参数变量
+    uniform highp float vertHorzRatio; //椭圆的纵轴与横轴之比
+
+    uniform highp float x_scale;  //x方向变形系数，从0到1
+    uniform highp float y_scale;  //x方向变形系数，从0到1
+
+    uniform highp float x_ratio; //x方向的比例系数
+    uniform highp float y_ratio; //y方向的比例系数
+
+    uniform highp float left_compress_ratio; //左侧压缩系数
+    uniform highp float right_compress_ratio; //右侧压缩系数
+
+    void main()
+    {
+        //计算旋转矩阵
+        highp vec2 normm_img = vec2(normm.x, normm.y * aspectRatio);//纹理坐标系转换到归一化坐标系
+        highp float len = length(normm_img);
+        highp vec4 trans_mat = vec4(normm_img.x / len, normm_img.y / len,  -1.0 * normm_img.y / len, normm_img.x / len);
+
+        //将当前点转化到以圆心为原点，且x轴平行于normm_img的坐标系
+        highp vec2 sub_cord = vec2(textureCoordinate.x - center.x, (textureCoordinate.y - center.y) * aspectRatio);
+        highp vec2 trans_cord = vec2(0.0, 0.0);
+        trans_cord.x= trans_mat.r * sub_cord.x + trans_mat.g * sub_cord.y;
+        trans_cord.y= trans_mat.b * sub_cord.x + trans_mat.a * sub_cord.y;
+
+        highp float dist = 0.0;
+        if(trans_cord.x > 0.0)
+        {
+            dist = length(vec2(trans_cord.x * right_compress_ratio, trans_cord.y / vertHorzRatio));
+        }
+        else
+        {
+            dist = length(vec2(trans_cord.x * left_compress_ratio, trans_cord.y / vertHorzRatio));
+        }
+
+        highp float ang = atan(trans_cord.y / abs(trans_cord.x)); //当前点和圆心的连线与X轴的夹角（-pi/2 ~ pi/2）
+        ang = ang + 1.570796; // 加PI/2，范围变为0到PI
+
+        //基于查找表的方法
+        highp float fDistance = clamp(0.5 + 0.5 * (dist - radius) / radius, 0.0, 1.0);//当前点的到圆心的归一化距离（圆心对应0.0，圆周对应0.5）
+
+        if(fDistance < 1.0) //只计算距离小于1.0的像素，以减少查找表耗时
+        {
+            highp float fAngle = clamp(ang / 3.14159265, 0.0, 1.0);  //夹角归一化
+            highp float fAngleRatio = texture2D(inputImageTexture2, vec2(fAngle, 0.25)).r; //角度查找表
+            highp float fDistanceRatio = texture2D(inputImageTexture2, vec2(fDistance, 0.75)).r; //距离查找表
+            fDistanceRatio = fDistanceRatio / (dist / radius) * 1.0;  //距离缩放倍率要除以距离值
+
+            highp float fRatio = fDistanceRatio * fAngleRatio;
+
+            if(fRatio > 1.0e-6)
+            {
+                trans_cord.x = trans_cord.x * (1.0 +  fRatio * x_ratio * x_scale);
+                trans_cord.y = trans_cord.y * (1.0 +  fRatio * y_ratio * y_scale);
+
+                //将当前的坐标转换到原坐标系
+                highp vec2 textureCoordinateToUse;
+                textureCoordinateToUse.x= trans_mat.r * trans_cord.x + trans_mat.b * trans_cord.y;
+                textureCoordinateToUse.y= trans_mat.g * trans_cord.x + trans_mat.a * trans_cord.y;
+                textureCoordinateToUse.x= textureCoordinateToUse.x + center.x;
+                textureCoordinateToUse.y= textureCoordinateToUse.y / aspectRatio + center.y;
+
+                //当前像素的新像素值
+                gl_FragColor = texture2D(inputImageTexture, textureCoordinateToUse);
+            }
+            else
+            {
+                gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+            }
+        }
+        else
+        {
+            gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+        }
+
+        //ang = ang / 3.1415926;
+        //gl_FragColor = vec4(ang, ang, ang, 1.0);
+        //gl_FragColor = vec4(textureCoordinate.x, textureCoordinate.x, textureCoordinate.x, 1.0);
+        //gl_FragColor = vec4(textureCoordinate.y, textureCoordinate.y, textureCoordinate.y, 1.0);
+        
+//        if(aspectRatio > 1.0)
+//        {
+//            gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+//        }
+//        else
+//        {
+//            gl_FragColor = vec4(0.0, 0.0, 0.0, 1.0);
+//        }
+
+//        ang = ang / 3.1415926;
+//        gl_FragColor = vec4(ang, ang, ang, 1.0);
+
+         //gl_FragColor = vec4(trans_cord.x, trans_cord.x, trans_cord.x, 1.0);
+         //gl_FragColor = vec4(trans_cord.y, trans_cord.y, trans_cord.y, 1.0);
+
+         //gl_FragColor = vec4(sub_cord.x, sub_cord.x, sub_cord.x, 1.0);
+         //gl_FragColor = vec4(sub_cord.y, sub_cord.y, sub_cord.y, 1.0);
+         //gl_FragColor = vec4(textureCoordinate.x, textureCoordinate.x, textureCoordinate.x, 1.0);
+         //gl_FragColor = vec4(textureCoordinate.y, textureCoordinate.y, textureCoordinate.y, 1.0);
+
+//        dist = dist / radius;
+//        if(dist < 0.04)
+//        {
+//            gl_FragColor = vec4(0.7, 0.0, 0.0, 1.0);
+//        }
+//        else if(dist < 2.02 && dist > 1.98)
+//        {
+//            gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+//        }
+//        else if(dist < 1.01 && dist > 0.99)
+//        {
+//            gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);
+//        }
+    }

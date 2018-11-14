@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="QHVCUploadProgressView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view alpha="0.20000000000000001" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f4H-nn-tBD" userLabel="bg_view">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iw6-Fv-3Vv" userLabel="progress_view">
+                    <rect key="frame" x="52" y="150" width="270" height="130"/>
+                    <subviews>
+                        <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Zk4-C0-F7Y">
+                            <rect key="frame" x="10" y="58" width="214" height="2"/>
+                        </progressView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0%" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D6S-3o-rxh">
+                            <rect key="frame" x="239" y="52" width="21" height="18"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sU3-iG-Dsy">
+                            <rect key="frame" x="120" y="90" width="31" height="30"/>
+                            <state key="normal" title="取消"/>
+                            <connections>
+                                <action selector="cancel:" destination="iN0-l3-epB" eventType="touchUpInside" id="jfB-7G-AtP"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="130" id="6c1-gz-IGO"/>
+                        <constraint firstItem="D6S-3o-rxh" firstAttribute="leading" secondItem="Zk4-C0-F7Y" secondAttribute="trailing" constant="15" id="7At-dz-N0j"/>
+                        <constraint firstAttribute="width" constant="270" id="RMt-He-tBB"/>
+                        <constraint firstAttribute="bottom" secondItem="sU3-iG-Dsy" secondAttribute="bottom" constant="10" id="VbF-xq-kcj"/>
+                        <constraint firstItem="sU3-iG-Dsy" firstAttribute="centerX" secondItem="iw6-Fv-3Vv" secondAttribute="centerX" id="WZF-O6-wW8"/>
+                        <constraint firstAttribute="bottom" secondItem="D6S-3o-rxh" secondAttribute="bottom" constant="60" id="WrX-Cy-qXl"/>
+                        <constraint firstAttribute="trailing" secondItem="D6S-3o-rxh" secondAttribute="trailing" constant="10" id="cz4-EC-AOi"/>
+                        <constraint firstAttribute="bottom" secondItem="Zk4-C0-F7Y" secondAttribute="bottom" constant="70" id="eyT-pC-zsl"/>
+                        <constraint firstItem="Zk4-C0-F7Y" firstAttribute="leading" secondItem="iw6-Fv-3Vv" secondAttribute="leading" constant="10" id="fNs-a1-T4a"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="iw6-Fv-3Vv" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="150" id="WpW-mr-Cql"/>
+                <constraint firstItem="iw6-Fv-3Vv" firstAttribute="centerX" secondItem="iN0-l3-epB" secondAttribute="centerX" id="XIK-Z7-40F"/>
+            </constraints>
+            <connections>
+                <outlet property="_cancelBtn" destination="sU3-iG-Dsy" id="iaB-4y-z3U"/>
+                <outlet property="_progress" destination="Zk4-C0-F7Y" id="RVo-Yg-efI"/>
+                <outlet property="_progressLabel" destination="D6S-3o-rxh" id="gub-GD-vZ0"/>
+            </connections>
+        </view>
+    </objects>
+</document>

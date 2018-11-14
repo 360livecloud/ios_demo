@@ -1,0 +1,6 @@
+framework module QHVCUploadKit {
+  umbrella header "QHVCUploadKit.h"
+
+  export *
+  module * { export * }
+}

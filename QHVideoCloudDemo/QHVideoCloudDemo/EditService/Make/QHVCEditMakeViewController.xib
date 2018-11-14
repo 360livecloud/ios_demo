@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="QHVCEditMakeViewController">
+            <connections>
+                <outlet property="_loading" destination="WS7-R4-3jx" id="rdW-xe-6W9"/>
+                <outlet property="_preview" destination="JrL-ZC-aUU" id="KaS-C1-y8L"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JrL-ZC-aUU" userLabel="preview">
+                    <rect key="frame" x="30" y="65" width="315" height="562"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                </view>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WS7-R4-3jx">
+                    <rect key="frame" x="162" y="308.5" width="50" height="50"/>
+                    <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="width" secondItem="WS7-R4-3jx" secondAttribute="height" multiplier="1:1" id="ddY-Zs-NSY"/>
+                        <constraint firstAttribute="width" constant="50" id="sdi-Nj-TWT"/>
+                    </constraints>
+                    <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                    <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    <nil key="highlightedColor"/>
+                </label>
+            </subviews>
+            <color key="backgroundColor" red="0.15294117647058825" green="0.14509803921568626" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="JrL-ZC-aUU" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" constant="65" id="E3h-cz-tCd"/>
+                <constraint firstAttribute="bottom" secondItem="JrL-ZC-aUU" secondAttribute="bottom" constant="40" id="Iug-KT-MBm"/>
+                <constraint firstItem="JrL-ZC-aUU" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" constant="30" id="TLh-rG-BFm"/>
+                <constraint firstAttribute="trailing" secondItem="JrL-ZC-aUU" secondAttribute="trailing" constant="30" id="Uct-Rw-dyV"/>
+                <constraint firstItem="WS7-R4-3jx" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="X8I-FL-VJY"/>
+                <constraint firstItem="WS7-R4-3jx" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="qg2-sX-LQo"/>
+            </constraints>
+            <point key="canvasLocation" x="34.5" y="53.5"/>
+        </view>
+    </objects>
+</document>

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="12121" systemVersion="16A323" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="12089"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="KGk-i7-Jjw" customClass="QHVCLiveSettingCellOne">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nxu-wY-CPG">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="58.5"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jnm-Aj-ePF">
+                        <rect key="frame" x="15" y="0.0" width="35.5" height="59.5"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" red="0.20000000000000001" green="0.20000000000000001" blue="0.20000000000000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="ieE-fb-p3F">
+                        <rect key="frame" x="184" y="15" width="121" height="29"/>
+                        <segments>
+                            <segment title="First"/>
+                            <segment title="Second"/>
+                        </segments>
+                        <connections>
+                            <action selector="segmentAction:" destination="KGk-i7-Jjw" eventType="valueChanged" id="ZfQ-ch-MMx"/>
+                        </connections>
+                    </segmentedControl>
+                </subviews>
+                <color key="backgroundColor" red="0.97254901960784312" green="0.97254901960784312" blue="0.97254901960784312" alpha="1" colorSpace="calibratedRGB"/>
+                <constraints>
+                    <constraint firstItem="Jnm-Aj-ePF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="15" id="8qg-Ec-K0n"/>
+                    <constraint firstItem="Nxu-wY-CPG" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="9Ly-8Q-H11"/>
+                    <constraint firstAttribute="bottom" secondItem="Jnm-Aj-ePF" secondAttribute="bottom" id="GRx-ui-7Rg"/>
+                    <constraint firstAttribute="trailing" secondItem="Nxu-wY-CPG" secondAttribute="trailing" id="JQ6-sm-Nhr"/>
+                    <constraint firstItem="ieE-fb-p3F" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="15" id="Oa0-j5-kmO"/>
+                    <constraint firstAttribute="bottom" secondItem="Nxu-wY-CPG" secondAttribute="bottom" constant="1" id="YZp-b7-jln"/>
+                    <constraint firstItem="Jnm-Aj-ePF" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="om2-Eo-udk"/>
+                    <constraint firstAttribute="trailing" secondItem="ieE-fb-p3F" secondAttribute="trailing" constant="15" id="sve-Xk-ZLz"/>
+                    <constraint firstItem="Nxu-wY-CPG" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="z7a-mX-REb"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="_segmentControl" destination="ieE-fb-p3F" id="ttF-3u-NMC"/>
+                <outlet property="_titleLabel" destination="Jnm-Aj-ePF" id="tDS-VG-Xft"/>
+            </connections>
+            <point key="canvasLocation" x="34" y="62"/>
+        </tableViewCell>
+    </objects>
+</document>

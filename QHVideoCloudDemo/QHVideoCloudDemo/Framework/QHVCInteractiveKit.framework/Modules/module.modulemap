@@ -1,0 +1,6 @@
+framework module QHVCInteractiveKit {
+  umbrella header "QHVCInteractiveKit.h"
+
+  export *
+  module * { export * }
+}

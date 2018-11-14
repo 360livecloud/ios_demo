@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="QHVCEditMainFunctionCell">
+            <rect key="frame" x="0.0" y="0.0" width="73" height="80"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="73" height="80"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="PZg-Kv-T9A">
+                        <rect key="frame" x="10" y="0.0" width="53" height="53"/>
+                        <constraints>
+                            <constraint firstAttribute="width" secondItem="PZg-Kv-T9A" secondAttribute="height" multiplier="1:1" id="odG-wK-mcl"/>
+                        </constraints>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xR7-BC-JBi">
+                        <rect key="frame" x="0.0" y="53" width="73" height="27"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstItem="PZg-Kv-T9A" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="10" id="3oA-gc-7PH"/>
+                <constraint firstItem="xR7-BC-JBi" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="IqA-8y-Vcd"/>
+                <constraint firstAttribute="trailing" secondItem="xR7-BC-JBi" secondAttribute="trailing" id="K4F-hG-Ixf"/>
+                <constraint firstAttribute="trailing" secondItem="PZg-Kv-T9A" secondAttribute="trailing" constant="10" id="QIH-iW-SLD"/>
+                <constraint firstItem="PZg-Kv-T9A" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="hOG-ci-HB2"/>
+                <constraint firstAttribute="bottom" secondItem="xR7-BC-JBi" secondAttribute="bottom" id="qnq-lV-6qp"/>
+                <constraint firstItem="xR7-BC-JBi" firstAttribute="top" secondItem="PZg-Kv-T9A" secondAttribute="bottom" id="uVJ-5d-1du"/>
+            </constraints>
+            <size key="customSize" width="93" height="117"/>
+            <connections>
+                <outlet property="_logoImageView" destination="PZg-Kv-T9A" id="cQB-gD-FCJ"/>
+                <outlet property="_titleLabel" destination="xR7-BC-JBi" id="pgp-dP-4a9"/>
+            </connections>
+            <point key="canvasLocation" x="55.5" y="87"/>
+        </collectionViewCell>
+    </objects>
+</document>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="QHVCEditPhotoItemCell">
+            <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Zrv-fe-suf" userLabel="thumb_image">
+                        <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                    </imageView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8xb-I7-xjb" userLabel="v_duration">
+                        <rect key="frame" x="5" y="61" width="74" height="20"/>
+                        <constraints>
+                            <constraint firstAttribute="height" constant="20" id="Gos-91-YmD"/>
+                        </constraints>
+                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mmZ-66-ba4" userLabel="select_view">
+                        <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="edit_white_right" translatesAutoresizingMaskIntoConstraints="NO" id="22K-fe-hB6" userLabel="select_image">
+                                <rect key="frame" x="0.0" y="0.0" width="84" height="84"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.16862745098039217" green="0.6470588235294118" blue="1" alpha="0.40000000000000002" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="22K-fe-hB6" secondAttribute="trailing" id="Loq-ch-HBf"/>
+                            <constraint firstAttribute="bottom" secondItem="22K-fe-hB6" secondAttribute="bottom" id="YiO-UX-2AD"/>
+                            <constraint firstItem="22K-fe-hB6" firstAttribute="leading" secondItem="mmZ-66-ba4" secondAttribute="leading" id="haX-36-wfg"/>
+                            <constraint firstItem="22K-fe-hB6" firstAttribute="top" secondItem="mmZ-66-ba4" secondAttribute="top" id="o3n-j3-vBs"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="mmZ-66-ba4" secondAttribute="trailing" id="1rT-77-V69"/>
+                <constraint firstItem="Zrv-fe-suf" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="FhS-TE-Vqc"/>
+                <constraint firstAttribute="trailing" secondItem="8xb-I7-xjb" secondAttribute="trailing" constant="5" id="G59-ru-mCJ"/>
+                <constraint firstItem="mmZ-66-ba4" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="QOa-xu-9V6"/>
+                <constraint firstAttribute="bottom" secondItem="mmZ-66-ba4" secondAttribute="bottom" id="RYS-7f-VNW"/>
+                <constraint firstItem="mmZ-66-ba4" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="T3L-i7-7bi"/>
+                <constraint firstAttribute="bottom" secondItem="8xb-I7-xjb" secondAttribute="bottom" constant="3" id="VUy-z0-7Yd"/>
+                <constraint firstAttribute="trailing" secondItem="Zrv-fe-suf" secondAttribute="trailing" id="ayF-pp-yde"/>
+                <constraint firstAttribute="bottom" secondItem="Zrv-fe-suf" secondAttribute="bottom" id="c1i-nv-qYY"/>
+                <constraint firstItem="Zrv-fe-suf" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="hHJ-CX-MTT"/>
+                <constraint firstItem="8xb-I7-xjb" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="5" id="yhs-eP-3WY"/>
+            </constraints>
+            <connections>
+                <outlet property="_duration" destination="8xb-I7-xjb" id="1k0-Jh-MUr"/>
+                <outlet property="_selectView" destination="mmZ-66-ba4" id="plM-uD-4e3"/>
+                <outlet property="thumbImageView" destination="Zrv-fe-suf" id="ESA-Lj-Dwv"/>
+            </connections>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="edit_white_right" width="25" height="17"/>
+    </resources>
+</document>

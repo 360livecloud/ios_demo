@@ -1,0 +1,107 @@
+precision mediump float;
+
+varying highp vec2 textureCoordinate;
+uniform sampler2D inputImageTexture;    //输入图像
+
+varying mediump vec2 textureCoordinate2;
+uniform sampler2D inputImageTexture2;   //查找表
+
+uniform mediump float aspectRatio;        //高比宽
+uniform mediump vec2 center[6];           //圆的中心(宽高比例与图像相同)
+uniform mediump vec2 normm[6];            //水平向量，从左到右
+uniform mediump float radius[6];          //圆的半径（横轴）
+uniform mediump float vertHorzRatio[6];   //椭圆的纵轴与横轴之比
+
+uniform mediump float x_scale[6];         //x方向变形系数，从0到1
+uniform mediump float y_scale[6];         //x方向变形系数，从0到1
+
+uniform lowp float lut_row[6];            //查找表行号
+
+void main()
+{
+    //计算旋转矩阵
+    highp vec2 normm_img = vec2(normm[0].x, normm[0].y * aspectRatio);//纹理坐标系转换到归一化坐标系
+    highp float len = length(normm_img);
+    highp float cosNormm = normm_img.x / len;
+    highp float sinNormm = normm_img.y / len;
+    highp mat2 rotateNormm  = mat2(cosNormm, -sinNormm,
+                                     sinNormm, cosNormm);
+
+    highp mat2 inverseRotateNormm = mat2(cosNormm, sinNormm,
+                                          -sinNormm, cosNormm);
+
+    highp vec2 srcPt = vec2(textureCoordinate.x, textureCoordinate.y * aspectRatio);  //当前点坐标
+    srcPt = rotateNormm * srcPt; //源坐标转化到转正坐标系下
+
+    //判断当前点是否在一个圆中
+    lowp int bInCircle = 0;
+    mediump float arrDist[4];
+    mediump vec2 arrTransCord;
+    for(lowp int i = 3 ; i >= 0; i--)
+    {
+       arrTransCord = vec2(srcPt.x - center[i].x, srcPt.y - center[i].y);
+       arrDist[i] = length(vec2(arrTransCord.x, arrTransCord.y / vertHorzRatio[i]));
+       if(arrDist[i] < radius[i])
+       {
+          bInCircle = 1;
+       }
+    }
+
+    //如果是则计算变形量
+    if(bInCircle > 0)
+    {
+        for(lowp int i = 3 ; i >= 0; i--)
+        {
+           //基于查找表的方法
+           if(arrDist[i] < radius[i]) //只计算半径距离以内的像素
+           {
+               //源坐标转化到以当前圆心为原点的坐标系
+               highp vec2 trans_cord = vec2(srcPt.x - center[i].x, srcPt.y - center[i].y);
+
+               //旋转
+               mediump float percent = texture2D(inputImageTexture2, vec2(arrDist[i] / radius[i], lut_row[i])).r;
+               mediump float rotateAngle = percent * x_scale[i];
+               mediump float cosValue = cos(rotateAngle);
+               mediump float sinValue = sin(rotateAngle);
+               mediump mat2 rotateMat = mat2(cosValue, -sinValue,
+                                        sinValue, cosValue);
+               trans_cord = rotateMat * trans_cord;
+
+               //将当前的坐标转换到原坐标系
+               srcPt.x= trans_cord.x + center[i].x;
+               srcPt.y= trans_cord.y + center[i].y;
+           }
+        }//for
+
+
+        //计算左眼的偏移量
+        mediump float eyeDist = arrDist[0];
+        mediump float left_percent_x = 0.0;
+        if(eyeDist < radius[4])
+        {
+            mediump float percent = texture2D(inputImageTexture2, vec2(eyeDist / radius[4], lut_row[4])).r;
+            left_percent_x =  radius[4] * percent * x_scale[4];
+        }
+
+        //计算右眼的偏移量
+        eyeDist = arrDist[1];
+        mediump float right_percent_x = 0.0;
+        if(eyeDist < radius[5])
+        {
+            mediump float percent = texture2D(inputImageTexture2, vec2(eyeDist / radius[5], lut_row[5])).r;
+            right_percent_x =  radius[5] * percent * x_scale[5];
+        }
+
+        //叠加偏移量
+        srcPt.x += left_percent_x + right_percent_x;
+
+        srcPt = inverseRotateNormm * srcPt;
+        srcPt.y = srcPt.y / aspectRatio;
+
+        gl_FragColor = texture2D(inputImageTexture, srcPt);
+    }
+    else //否则直接返回原始像素值
+    {
+        gl_FragColor = texture2D(inputImageTexture, textureCoordinate);
+    }
+}

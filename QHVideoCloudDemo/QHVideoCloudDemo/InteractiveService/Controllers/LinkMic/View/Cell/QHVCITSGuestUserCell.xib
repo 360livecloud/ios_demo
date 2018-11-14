@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" rowHeight="60" id="KGk-i7-Jjw" customClass="QHVCITSGuestUserCell">
+            <rect key="frame" x="0.0" y="0.0" width="320" height="60"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="pbF-3Z-jJU" userLabel="bg_view">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="59.5"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Jp0-W1-sAO" userLabel="avatar">
+                                <rect key="frame" x="15" y="10" width="39.5" height="39.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="Jp0-W1-sAO" secondAttribute="height" multiplier="1:1" id="t4K-0b-cO3"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="pdM-cf-hyh">
+                                <rect key="frame" x="69.5" y="22" width="33" height="16"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0Fi-kd-gHA">
+                                <rect key="frame" x="281" y="17" width="24" height="24"/>
+                                <state key="normal" image="room_kick"/>
+                                <connections>
+                                    <action selector="guestBtnAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="vrT-1D-axx"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="Jp0-W1-sAO" secondAttribute="bottom" constant="10" id="0NA-Me-CnG"/>
+                            <constraint firstAttribute="trailing" secondItem="0Fi-kd-gHA" secondAttribute="trailing" constant="15" id="KXt-Su-e8E"/>
+                            <constraint firstItem="0Fi-kd-gHA" firstAttribute="centerY" secondItem="pbF-3Z-jJU" secondAttribute="centerY" id="Ro2-R8-uuY"/>
+                            <constraint firstItem="Jp0-W1-sAO" firstAttribute="top" secondItem="pbF-3Z-jJU" secondAttribute="top" constant="10" id="Sxu-uh-rHB"/>
+                            <constraint firstItem="pdM-cf-hyh" firstAttribute="centerY" secondItem="pbF-3Z-jJU" secondAttribute="centerY" id="TfZ-de-VWQ"/>
+                            <constraint firstItem="Jp0-W1-sAO" firstAttribute="leading" secondItem="pbF-3Z-jJU" secondAttribute="leading" constant="15" id="epW-gg-wuV"/>
+                            <constraint firstItem="pdM-cf-hyh" firstAttribute="leading" secondItem="Jp0-W1-sAO" secondAttribute="trailing" constant="15" id="unb-qr-d26"/>
+                        </constraints>
+                    </view>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" secondItem="pbF-3Z-jJU" secondAttribute="bottom" id="GJX-DD-f8T"/>
+                    <constraint firstAttribute="trailing" secondItem="pbF-3Z-jJU" secondAttribute="trailing" id="H32-YO-de4"/>
+                    <constraint firstItem="pbF-3Z-jJU" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" id="Lup-Cs-vcf"/>
+                    <constraint firstItem="pbF-3Z-jJU" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" id="jcz-kb-Zyf"/>
+                </constraints>
+            </tableViewCellContentView>
+            <connections>
+                <outlet property="_avatar" destination="Jp0-W1-sAO" id="7qF-p6-Has"/>
+                <outlet property="_kickoutBtn" destination="0Fi-kd-gHA" id="ghk-Zu-w2W"/>
+                <outlet property="_titleLabel" destination="pdM-cf-hyh" id="VBc-hE-G1z"/>
+            </connections>
+            <point key="canvasLocation" x="34" y="62"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="room_kick" width="24" height="24"/>
+    </resources>
+</document>

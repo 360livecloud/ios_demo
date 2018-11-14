@@ -1,0 +1,6 @@
+framework module QHVCIMKit {
+  umbrella header "QHVCIMKit.h"
+
+  export *
+  module * { export * }
+}

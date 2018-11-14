@@ -1,0 +1,24 @@
+platform :ios, '9.0'
+
+def shared_pods
+    
+    pod 'Masonry', '~> 0.6'
+    pod 'AFNetworking', '~> 3.0'
+    pod 'MJRefresh'
+    pod 'MBProgressHUD'
+    pod 'SDWebImage'
+    
+end
+
+def debug_only_pods
+    
+    
+    
+end
+
+target :'QHVideoCloudDemo' do
+    
+    shared_pods
+    debug_only_pods
+    
+end

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="QHVCEditOverlayAlphaMovView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KVK-bf-MHG">
+                    <rect key="frame" x="9" y="26" width="30" height="68"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="30" id="KSH-5q-7HR"/>
+                        <constraint firstAttribute="height" constant="68" id="dBp-Gj-zmp"/>
+                    </constraints>
+                    <state key="normal" image="edit_overlay_back"/>
+                    <connections>
+                        <action selector="clickedBackBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="EFX-WF-mQj"/>
+                    </connections>
+                </button>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="4uf-pl-8GQ">
+                    <rect key="frame" x="49" y="22.5" width="316" height="75"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="oEA-aQ-iBI"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="10" minimumInteritemSpacing="10" id="Kvb-XB-SfL">
+                        <size key="itemSize" width="55" height="75"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="4uf-pl-8GQ" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="ANO-pJ-jLG"/>
+                <constraint firstItem="4uf-pl-8GQ" firstAttribute="leading" secondItem="KVK-bf-MHG" secondAttribute="trailing" constant="10" id="BKq-qb-9dA"/>
+                <constraint firstItem="KVK-bf-MHG" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="9" id="LtY-sy-5a4"/>
+                <constraint firstItem="KVK-bf-MHG" firstAttribute="centerY" secondItem="iN0-l3-epB" secondAttribute="centerY" id="ch2-0S-D2u"/>
+                <constraint firstAttribute="trailing" secondItem="4uf-pl-8GQ" secondAttribute="trailing" constant="10" id="ouo-QE-uhy"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="fileCollection" destination="4uf-pl-8GQ" id="dht-tx-8mm"/>
+            </connections>
+            <point key="canvasLocation" x="-107" y="44"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="edit_overlay_back" width="30" height="68"/>
+    </resources>
+</document>

@@ -1,0 +1,6 @@
+framework module QHVCLocalServerKit {
+  umbrella header "QHVCLocalServerKit.h"
+
+  export *
+  module * { export * }
+}

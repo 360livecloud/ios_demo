@@ -1,0 +1,6 @@
+framework module QHVCPlayerKit {
+  umbrella header "QHVCPlayerKit.h"
+
+  export *
+  module * { export * }
+}
