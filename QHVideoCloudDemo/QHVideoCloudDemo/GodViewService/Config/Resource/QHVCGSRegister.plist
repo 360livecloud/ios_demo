@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>image</key>
+		<string>live_bid</string>
+		<key>title</key>
+		<string>用户名：</string>
+		<key>value</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>Interactive_key</string>
+		<key>title</key>
+		<string>密码：</string>
+		<key>value</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>Interactive_key</string>
+		<key>title</key>
+		<string>确认密码：</string>
+		<key>value</key>
+		<string></string>
+	</dict>
+</array>
+</plist>

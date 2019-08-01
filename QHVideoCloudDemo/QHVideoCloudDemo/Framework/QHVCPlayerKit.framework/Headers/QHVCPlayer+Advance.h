@@ -29,8 +29,9 @@ typedef NS_ENUM(NSInteger, QHVCPlayMode)
 
 typedef NS_ENUM(NSInteger, QHVCRecorderFormat)
 {
-    QHVCRecorderFormat_MP4   = 0,
-    QHVCRecorderFormat_MOV   = 1,
+    QHVCRecordFormatDefault = 0,//默认方式（音、视频）
+    QHVCRecordFormatOnlyAudio = 1,//仅音频
+    QHVCRecordFormatOnlyVideo = 2,//仅视频
 };
 
 typedef struct
@@ -44,6 +45,23 @@ typedef struct
     int channels;
     int fps;
 }QHVCRecordConfig;
+
+typedef enum
+{
+    QHVC_PACKET_TYPE_NONE = 0,
+    QHVC_PACKET_TYPE_H264,
+    QHVC_PACKET_TYPE_H265,
+    QHVC_PACKET_TYPE_AAC,
+    QHVC_PACKET_TYPE_OPUS
+}QHVC_PACKET_TYPE;
+
+typedef struct QHVCPacket
+{
+    void    * _Nonnull opaque;//packet
+    uint8_t * _Nonnull pData;
+    int                size;
+    QHVC_PACKET_TYPE   flags;
+}QHVCPacket;
 
 /**
  播放器advanceDelegate
@@ -99,6 +117,18 @@ typedef struct
  @param sampleBuffer 音频buffer
  */
 - (void)onPlayerAudioDataCallback:(CMSampleBufferRef _Nonnull)sampleBuffer;
+
+/**
+ 播放实时回调视频buffer
+ @param pixelBuffer 视频buffer
+ */
+- (void)onPlayerVideoDataCallback:(CVPixelBufferRef _Nonnull)pixelBuffer;
+
+/**
+ 返回原始数据包（注意该接口必须同步处理数据）
+ @param packet 数据包结构体
+ */
+- (void)onPlayerOutputPacket:(QHVCPacket)packet;
 
 @end
 
@@ -221,20 +251,53 @@ typedef struct
  *
  * @param rate 播放速度，取值1~n（建议n<=5）
  */
-- (void)setPlayBackRate:(float)rate;
+- (void)setPlaybackRate:(float)rate;
 
 /**
  获取播放倍速
 
  @return 倍速值
  */
-- (float)getPlayBackRate;
+- (float)getPlaybackRate;
+
+/**
+ 销毁音频模块(直播生效)
+ */
+- (void)destroyAudioModule;
+
+/**
+ 重启音频模块(直播生效)
+ */
+- (void)reStartAudioModule;
 
 /**
  设置音频数据回调(注意：只能在onPlayerPrepared之后调用)
  @param isOutput yes输出 no不输出
  */
 - (void)setAudioDataOutput:(BOOL)isOutput;
+
+/**
+ 设置输出视频buffer
+ @param isOutput yes输出 no不输出
+ @param isUseSoftware yes用cpu,no用gpu转换纹理yuv->bgra
+ */
+- (void)setVideoDataOutput:(BOOL)isOutput useSoftware:(BOOL)isUseSoftware;
+
+/**
+ 渲染模式输出宽高比例保持短边可见
+ */
+- (void)renderModeOutAspectScaleKeepShortEdgeVisible:(BOOL)isAlwaysVisible;
+
+/**
+ 播放器接收外部数据流（要在prepare之后调用才有效）
+ @param type 数据流类型
+ @param data 数据流
+ @param size 数据流长度
+ @param pts 显示时间戳
+ @param dts 解码时间戳
+ @param isKey 是否是关键帧
+ */
+- (void)inputStream:(QHVC_PACKET_TYPE)type data:(uint8_t *_Nonnull)data size:(int)size pts:(int64_t)pts dts:(int64_t)dts isKey:(int)isKey;
 
 /**
  * 开始录制(注意：此接口与setAudioDataOutput冲突，先设置的生效)

@@ -11,7 +11,8 @@
 #import "QHVCSlider.h"
 #import <QHVCPlayerKit/QHVCPlayerKit.h>
 #import <SDWebImage/UIImageView+WebCache.h>
-#import <QHVCLocalServerKit/QHVCLocalServerKit.h>
+#import <QHVCNetKit/QHVCNetKit.h>
+#import <AudioToolbox/AudioToolbox.h>
 
 @interface QHVCLocalServerPlayerView ()<QHVCSliderDelegate>
 {
@@ -50,6 +51,7 @@
     NSDictionary *currentItem;
     
     long long fileTotalSize;
+    UITextView *p2pInfoTextView;
 }
 
 @end
@@ -310,14 +312,14 @@
 {
     if (fileTotalSize == 0)
     {
-        [[QHVCLocalServerKit sharedInstance] getFileCachedSize:[currentItem valueForKey:@"rid"] url:[currentItem valueForKey:@"playUrl"] callback:^(unsigned long long cachedSize, unsigned long long totalSize) {
+        [[QHVCNet sharedInstance] getFileCachedSize:[currentItem valueForKey:@"rid"] url:[currentItem valueForKey:@"playUrl"] callback:^(unsigned long long cachedSize, unsigned long long totalSize) {
             fileTotalSize = totalSize;
         }];
     }
     double download = [_player getDownloadProgress];
     NSString *rid = [currentItem valueForKey:@"rid"];
     NSString *url = [currentItem valueForKey:@"playUrl"];
-    long long pro = [[QHVCLocalServerKit sharedInstance] getFileAvailedSize:rid url:url  offset:[_player getCurrentPosition] * fileTotalSize/[_player getDuration]];
+    long long pro = [[QHVCNet sharedInstance] getFileAvailedSize:rid url:url  offset:[_player getCurrentPosition] * fileTotalSize/[_player getDuration]];
     if (pro != 0)
     {
         download = (double)(pro * [_player getDuration]/fileTotalSize) ;
@@ -334,6 +336,42 @@
     }
     playerSlider.trackValue = value/total;
     slider.trackValue = value/total;
+    
+    NSDictionary *dic = [[QHVCNet sharedInstance] getP2pInfo];
+    float cdnDownSize = [[dic valueForKey:@"cdnDownSize"] floatValue];
+    float p2pDownSize = [[dic valueForKey:@"p2pDownSize"] floatValue];
+    
+    cdnDownSize = cdnDownSize/1024;
+    p2pDownSize = p2pDownSize/1024;
+    
+    if (cdnDownSize >= 1024)
+    {
+        cdnDownSize = cdnDownSize/1024;
+        [dic setValue:[NSString stringWithFormat:@"%.1fM", cdnDownSize] forKey:@"cdnDownSize"];
+    }
+    else
+    {
+        [dic setValue:[NSString stringWithFormat:@"%.fK", cdnDownSize] forKey:@"cdnDownSize"];
+    }
+    
+    if (p2pDownSize >= 1024)
+    {
+        p2pDownSize = p2pDownSize/1024;
+        [dic setValue:[NSString stringWithFormat:@"%.1fM", p2pDownSize] forKey:@"p2pDownSize"];
+    }
+    else
+    {
+        [dic setValue:[NSString stringWithFormat:@"%.fK", p2pDownSize] forKey:@"p2pDownSize"];
+    }
+    
+    if (dic) {
+        p2pInfoTextView.text = [dic description];
+        NSNumber *p2pDownSpeed = dic[@"p2pDownSpeed"];
+        if (p2pDownSpeed.longValue > 0) {
+            AudioServicesPlaySystemSound(kSystemSoundID_Vibrate);
+            AudioServicesPlaySystemSound(1007);
+        }
+    }
 }
 
 - (void)startHideTopBottomTimer
@@ -527,7 +565,7 @@
     
     if (fileTotalSize == 0)
     {
-        [[QHVCLocalServerKit sharedInstance] getFileCachedSize:[currentItem valueForKey:@"rid"] url:[currentItem valueForKey:@"playUrl"] callback:^(unsigned long long cachedSize, unsigned long long totalSize) {
+        [[QHVCNet sharedInstance] getFileCachedSize:[currentItem valueForKey:@"rid"] url:[currentItem valueForKey:@"playUrl"] callback:^(unsigned long long cachedSize, unsigned long long totalSize) {
             fileTotalSize = totalSize;
         }];
     }
@@ -541,7 +579,7 @@
         {
             offset = [_player getCurrentPosition] * fileTotalSize/[_player getDuration];
         }
-        long long pro = [[QHVCLocalServerKit sharedInstance] getFileAvailedSize:rid url:url  offset:offset];
+        long long pro = [[QHVCNet sharedInstance] getFileAvailedSize:rid url:url  offset:offset];
         if (pro != 0)
         {
             download = (double)(pro * [_player getDuration]/fileTotalSize) ;
@@ -651,6 +689,17 @@
             make.top.bottom.equalTo(bottomView);
             make.width.equalTo(@40);
         }];
+        if (!p2pInfoTextView)
+        {
+            p2pInfoTextView = [[UITextView alloc]initWithFrame:CGRectMake(10, 0, SCREEN_SIZE.width - 20, 150)];
+            p2pInfoTextView.backgroundColor = [UIColor clearColor];
+            p2pInfoTextView.textColor = [UIColor whiteColor];
+            p2pInfoTextView.editable = NO;
+            p2pInfoTextView.font = [UIFont systemFontOfSize:10.0];
+            p2pInfoTextView.textAlignment = NSTextAlignmentRight;
+            [self addSubview:p2pInfoTextView];
+            [self sendSubviewToBack:p2pInfoTextView];
+        }
     }
 
 }

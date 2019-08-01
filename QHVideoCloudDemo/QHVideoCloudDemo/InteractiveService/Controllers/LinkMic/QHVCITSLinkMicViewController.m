@@ -8,7 +8,6 @@
 
 #import "QHVCITSLinkMicViewController.h"
 #import "QHVCITSProtocolMonitor.h"
-#import "QHVCITSLog.h"
 #import "QHVCITSUserSystem.h"
 #import "QHVCITSRoomUserListView.h"
 #import "QHVCITSChatManager.h"
@@ -18,10 +17,11 @@
 #import "QHVCITSRoomUserListView.h"
 #import "QHVCITSLinkMicViewController+Control.h"
 #import "QHVCITSLinkMicViewController+Hongpa.h"
-#import "QHVCConfig.h"
+#import "QHVCGlobalConfig.h"
 #import "QHVCInteractiveViewController.h"
 #import "QHVCToast.h"
-#import <QHVCLiveKit/QHVCLiveKit.h>
+//#import "QHVCLiveKit.h"
+#import "QHVCLogger.h"
 
 @interface QHVCITSVideoCompositingLayout : NSObject
 
@@ -36,7 +36,7 @@
 
 @end
 
-@interface QHVCITSLinkMicViewController ()<QHVCIMMessageDelegate,UIAlertViewDelegate,QHVCInteractiveDelegate, QHVCInteractiveVideoFrameDelegate, QHVCInteractiveAudioFrameDelegate, QHVCLiveKitDelegate>
+@interface QHVCITSLinkMicViewController ()<QHVCITSChatMessageDelegate,UIAlertViewDelegate,QHVCInteractiveDelegate, QHVCInteractiveVideoFrameDelegate, QHVCInteractiveAudioFrameDelegate>
 {
     IBOutlet UIView *_preview;
     IBOutlet UILabel *_roomName;
@@ -48,7 +48,7 @@
     IBOutlet UIImageView *_audioOnlyImageView;
     QHVCITSRoomUserListView *_userListView;
     QHVCITSRoomUserListView *_audioGuestListView;
-    QHVCLive *_liveEngine;
+//    QHVCLive *_liveEngine;
     QHVCITSIdentity _expectedRole;
 }
 
@@ -60,6 +60,12 @@
 @end
 
 @implementation QHVCITSLinkMicViewController
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    [self.navigationController setNavigationBarHidden:YES animated:YES];
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -175,13 +181,18 @@
     
     if (![bindRoleId isEqualToString:@"0"])
     {
-        [QHVCITSChatManager sendCommandMessage:QHVCIMConversationTypePrivate cmdType:QHVCITSCommandGuestAskJoin targetId:bindRoleId success:^(long messageId) {
-            [QHVCToast makeToast:@"加入互动请求已发送"];
-        } error:^(QHVCIMErrorCode errorCode, long messageId) {
-            [QHVCToast makeToast:@"请求发送失败，请稍后再试"];
-        }];
-    }
-    else//hongpa模式
+        [[QHVCITSChatManager sharedManager] sendCommandMessage:QHVCITSCommandGuestAskJoin
+                                                      targetId:bindRoleId
+                                                      complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
+                                                          if (success)
+                                                          {
+                                                              [QHVCToast makeToast:@"加入互动请求已发送"];
+                                                          } else
+                                                          {
+                                                              [QHVCToast makeToast:@"请求发送失败，请稍后再试"];
+                                                          }
+                                                      }];
+    } else//hongpa模式
     {
         _expectedRole = QHVCITS_Identity_Anchor;
         [self setClientRoleIdentity:QHVCITS_Identity_Anchor];
@@ -207,18 +218,28 @@
             
             if (expectedRole == QHVCITS_Identity_Audience) {
                 [QHVCToast makeToast:@"退出连麦成功"];
-                [QHVCITSChatManager sendCommandMessage:QHVCIMConversationTypeChartroom cmdType:QHVCITSCommandGuestQuitNotify targetId:roomInfo.roomId success:nil error:nil];
-            }
-            else
+                NSArray* targetIdentityArray = @[@(QHVCITS_Identity_Audience),@(QHVCITS_Identity_Anchor),@(QHVCITS_Identity_Guest)];
+                [[QHVCITSChatManager sharedManager] sendCommandMessage:roomInfo.roomId
+                                                               cmdType:QHVCITSCommandGuestQuitNotify
+                                                   targetIdentityArray:targetIdentityArray
+                                                              complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
+                                                                  [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"退出连麦,发送信令消息:%@",[NSNumber numberWithBool:success]] dict:dict];
+                                                              }];
+            } else
             {
                 [QHVCToast makeToast:@"连麦成功"];
-                [QHVCITSChatManager sendCommandMessage:QHVCIMConversationTypeChartroom cmdType:QHVCITSCommandGuestJoinNotify targetId:roomInfo.roomId success:nil error:nil];
+                NSArray* targetIdentityArray = @[@(QHVCITS_Identity_Audience),@(QHVCITS_Identity_Anchor),@(QHVCITS_Identity_Guest)];
+                [[QHVCITSChatManager sharedManager] sendCommandMessage:roomInfo.roomId
+                                                               cmdType:QHVCITSCommandGuestJoinNotify
+                                                   targetIdentityArray:targetIdentityArray
+                                                              complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
+                                                                  [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"连麦成功,发送信令消息:%@",[NSNumber numberWithBool:success]] dict:dict];
+                                                              }];
             }
             [self setInteractiveBtnTitle];
             [self updateControlView:roomInfo.talkType];
             [self updateRoomRoleList];
-        }
-        else
+        } else
         {
             NSString* errMsg = [QHVCToolUtils getStringFromDictionary:dict key:QHVCITS_KEY_ERROR_MESSAGE defaultValue:@"申请互动改变身份失败"];
             [QHVCToast makeToast:errMsg];
@@ -238,7 +259,7 @@
  */
 - (void)interactiveEngine:(nonnull QHVCInteractiveKit *)engine didOccurWarning:(QHVCITLWarningCode)warningCode;
 {
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_WARN content:[NSString stringWithFormat:@"didOccurWarning:%ld",warningCode]];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_WARN content:[NSString stringWithFormat:@"didOccurWarning:%ld",(int)warningCode]];
 }
 
 /**
@@ -250,7 +271,7 @@
  */
 - (void)interactiveEngine:(nonnull QHVCInteractiveKit *)engine didOccurError:(QHVCITLErrorCode)errorCode;
 {
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_ERROR content:[NSString stringWithFormat:@"didOccurError:%ld",errorCode]];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_ERROR content:[NSString stringWithFormat:@"didOccurError:%ld",errorCode]];
     [self receiveLinkMicSDKError:errorCode];
 }
 
@@ -288,7 +309,7 @@
  */
 - (void)interactiveEngine:(nonnull QHVCInteractiveKit *)engine firstLocalVideoFrameWithSize:(CGSize)size;
 {
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"firstLocalVideoFrameWithSize:%@",NSStringFromCGSize(size)]];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"firstLocalVideoFrameWithSize:%@",NSStringFromCGSize(size)]];
 }
 
 /**
@@ -301,7 +322,7 @@
  */
 - (void)interactiveEngine:(nonnull QHVCInteractiveKit *)engine firstRemoteVideoDecodedOfUid:(nonnull NSString *)uid size:(CGSize)size;
 {
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"firstRemoteVideoDecodedOfUid:%@, size:%@",uid,NSStringFromCGSize(size)]];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"firstRemoteVideoDecodedOfUid:%@, size:%@",uid,NSStringFromCGSize(size)]];
 }
 
 /**
@@ -314,7 +335,7 @@
  */
 - (void)interactiveEngine:(nonnull QHVCInteractiveKit *)engine videoSizeChangedOfUid:(nonnull NSString *)uid size:(CGSize)size rotation:(NSInteger)rotation;
 {
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"videoSizeChangedOfUid:%@,size:%@,rotation:%ld",uid,NSStringFromCGSize(size),rotation]];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"videoSizeChangedOfUid:%@,size:%@,rotation:%ld",uid,NSStringFromCGSize(size),rotation]];
 }
 
 /**
@@ -329,7 +350,7 @@
  */
 - (void)interactiveEngine:(nonnull QHVCInteractiveKit *)engine firstRemoteVideoFrameOfUid:(nonnull NSString *)uid size:(CGSize)size;
 {
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"firstRemoteVideoFrameOfUid:%@,size:%@",uid,NSStringFromCGSize(size)]];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"firstRemoteVideoFrameOfUid:%@,size:%@",uid,NSStringFromCGSize(size)]];
 }
 
 
@@ -355,7 +376,7 @@
  */
 - (void)interactiveEngine:(nonnull QHVCInteractiveKit *)engine didOfflineOfUid:(nonnull NSString *)uid reason:(QHVCITLUserOfflineReason)reason;
 {
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"didOfflineOfUid:%@,reason:%ld",uid,reason]];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"didOfflineOfUid:%@,reason:%ld",uid,reason]];
     
     [QHVCToast makeToast:[NSString stringWithFormat:@"userId %@离开了频道，reason %@",uid,@(reason)]];
     
@@ -494,7 +515,7 @@
  */
 - (void)interactiveEngine:(nonnull QHVCInteractiveKit *)engine didJoinChannel:(nonnull NSString *)channel withUid:(nonnull NSString *)uid;
 {
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"didJoinChannel %@ uid:%@",channel,uid]];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"didJoinChannel %@ uid:%@",channel,uid]];
     [self receiveJoinChannelSucess];
 }
 
@@ -807,6 +828,7 @@
     if (identity == QHVCITS_Identity_Audience)
     {
         [self endVideoCompositingTask];
+        [engineKit enableInEarMonitoring:NO];
         [engineKit setClientRole:QHVCITL_ClientRole_Audience];
         if (talkType == QHVCITS_Talk_Type_Audio)
         {
@@ -835,6 +857,7 @@
         //设置合流信息
         [self settingMergeData];
         //设置连麦引擎其它参数
+        [engineKit enableInEarMonitoring:YES];
         [engineKit setClientRole:QHVCITL_ClientRole_Broadcaster];
         if (talkType == QHVCITS_Talk_Type_Audio)
         {
@@ -875,12 +898,11 @@
 //角色已经成功加入频道,可以考虑把相关UI的遮罩去掉
 - (void) receiveJoinChannelSucess
 {
-    QHVCITSRoomModel* roomInfo = [[QHVCITSUserSystem sharedInstance] roomInfo];
     WEAK_SELF_LINKMIC
     [self joinBusinessServerRoom:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
         STRONG_SELF_LINKMIC
         //启动信令系统
-        [self joinChatroom:roomInfo.roomId];
+        [self startIMServer];
         //启动心跳
         [self startHeartbeatTimer];
         //启动定时刷新房间列表
@@ -902,32 +924,32 @@
 //启动预览
 - (void) QHVCLiveSDKStartPreview:(QHVCITSVideoSession *)localSession
 {
-    _liveEngine = [QHVCLive sharedInstance];
-    _liveEngine.liveDelegate = self;
-    
-    [_liveEngine setCameraOutputResolution:QHVCLiveOutputPreset1280x720];
-    
-    [_liveEngine encoderSwitch:NO];
-    [_liveEngine setVideoEncoderFPS:15];
-//    [_liveEngine setVideoEncoderBitrate:500];
-//    [_liveEngine setVideoEncoderKeyframeInterval:2];
-//    [_liveEngine setVideoEncoderResolution:CGSizeMake(720, 1280)];
-    
-    [_liveEngine setPreviewView:localSession.videoView];
-    [_liveEngine setFrontCameraMirrored:YES];
-    [_liveEngine startCapture];
-    if (1)
-    {
-        [_liveEngine setVideoOrientation:QHVCLiveVideoOrientationPortrait];
-    }
+//    _liveEngine = [QHVCLive sharedInstance];
+//    _liveEngine.liveDelegate = self;
+//
+//    [_liveEngine setCameraOutputResolution:QHVCLiveOutputPreset1280x720];
+//
+//    [_liveEngine encoderSwitch:NO];
+//    [_liveEngine setVideoEncoderFPS:15];
+////    [_liveEngine setVideoEncoderBitrate:500];
+////    [_liveEngine setVideoEncoderKeyframeInterval:2];
+////    [_liveEngine setVideoEncoderResolution:CGSizeMake(720, 1280)];
+//
+//    [_liveEngine setPreviewView:localSession.videoView];
+//    [_liveEngine setFrontCameraMirrored:YES];
+//    [_liveEngine startCapture];
+//    if (1)
+//    {
+//        [_liveEngine setVideoOrientation:QHVCLiveVideoOrientationPortrait];
+//    }
 }
 
 //停止预览
 - (void) QHVCLiveSDKStopPreview
 {
-    _liveEngine.liveDelegate = nil;
-    [_liveEngine stopCapture];
-    _liveEngine = nil;
+//    _liveEngine.liveDelegate = nil;
+//    [_liveEngine stopCapture];
+//    _liveEngine = nil;
 }
 
 #pragma mark - 旁路直播信息准备 -
@@ -943,7 +965,7 @@
     NSMutableDictionary* infoDict = [NSMutableDictionary dictionary];
     [QHVCToolUtils setStringToDictionary:infoDict key:@"pull_addr" value:pullUrl];
     [QHVCToolUtils setStringToDictionary:infoDict key:@"push_addr" value:publishUrl];
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_INFO content:@"prepareForBypassLiveInfo" dict:infoDict];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:@"prepareForBypassLiveInfo" dict:infoDict];
     [self loadingEngineData:infoDict];
 }
 
@@ -960,7 +982,7 @@
     mixStreamConfig.lifeCycle = QHVCITL_RtmpStream_LifeCycle_Bind_To_Owner;
     mixStreamConfig.width = config.mergeVideoCanvasWidth;
     mixStreamConfig.height = config.mergeVideoCanvasHeight;
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_INFO content:@"settingMergeData" dict:[mixStreamConfig transformToDictionary]];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:@"settingMergeData" dict:[mixStreamConfig transformToDictionary]];
     QHVCInteractiveKit* engineKit = [QHVCInteractiveKit sharedInstance];
     int code = [engineKit setMixStreamInfo:mixStreamConfig];
     if (code != QHVCITL_Error_NoError)
@@ -1340,14 +1362,25 @@
     NSString* roomId = [[QHVCITSUserSystem sharedInstance] roomInfo].roomId;
     if ([currentUserId isEqualToString:[[QHVCITSUserSystem sharedInstance] roomInfo].bindRoleId])
     {
-        [QHVCITSChatManager sendCommandMessage:QHVCIMConversationTypeChartroom cmdType:QHVCITSCommandAnchorQuitNotify targetId:roomId success:nil error:nil];
-    }
-    else if (identity != QHVCITS_Identity_Audience)
+        NSArray* targetIdentityArray = @[@(QHVCITS_Identity_Audience),@(QHVCITS_Identity_Anchor),@(QHVCITS_Identity_Guest)];
+        [[QHVCITSChatManager sharedManager] sendCommandMessage:roomId
+                                                       cmdType:QHVCITSCommandAnchorQuitNotify
+                                           targetIdentityArray:targetIdentityArray
+                                                      complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
+                                                          [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"主播退出连麦,发送信令消息:%@",[NSNumber numberWithBool:success]] dict:dict];
+                                                      }];
+    } else if (identity != QHVCITS_Identity_Audience)
     {
-        [QHVCITSChatManager sendCommandMessage:QHVCIMConversationTypeChartroom cmdType:QHVCITSCommandGuestQuitNotify targetId:roomId success:nil error:nil];
+        NSArray* targetIdentityArray = @[@(QHVCITS_Identity_Audience),@(QHVCITS_Identity_Anchor),@(QHVCITS_Identity_Guest)];
+        [[QHVCITSChatManager sharedManager] sendCommandMessage:roomId
+                                                       cmdType:QHVCITSCommandGuestQuitNotify
+                                           targetIdentityArray:targetIdentityArray
+                                                      complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
+                                                          [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"嘉宾退出连麦,发送信令消息:%@",[NSNumber numberWithBool:success]] dict:dict];
+                                                      }];
     }
-    //退出聊天室
-    [QHVCITSChatManager quitChatroom:roomId];
+    
+    [QHVCITSChatManager sharedManager].delegate = nil;
     
     [_httpManager cancelAllOperations];
     _httpManager = nil;
@@ -1390,9 +1423,9 @@
     }else if (dataCollectMode == QHVCITLDataCollectModeUser)
     {
         [engineKit closeCollectingData];
-        _liveEngine.liveDelegate = nil;
-        [_liveEngine stopCapture];
-        _liveEngine = nil;
+//        _liveEngine.liveDelegate = nil;
+//        [_liveEngine stopCapture];
+//        _liveEngine = nil;
     }
     [QHVCInteractiveKit destory];
 }
@@ -1429,7 +1462,7 @@
     [QHVCITSProtocolMonitor joinRoom:_httpManager
                                 dict:joinRoomDict
                             complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
-                                [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"joinServerRoom" dict:dict];
+                                [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"joinServerRoom" dict:dict];
                                 if (!success)
                                 {
                                     complete(nil, false, dict);
@@ -1452,7 +1485,7 @@
         [QHVCITSProtocolMonitor dismissRoom:_httpManager
                                        dict:roomDict
                                    complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
-                                       [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"dismissRoom" dict:dict];
+                                       [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"dismissRoom" dict:dict];
                                        if (complete)
                                        {
                                            complete(taskData, success, dict);
@@ -1463,7 +1496,7 @@
         [QHVCITSProtocolMonitor userLeaveRoom:_httpManager
                                          dict:roomDict
                                      complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
-                                         [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"userLeaveRoom" dict:dict];
+                                         [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"userLeaveRoom" dict:dict];
                                          if (complete)
                                          {
                                              complete(taskData, success, dict);
@@ -1484,7 +1517,7 @@
     [QHVCITSProtocolMonitor getRoomInfo:_httpManager
                                    dict:roomInfoDict
                                complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
-                                   [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"getRoomInfo" dict:dict];
+                                   [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"getRoomInfo" dict:dict];
                                    if (complete)
                                    {
                                        complete(taskData, success, dict);
@@ -1503,7 +1536,7 @@
     [QHVCITSProtocolMonitor getRoomUserList:_httpManager
                                        dict:roomUserDict
                                    complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
-                                       [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"getRoomUserList" dict:dict];
+                                       [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"getRoomUserList" dict:dict];
                                        if (complete)
                                        {
                                            complete(taskData, success, dict);
@@ -1523,7 +1556,7 @@
     [QHVCITSProtocolMonitor changeUserIdentity:_httpManager
                                           dict:identityDict
                                       complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
-                                          [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"changeUserIdentity" dict:dict];
+                                          [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"changeUserIdentity" dict:dict];
                                           if (complete)
                                           {
                                               complete(taskData, success, dict);
@@ -1536,68 +1569,104 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - QHVCIMMessageDelegate -
-
-- (void)didRecieveNewMessage:(QHVCIMMessage *)message left:(int)left
+#pragma mark - IM相关方法实现 -
+- (void)startIMServer
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
-        if ([message.content isMemberOfClass:[QHVCIMTextContent class]]) {
-//            NSLog(@"it is text msg %@",[(QHVCIMTextContent *)message.content content]);
-        }
-        else if ([message.content isMemberOfClass:[QHVCIMCommandContent class]])
-        {
-            [self handleCommandMessage:message];
-        }
-    });
+    [[QHVCITSChatManager sharedManager] setDelegate:self];
 }
 
-- (void)handleCommandMessage:(QHVCIMMessage *)message
+#pragma mark - QHVCITSChatMessageDelegate -
+
+- (void)onChatRsvPayloadData:(NSArray *)msgArray
 {
-    QHVCIMCommandContent *content = (QHVCIMCommandContent *)message.content;
+    for (NSDictionary *item in msgArray) {
+        NSData *data = item[@"msgData"];
+        NSDictionary* dict = [QHVCToolUtils resolveJsonDataToDictionary:data];
+        NSString *messageEncode = dict[@"transmission"][@"content"];
+        NSString *messageDecode = [QHVCToolUtils urlDecode:messageEncode];
+        NSData* messageData = [messageDecode dataUsingEncoding:NSUTF8StringEncoding];
+        NSDictionary *messageDict = [QHVCToolUtils resolveJsonDataToDictionary:messageData];
+        [self handleCommandMessage:messageDict];
+    }
+}
+
+- (void)onChatDidNotifySdkState:(QHVCITSChatStatus)status
+{
     
-    if (content.data.length > 0) {
-        NSDictionary *dict = [QHVCITSChatManager jsonFormatToDic:[content.data dataUsingEncoding:NSUTF8StringEncoding]];
-        NSString *cmdId = dict[@"cmd"];
-        NSString *roomId = dict[@"target"];
-        //只处理房间内的私聊、通知
-        if (![roomId isEqualToString:[QHVCITSUserSystem sharedInstance].roomInfo.roomId]) {
-            return;
-        }
-        if (cmdId.integerValue == QHVCITSCommandGuestAskJoin)
+}
+
+- (void)onChatDidRegisterDT:(BOOL)isSuccess
+{
+    
+}
+
+- (void)onChatDidOccurError:(NSError *)error
+{
+    [QHVCToast makeToast:[NSString stringWithFormat:@"长链断开连接，错误：%@",error.description]];
+}
+
+- (void)handleCommandMessage:(NSDictionary *)messageDict
+{
+    NSString* sendUserId = [QHVCToolUtils getStringFromDictionary:messageDict key:QHVCITS_KEY_USER_ID defaultValue:nil];
+    NSString* reciveUserId = [QHVCToolUtils getStringFromDictionary:messageDict key:QHVCITS_KEY_TARGET_ID defaultValue:nil];
+    NSString* targetRoomId = [QHVCToolUtils getStringFromDictionary:messageDict key:QHVCITS_KEY_ROOM_ID defaultValue:nil];
+    NSInteger cmd = [QHVCToolUtils getLongFromDictionary:messageDict key:QHVCITS_KEY_CMD defaultValue:0];
+    QHVCITSRoomModel* roomInfo = [QHVCITSUserSystem sharedInstance].roomInfo;
+    QHVCITSUserModel* userInfo = [QHVCITSUserSystem sharedInstance].userInfo;
+    //只处理发给本房间的信息
+    if (![roomInfo.roomId isEqualToString:targetRoomId])
+    {
+        return;
+    }
+    //只处理不是本人发出的信息
+    if ([userInfo.userId isEqualToString:sendUserId])
+    {
+        return;
+    }
+    if(cmd == QHVCITSCommandGuestAskJoin )
+    {
+        if ([userInfo.userId isEqualToString:reciveUserId])
         {
-            [self guestAskJoin:message.senderUserId];
-        } else if (cmdId.integerValue == QHVCITSCommandAnchorRefuseJoin)
+            [self guestAskJoin:sendUserId];
+        }
+        return;
+    }
+    if (cmd == QHVCITSCommandAnchorRefuseJoin)
+    {
+        if ([userInfo.userId isEqualToString:reciveUserId])
         {
             [QHVCToast makeToast:@"主播拒绝了你的连麦请求"];
-        } else if (cmdId.integerValue == QHVCITSCommandAnchorAgreeJoin)
+        }
+        return;
+    }
+    if (cmd == QHVCITSCommandAnchorAgreeJoin)
+    {
+        if ([userInfo.userId isEqualToString:reciveUserId])
         {
             [QHVCToast makeToast:@"主播同意了你的连麦请求"];
             _expectedRole = QHVCITS_Identity_Guest;
             [self setClientRoleIdentity:QHVCITS_Identity_Guest];
         }
-        else if (cmdId.integerValue == QHVCITSCommandAnchorKickoutGuest)
+        return;
+    }
+    if (cmd == QHVCITSCommandAnchorKickoutGuest)
+    {
+        if ([userInfo.userId isEqualToString:reciveUserId])
         {
             [QHVCToast makeToast:@"主播把你踢出了"];
             [self endLinkmic];
         }
-        else if (cmdId.integerValue == QHVCITSCommandGuestJoinNotify||
-                 cmdId.integerValue == QHVCITSCommandGuestQuitNotify||
-                 cmdId.integerValue == QHVCITSCommandGuestKickoutNotify)
-        {
-            [self updateRoomRoleList];
-        }
-        else if (cmdId.integerValue == QHVCITSCommandAnchorQuitNotify)
-        {
-            [self anchorQuitNotify];
-        }
+        return;
     }
-}
-
-#pragma mark - IM相关方法实现 -
-- (void)joinChatroom:(NSString *)roomId
-{
-    [QHVCITSChatManager setChatMessageDelegate:self];
-    [QHVCITSChatManager joinChatroom:roomId];
+    if (cmd == QHVCITSCommandGuestJoinNotify || cmd == QHVCITSCommandGuestQuitNotify || cmd == QHVCITSCommandGuestKickoutNotify)
+    {
+        [self updateRoomRoleList];
+        return;
+    }
+    if (cmd == QHVCITSCommandAnchorQuitNotify)
+    {
+        [self anchorQuitNotify];
+    }
 }
 
 #pragma mark - 观众发送连麦请求
@@ -1621,11 +1690,17 @@
 
 - (void)anchorRespondGuestRequest:(NSString *)guestId result:(QHVCITSCommand)result
 {
-    [QHVCITSChatManager sendCommandMessage:QHVCIMConversationTypePrivate cmdType:result targetId:guestId success:^(long messageId) {
-        [QHVCToast makeToast:@"请求发送成功"];
-    } error:^(QHVCIMErrorCode errorCode, long messageId) {
-        [QHVCToast makeToast:@"请求发送失败，请稍后再试"];
-    }];
+    [[QHVCITSChatManager sharedManager] sendCommandMessage:result
+                                                  targetId:guestId
+                                                  complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
+                                                      if (success)
+                                                      {
+                                                          [QHVCToast makeToast:@"请求发送成功"];
+                                                      }else
+                                                      {
+                                                          [QHVCToast makeToast:@"请求发送失败，请稍后再试"];
+                                                      }
+                                                  }];
 }
 
 #pragma mark - 主播退出，发送通知
@@ -1697,6 +1772,9 @@
     [_onlineCount setText:[NSString stringWithFormat:@"%ld",roomInfo.num]];
     if (![roomInfo.bindRoleId isEqualToString:@"0"]) {
         _anchorIdLabel.text = [NSString stringWithFormat:@"主播Id:%@",roomInfo.bindRoleId];
+        if ([roomInfo.bindRoleId isEqualToString:[[QHVCITSUserSystem sharedInstance] userInfo].userId]) {
+            [[QHVCITSUserSystem sharedInstance] userInfo].identity = QHVCITS_Identity_Anchor;
+        }
     }
     [self setInteractiveBtnTitle];
     [self updateControlView:roomInfo.talkType];

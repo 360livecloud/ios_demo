@@ -273,12 +273,11 @@ typedef NS_ENUM(NSInteger, QHVCPlayerLogLevel)
 
 /**
  初始化播放器(若需要设置解码类型、流类型用如下初始化接口，更多设置请用Advance内部初始化接口)
- 
  @param URL 需要播放到URL
  @param channelId 渠道ID，使用者从平台申请，eg:live_huajiao_v2
  @param userId 用户ID，用户标识，唯一标识（需要详细说明）
  @param playType 播放类型，直播、点播、本地
- @param options @{@"streamType":@"intValue",@"hardDecode":@"boolValue",@"position":@"longValue",@"mute":@"boolValue",@"forceP2p":@"boolValue",@"playMode":@"intValue"，@"audioSessionCategory"：@"intValue",@"setPreferredIOBufferDuration"：@"boolValue"}
+ @param options @{@"streamType":@"intValue",@"hardDecode":@"boolValue",@"position":@"longValue",@"mute":@"boolValue",@"forceP2p":@"boolValue",@"playMode":@"intValue"，@"audioSessionCategory"：@"intValue",@"setPreferredIOBufferDuration"：@"boolValue",@"outputPacket"：@"boolValue",@"inputStream"：@"boolValue"}
  @return 成功：播放器对象, 失败：nil
  */
 - (QHVCPlayer * _Nullable)initWithURL:(NSString * _Nonnull)URL
@@ -296,7 +295,7 @@ typedef NS_ENUM(NSInteger, QHVCPlayerLogLevel)
  @param channelId 渠道ID，使用者从平台申请，eg:live_huajiao_v2
  @param userId 用户ID，用户标识，唯一标识（需要详细说明）
  @param playType 播放类型，直播、点播、本地
- @param options @{@"streamType":@"intValue",@"hardDecode":@"boolValue",@"position":@"longValue",@"mute":@"boolValue",@"forceP2p":@"boolValue",@"playMode":@"intValue",@"audioSessionCategory"：@"intValue",@"setPreferredIOBufferDuration"：@"boolValue"}
+ @param options @{@"streamType":@"intValue",@"hardDecode":@"boolValue",@"position":@"longValue",@"mute":@"boolValue",@"forceP2p":@"boolValue",@"playMode":@"intValue",@"audioSessionCategory"：@"intValue",@"setPreferredIOBufferDuration"：@"boolValue",@"outputPacket"：@"boolValue",@"inputStream"：@"boolValue"}
  @return 成功：播放器对象, 失败：nil
  */
 - (QHVCPlayer * _Nullable)initWithUrlArray:(NSArray<NSString *> *_Nullable)urlArray
@@ -497,16 +496,6 @@ typedef NS_ENUM(NSInteger, QHVCPlayerLogLevel)
 - (void)setMute:(BOOL)mute;
 
 /**
- 销毁音频模块
- */
-- (void)destroyAudioModule;
-
-/**
- 重启音频模块
- */
-- (void)reStartAudioModule;
-
-/**
  是否静音
 
  @return yes or no
@@ -534,6 +523,12 @@ typedef NS_ENUM(NSInteger, QHVCPlayerLogLevel)
  @param enableUpload yes:允许上传 or no:禁止上传 默认值为no
  */
 + (void)setP2pUploadStatus:(BOOL)enableUpload;
+
+/**
+ 设置最大缓冲时长
+ @param delay 时长
+ */
+- (void)setMax_buffering_delay:(int)delay;
 
 /**
  设置日志级别

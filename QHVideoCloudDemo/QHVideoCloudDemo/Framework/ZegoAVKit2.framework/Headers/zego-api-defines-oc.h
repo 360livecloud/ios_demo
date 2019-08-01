@@ -17,6 +17,19 @@
 #define ZEGO_EXTERN     extern
 #endif
 
+
+/** 接口调用返回错误码 */
+typedef enum ZegoAPIErrorCode
+{
+    kZegoAPIErrorCodeOK = 0,    /**< 没有错误 */
+    kZegoAPIErrorCodeInvalidParameter = 1,  /** 调用输入参数错误 */
+    
+    // * 外部音频设备
+    kZegoAPIErrorCodeExternalAudioDeviceWasNotEnabled = 5101, /** 没有启用外部音频设备 */
+    kZegoAPIErrorCodeExternalAudioDeviceEngineError = 5102, /** 处理音频数据异常 */
+} ZegoAPIErrorCode;
+
+
 /** 流ID，值为 NSString */
 ZEGO_EXTERN NSString *const kZegoStreamIDKey;
 /** 混流ID，值为 NSString */
@@ -166,6 +179,10 @@ typedef enum : NSUInteger {
 @property int bottom;
 /** 混流图层左上角坐标的第一个值，即右下角坐标为 (right, bottom) */
 @property int right;
+/** 音浪ID，用于标识用户，注意大小是32位无符号数 */
+@property unsigned int soundLevelID;
+/** 推流内容控制， 0表示音视频都要， 1表示只要音频， 2表示只要视频。default：0。*/
+@property int contentControl;
 
 /**
  *  原点在左上角，top/bottom/left/right 定义如下：
@@ -208,6 +225,8 @@ typedef enum : NSUInteger {
 @property int outputBackgroundColor;
 /** 混流背景图，支持预设图片，如 (preset-id://xxx) */
 @property (copy) NSString *outputBackgroundImage;
+/** 是否开启音浪。true：开启，false：关闭 */
+@property BOOL withSoundLevel;
 
 @end
 
@@ -299,6 +318,8 @@ typedef enum : NSUInteger {
     ZEGOAPI_LATENCY_MODE_NORMAL2,
     /** 低延迟模式，无法用于 RTMP 流。相对于 ZEGO_LATENCY_MODE_LOW 而言，CPU 开销稍低 */
     ZEGOAPI_LATENCY_MODE_LOW2,
+    /** 低延迟模式，无法用于 RTMP 流。支持WebRTC必须使用此模式 */
+    ZEGOAPI_LATENCY_MODE_LOW3,
 } ZegoAPILatencyMode;
 
 /** 流量控制属性 */
@@ -380,7 +401,6 @@ typedef enum : NSUInteger
     ZEGOAPI_VOLUME_SIMPLE = 1,
 } ZegoAPIVolumeType;
 
-
 @interface ZegoAPIDeviceInfo : NSObject
 /** 设备ID */
 @property (copy) NSString* deviceId;
@@ -403,6 +423,13 @@ typedef enum : NSUInteger
 
 @end
 
+@interface ZegoSoundLevelInMixedStreamInfo : NSObject
 
+/** sound level id */
+@property (assign) unsigned int soundLevelID;
+/** sound level value */
+@property (assign) unsigned char soundLevel;
+
+@end
 
 #endif /* zego_api_defines_oc_h */

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="QHVCEditDynamicSubtitleView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dYH-PB-ODz">
+                    <rect key="frame" x="0.0" y="25" width="375" height="70"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="Bep-0U-hmK"/>
+                    </constraints>
+                </view>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="ApB-Zf-OC9">
+                    <rect key="frame" x="5" y="110" width="365" height="50"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="50" id="sMd-W2-rk2"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="bb9-ta-xzO">
+                        <size key="itemSize" width="30" height="40"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                    <connections>
+                        <outlet property="dataSource" destination="iN0-l3-epB" id="FOe-95-fA7"/>
+                        <outlet property="delegate" destination="iN0-l3-epB" id="oSE-ll-5qf"/>
+                    </connections>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <constraints>
+                <constraint firstItem="ApB-Zf-OC9" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="5" id="17B-io-Dkg"/>
+                <constraint firstAttribute="bottom" secondItem="ApB-Zf-OC9" secondAttribute="bottom" id="48T-AK-Nst"/>
+                <constraint firstItem="dYH-PB-ODz" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="CCu-f4-tFq"/>
+                <constraint firstItem="dYH-PB-ODz" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="25" id="OGh-re-BXV"/>
+                <constraint firstAttribute="trailing" secondItem="dYH-PB-ODz" secondAttribute="trailing" id="VzR-cK-tdJ"/>
+                <constraint firstAttribute="trailing" secondItem="ApB-Zf-OC9" secondAttribute="trailing" constant="5" id="mKp-9W-zmX"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="collectionView" destination="ApB-Zf-OC9" id="ufj-l1-DOx"/>
+                <outlet property="timelineContainer" destination="dYH-PB-ODz" id="WOS-cV-vHt"/>
+            </connections>
+            <point key="canvasLocation" x="53.600000000000001" y="48.575712143928037"/>
+        </view>
+    </objects>
+</document>

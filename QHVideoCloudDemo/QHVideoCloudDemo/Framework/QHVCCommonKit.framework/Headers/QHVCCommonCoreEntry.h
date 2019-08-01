@@ -19,12 +19,13 @@
  * @param appVer 端版本
  * @param deviceId 机器id
  * @param model 型号
+ * @param ops 可选参数,例如：@{@"product":@"intValue(QHVCCommonProduct)"}
  */
 + (void)coreOnAppStart:(NSString *)businessId
                 appVer:(NSString *)appVer
               deviceId:(NSString *)deviceId
                  model:(NSString *)model
-        optionalParams:(OptionalParams *)ops;
+        optionalParams:(NSDictionary *)ops;
 /**
  * 网络变化时通知传输层进行相应处理
  * @param type 网络变化类型

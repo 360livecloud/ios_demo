@@ -7,6 +7,8 @@
 //
 
 #import "QHVCITSConfig.h"
+#import "QHVCGlobalConfig.h"
+#import "QHVCITSDefine.h"
 
 @implementation QHVCITSConfig
 
@@ -50,8 +52,14 @@
 
 - (void) setEnableTestEnvironment:(BOOL)enableTestEnvironment
 {
-    _enableTestEnvironment = NO;
-    [self setInteractiveServerUrl:QHVCITS_RELEASE_ENV_INTERACTIVE_SERVER_URL];
+    _enableTestEnvironment = enableTestEnvironment;
+    if (enableTestEnvironment)
+    {
+        [self setInteractiveServerUrl:QHVCITS_TEST_ENV_INTERACTIVE_SERVER_URL];
+    }else
+    {
+        [self setInteractiveServerUrl:QHVCITS_RELEASE_ENV_INTERACTIVE_SERVER_URL];
+    }
 }
 
 - (void) readAccountSetting
@@ -68,19 +76,40 @@
 
 - (void) setAccountSettings:(NSMutableArray<NSMutableDictionary *> *)accountSettings
 {
-    _accountSettings = accountSettings;
     if (accountSettings == nil)
     {
         _businessId = nil;
         _channelId = nil;
         _appKey = nil;
         _appSecret = nil;
+        _accountSettings = nil;
         return;
     }
-    _businessId = accountSettings[0][@"value"];
-    _channelId = accountSettings[1][@"value"];
-    _appKey = accountSettings[2][@"value"];
+    _businessId = accountSettings[0][QHVCITS_KEY_VALUE];
+    if ([QHVCToolUtils isNullString:_businessId])
+    {
+        _businessId = kQHVCAppId;
+        [QHVCToolUtils setStringToDictionary:accountSettings[0] key:QHVCITS_KEY_VALUE value:_businessId];
+    }
+    _channelId = accountSettings[1][QHVCITS_KEY_VALUE];
+    if ([QHVCToolUtils isNullString:_channelId])
+    {
+        _channelId = kQHVCChannelId;
+        [QHVCToolUtils setStringToDictionary:accountSettings[1] key:QHVCITS_KEY_VALUE value:_channelId];
+    }
+    _appKey = accountSettings[2][QHVCITS_KEY_VALUE];
+    if ([QHVCToolUtils isNullString:_appKey])
+    {
+        _appKey = kQHVCInteractiveAppKey;
+        [QHVCToolUtils setStringToDictionary:accountSettings[2] key:QHVCITS_KEY_VALUE value:_appKey];
+    }
     _appSecret = accountSettings[3][@"value"];
+    if ([QHVCToolUtils isNullString:_appSecret])
+    {
+        _appSecret = kQHVCInteractiveAppSecret;
+        [QHVCToolUtils setStringToDictionary:accountSettings[3] key:QHVCITS_KEY_VALUE value:_appSecret];
+    }
+    _accountSettings = accountSettings;
 }
 
 - (void) readUserSetting

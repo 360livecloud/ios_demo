@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="O6d-x0-RZw" customClass="QHVCEditOverlayBlendView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="120"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="byu-7f-cTy">
+                    <rect key="frame" x="8" y="26" width="30" height="68"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="68" id="3On-pP-Y5O"/>
+                        <constraint firstAttribute="width" constant="30" id="q3U-RU-TnC"/>
+                    </constraints>
+                    <state key="normal" image="edit_overlay_back"/>
+                    <connections>
+                        <action selector="clickedBackBtn:" destination="O6d-x0-RZw" eventType="touchUpInside" id="Jhj-6t-LeD"/>
+                    </connections>
+                </button>
+                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="npq-ca-uKy">
+                    <rect key="frame" x="87.5" y="5" width="200" height="31"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="196" id="hZT-eQ-oMt"/>
+                    </constraints>
+                    <connections>
+                        <action selector="onProgressChanged:" destination="O6d-x0-RZw" eventType="valueChanged" id="3Lq-xP-uuw"/>
+                        <action selector="onSliderTouchUpInside:" destination="O6d-x0-RZw" eventType="touchUpInside" id="tR2-up-TlV"/>
+                    </connections>
+                </slider>
+                <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="none" translatesAutoresizingMaskIntoConstraints="NO" id="TBW-lQ-9OD">
+                    <rect key="frame" x="49" y="40" width="316" height="75"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="75" id="w3x-ck-Sha"/>
+                    </constraints>
+                    <collectionViewFlowLayout key="collectionViewLayout" scrollDirection="horizontal" minimumLineSpacing="10" minimumInteritemSpacing="10" id="8FM-Rg-gRs">
+                        <size key="itemSize" width="55" height="75"/>
+                        <size key="headerReferenceSize" width="0.0" height="0.0"/>
+                        <size key="footerReferenceSize" width="0.0" height="0.0"/>
+                        <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
+                    </collectionViewFlowLayout>
+                </collectionView>
+            </subviews>
+            <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="npq-ca-uKy" firstAttribute="centerX" secondItem="O6d-x0-RZw" secondAttribute="centerX" id="ARi-vS-obh"/>
+                <constraint firstItem="npq-ca-uKy" firstAttribute="top" secondItem="O6d-x0-RZw" secondAttribute="top" constant="5" id="CWN-Fr-ord"/>
+                <constraint firstItem="TBW-lQ-9OD" firstAttribute="leading" secondItem="byu-7f-cTy" secondAttribute="trailing" constant="11" id="Mf4-pp-jdy"/>
+                <constraint firstAttribute="trailing" secondItem="TBW-lQ-9OD" secondAttribute="trailing" constant="10" id="PLI-xP-wl9"/>
+                <constraint firstItem="byu-7f-cTy" firstAttribute="leading" secondItem="O6d-x0-RZw" secondAttribute="leading" constant="8" id="aFr-KK-i8R"/>
+                <constraint firstItem="byu-7f-cTy" firstAttribute="top" secondItem="O6d-x0-RZw" secondAttribute="top" constant="26" id="moQ-rV-c2X"/>
+                <constraint firstAttribute="bottom" secondItem="TBW-lQ-9OD" secondAttribute="bottom" constant="5" id="pYS-U2-7Ga"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="blendModeCollection" destination="TBW-lQ-9OD" id="fMf-pw-exf"/>
+                <outlet property="progressSlider" destination="npq-ca-uKy" id="Vac-6n-zje"/>
+            </connections>
+        </view>
+    </objects>
+    <resources>
+        <image name="edit_overlay_back" width="30" height="68"/>
+    </resources>
+</document>

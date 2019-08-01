@@ -68,6 +68,13 @@ dispatch_async(dispatch_get_main_queue(), block);\
 #define QHVCITS_KEY_ROOM_LIFE_TYPE                      @"roomLifeType"//房间生命周期
 #define QHVCITS_KEY_VIDEO_PROFILE                       @"videoProfile"//视频属性
 #define QHVCITS_KEY_EXCHANGE_W_H                        @"exchangeWH"//切换宽高
+#define QHVCITS_KEY_CMD                                 @"cmd"//指令
+#define QHVCITS_KEY_TARGET_ID                           @"targetId"//目标ID
+#define QHVCITS_KEY_CONTENT                             @"content"//内容
+#define QHVCITS_KEY_CLIENT_ID                           @"clientId"//客户端
+#define QHVCITS_KEY_IMAGE                               @"image"//图像
+#define QHVCITS_KEY_TITLE                               @"title"//标题
+#define QHVCITS_KEY_VALUE                               @"value"//值
 
 typedef NS_ENUM(NSInteger, QHVCITFunctionType) {
     QHVCITFunctionTypeOwnerAndGuest = 0,         // 主播&嘉宾

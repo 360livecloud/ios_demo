@@ -51,7 +51,7 @@ static NSString *KCellTypeFour= @"IdenitiferCellFour";
     _decode = @"1";
     _bid = @"demo";
     _cid = @"demo_cid";
-    _url = @"http://static.s3.huajiao.com/Object.access/hj-video/NTg1NzY5ODgxNDgxNjM2MzM5OTUxMjcwNjg1MDUzNy5tcDQ=";
+    _url = @"http://vod.che.360.cn/vod-car-bj/112470524_2-1523501461-dfd4df59-831e-4634.mp4";
     _sn = @"";
     _nick = @"";
     _liveList = [[NSMutableArray alloc] initWithObjects:@"直播列表", nil];

@@ -8,7 +8,7 @@
 
 #import "QHVCLocalServerSettingViewController.h"
 #import "QHVCLocalServerSettingCell.h"
-#import <QHVCLocalServerKit/QHVCLocalServerKit.h>
+#import <QHVCNetKit/QHVCNetKit.h>
 #import "QHVCLocalServerDownloadViewController.h"
 
 @interface QHVCLocalServerSettingViewController ()<UITableViewDelegate, UITableViewDataSource>
@@ -67,10 +67,10 @@
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     __weak typeof(self) weakSelf = self;
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
-    QHVCLocalServerKit *localServer = [QHVCLocalServerKit sharedInstance];
+    QHVCNet *localServer = [QHVCNet sharedInstance];
     if (indexPath.row == 0)
     {
-        BOOL selected = [[QHVCLocalServerKit sharedInstance] isStartLocalServer];
+        BOOL selected = [[QHVCNet sharedInstance] isStartLocalServer];
         [cell setSwitchSelected:selected];
         cell.switchAction = ^(BOOL on){
             if (on)
@@ -83,11 +83,11 @@
                 {
                     [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
                 }
-                [localServer startServer:path deviceId:[weakSelf getUUIDString] appId:@"Demo" cacheSize:200];
+                [localServer startLocalServer:path deviceId:[weakSelf getUUIDString] appId:@"Demo" cacheSize:200 options:nil];
             }
             else
             {
-                [localServer stopServer];
+                [localServer stopLocalServer];
             }
             [defaults setBool:on forKey:@"localServerKey"];
             [defaults synchronize];
@@ -96,10 +96,10 @@
     }
     else if (indexPath.row == 1)
     {
-        BOOL selected = [[QHVCLocalServerKit sharedInstance] isEnableCache];
+        BOOL selected = [[QHVCNet sharedInstance] isEnableNetwork];
         [cell setSwitchSelected:selected];
         cell.switchAction = ^(BOOL on){
-            [localServer enableCache:on];
+            [localServer enableNetwork:on];
             [defaults setBool:on forKey:@"enableCache"];
             [defaults synchronize];
             [tableView reloadData];
@@ -107,7 +107,7 @@
     }
     else if (indexPath.row == 2)
     {
-        BOOL selected = [[QHVCLocalServerKit sharedInstance] isEnablePrecacheForMobileNetwork];
+        BOOL selected = [[QHVCNet sharedInstance] isEnablePrecacheForMobileNetwork];
         [cell setSwitchSelected:selected];
         cell.switchAction = ^(BOOL on){
             [localServer enablePrecacheForMobileNetwork:on];
@@ -203,7 +203,7 @@
     [alertOne addAction:cancel];
     
     UIAlertAction *certain = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [[QHVCLocalServerKit sharedInstance] clearCache];
+        [[QHVCNet sharedInstance] clearPrecache];
     }];
     [alertOne addAction:certain];
 }

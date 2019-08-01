@@ -43,7 +43,7 @@
     {
         return nil;
     }
-    NSString* temp = [NSString stringWithFormat:@"sname__%@room_id__%@uid__%@%@",channelId,roomId,userId,appSecret];
+    NSString* temp = [NSString stringWithFormat:@"app_name__%@room_id__%@uid__%@%@",channelId,roomId,userId,appSecret];
     NSString* md5 = [QHVCToolUtils getMD5String:temp];
     return md5;
 }

@@ -7,10 +7,10 @@
 //
 
 #import "QHVCLocalServerDownloadManager.h"
-#import <QHVCLocalServerKit/QHVCLocalServerKit.h>
+#import <QHVCNetKit/QHVCNetKit.h>
 #import "QHVCLocalServerLocalFileManager.h"
 
-@interface QHVCLocalServerDownloadManager ()<QHVCLocalServerCachePersistenceDelegate>
+@interface QHVCLocalServerDownloadManager ()<QHVCNetCachePersistenceDelegate>
 {
     ReloadBlock reloadBlock;
     ReloadTable reloadTable;
@@ -39,7 +39,7 @@
 {
     if (self == [super init])
     {
-        [QHVCLocalServerKit sharedInstance].cachePersistenceDelegate = self;
+        [QHVCNet sharedInstance].cachePersistenceDelegate = self;
         self.tasksArray = [NSMutableArray new];
         self.indexArray = [NSMutableArray new];
         self.lock = [NSRecursiveLock new];
@@ -71,7 +71,7 @@
         
         [_tasksArray addObject:temp];
         
-        [[QHVCLocalServerKit sharedInstance] cachePersistence:rid url:url path:path];
+        [[QHVCNet sharedInstance] cachePersistence:rid url:url path:path];
         
         if (msgBlock)
         {
@@ -91,7 +91,7 @@
 {
     [self.lock lock];
     
-    BOOL flag = [[QHVCLocalServerKit sharedInstance] cancelCachePersistence:_indexArray[index] deleteFile:deleteFile];
+    BOOL flag = [[QHVCNet sharedInstance] cancelCachePersistence:_indexArray[index] deleteFile:deleteFile];
     
     [_tasksArray removeObjectAtIndex:index];
     [_indexArray removeObjectAtIndex:index];
@@ -111,12 +111,12 @@
 
 - (BOOL)pauseDownload:(NSInteger)index
 {
-    return [[QHVCLocalServerKit sharedInstance] pauseCachePersistence:_indexArray[index]];
+    return [[QHVCNet sharedInstance] pauseCachePersistence:_indexArray[index]];
 }
 
 - (BOOL)resumeDownload:(NSInteger)index
 {
-    return [[QHVCLocalServerKit sharedInstance] resumeCachePersistence:_indexArray[index]];
+    return [[QHVCNet sharedInstance] resumeCachePersistence:_indexArray[index]];
 }
 
 - (void)reloadData:(ReloadBlock)block

@@ -12,7 +12,7 @@
 
 + (void)snListRequestWithsuccess:(successBlock)success fail:(failBlock)fail
 {
-    NSString *urlString = [NSString stringWithFormat:@""];
+    NSString *urlString = [NSString stringWithFormat:@"http://sdk.live.360.cn/top.php"];
     [QHVCHTTPSession requestWithRequestType:LTHTTPRequestTypeGet urlString:urlString paraments:nil successBlock:^(NSDictionary * _Nullable object, NSError * _Nullable error) {
         success(object, error);
     } failBlock:^(NSError * _Nullable error) {
@@ -22,7 +22,7 @@
 
 + (void)shortVideoListRequestWithParameter:(NSDictionary *)para success:(successBlock)success fail:(failBlock)fail
 {
-    NSString *urlString = [NSString stringWithFormat:@""];
+    NSString *urlString = [NSString stringWithFormat:@"http://live.huajiao.com/feed/getNearbyFeeds"];
     [QHVCHTTPSession requestWithRequestType:LTHTTPRequestTypeGet urlString:urlString paraments:para successBlock:^(NSDictionary * _Nullable object, NSError * _Nullable error) {
         success(object, error);
     } failBlock:^(NSError * _Nullable error) {

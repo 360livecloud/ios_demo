@@ -35,10 +35,28 @@ ZEGO_EXTERN NSString *const kZegoMixStreamReqSeqKey;
 
 @end
 
+@protocol ZegoLiveSoundLevelInMixedStreamDelegate <NSObject>
+
+@optional
+
+- (void)onSoundLevelInMixedStream:(NSArray<ZegoSoundLevelInMixedStreamInfo *> *)soundLevelList;
+
+@end
+
 
 @interface ZegoStreamMixer : NSObject
 
+/**
+ 设置混流配置的回调
+ */
 - (void)setDelegate:(id<ZegoMixStreamDelegate>)delegate;
+
+/**
+ 设置拉取混流时带上音量信息的回调
+ 
+ note: 可以通过这个回调实现音浪的功能。
+ */
+- (void)setSoundLevelInMixedStreamDelegate:(id<ZegoLiveSoundLevelInMixedStreamDelegate>)delegate;
 
 /**
  开始混流

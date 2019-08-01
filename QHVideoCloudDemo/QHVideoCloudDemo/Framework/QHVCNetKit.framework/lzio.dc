@@ -1,0 +1,5 @@
+lzio.o: schedule/jni/lua/src/lzio.c schedule/jni/lua/src/lprefix.h \
+ schedule/jni/lua/src/lua.h schedule/jni/lua/src/luaconf.h \
+ schedule/jni/lua/src/llimits.h schedule/jni/lua/src/lmem.h \
+ schedule/jni/lua/src/lstate.h schedule/jni/lua/src/lobject.h \
+ schedule/jni/lua/src/ltm.h schedule/jni/lua/src/lzio.h

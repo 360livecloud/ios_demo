@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<array>
+		<string>画质</string>
+		<string>edit_quality</string>
+		<string>QHVCEditQualityView</string>
+		<integer>0</integer>
+		<integer>20</integer>
+	</array>
+	<array>
+		<string>变焦</string>
+		<string>edit_kenburns</string>
+		<string>QHVCEditKenburnsView</string>
+		<integer>0</integer>
+		<integer>0</integer>
+	</array>
+	<array>
+		<string>去水印</string>
+		<string>edit_delogo</string>
+		<string>QHVCEditDelogoView</string>
+		<integer>0</integer>
+		<integer>0</integer>
+	</array>
+	<array>
+		<string>动效</string>
+		<string>edit_motion_effect</string>
+		<string>QHVCEditMotionEffectView</string>
+		<integer>0</integer>
+		<integer>0</integer>
+	</array>
+	<array>
+		<string>动态字幕</string>
+		<string>edit_dynamic_subtitle</string>
+		<string>QHVCEditDynamicSubtitleView</string>
+		<integer>0</integer>
+		<integer>0</integer>
+	</array>
+</array>
+</plist>

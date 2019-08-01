@@ -9,9 +9,11 @@
 #import "QHVCITSCreateRoomViewController.h"
 #import "QHVCITSLinkMicViewController.h"
 #import "QHVCITSProtocolMonitor.h"
-#import "QHVCITSLog.h"
+#import "QHVCLogger.h"
 #import "QHVCITSUserSystem.h"
 #import "QHVCToast.h"
+#import "QHVCTool.h"
+#import "QHVCGlobalConfig.h"
 
 @interface QHVCITSCreateRoomViewController ()<UITextFieldDelegate>
 {
@@ -28,7 +30,7 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [QHVCTool setStatusBarBackgroundColor:[QHVCGlobalConfig getStatusBarColor]];
     _httpManager = [QHVCITSHTTPSessionManager new];
     _talkType = QHVCITS_Talk_Type_Normal;
     _numLimit = 6;
@@ -41,11 +43,11 @@
 
 - (IBAction)audioAction:(UISwitch *)sender
 {
-    if (sender.on) {
+    if (sender.on)
+    {
         _talkType = QHVCITS_Talk_Type_Audio;
         _numLimit = 100;
-    }
-    else
+    } else
     {
         _talkType = QHVCITS_Talk_Type_Normal;
         _numLimit = 6;
@@ -71,7 +73,7 @@
     [QHVCITSProtocolMonitor createRoom:_httpManager
                                   dict:createRoomDict
                               complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
-                                  [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"createRoom" dict:dict];
+                                  [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"createRoom" dict:dict];
                                   STRONG_SELF_LINKMIC
                                   [self handleCreateRoomResponse:success dict:dict];
                               }];

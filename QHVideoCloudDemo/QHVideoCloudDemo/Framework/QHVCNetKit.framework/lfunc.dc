@@ -1,0 +1,6 @@
+lfunc.o: schedule/jni/lua/src/lfunc.c schedule/jni/lua/src/lprefix.h \
+ schedule/jni/lua/src/lua.h schedule/jni/lua/src/luaconf.h \
+ schedule/jni/lua/src/lfunc.h schedule/jni/lua/src/lobject.h \
+ schedule/jni/lua/src/llimits.h schedule/jni/lua/src/lgc.h \
+ schedule/jni/lua/src/lstate.h schedule/jni/lua/src/ltm.h \
+ schedule/jni/lua/src/lzio.h schedule/jni/lua/src/lmem.h

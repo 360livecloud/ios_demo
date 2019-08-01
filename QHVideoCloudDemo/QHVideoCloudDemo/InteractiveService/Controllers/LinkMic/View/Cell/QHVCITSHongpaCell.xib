@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14109" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -20,11 +20,97 @@
                 <subviews>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XKd-Zm-85D" userLabel="left">
                         <rect key="frame" x="0.0" y="0.0" width="159.5" height="167.5"/>
+                        <subviews>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ze3-7g-Aef" userLabel="control_view">
+                                <rect key="frame" x="0.0" y="0.0" width="159.5" height="167.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XHZ-DY-7Vd" userLabel="camera">
+                                        <rect key="frame" x="5" y="42" width="32" height="32"/>
+                                        <state key="normal" image="room_camera"/>
+                                        <connections>
+                                            <action selector="cameraBtnAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="Myc-Lt-fAS"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pTe-Je-Jj4" userLabel="speaker">
+                                        <rect key="frame" x="5" y="5" width="32" height="32"/>
+                                        <state key="normal" image="room_speaker"/>
+                                        <connections>
+                                            <action selector="speakerBtnAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="0d4-n1-kpv"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bRG-oc-del">
+                                        <rect key="frame" x="124.5" y="5" width="30" height="34"/>
+                                        <state key="normal" title="x"/>
+                                        <connections>
+                                            <action selector="closeBtnAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="mlB-y4-4AE"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="pTe-Je-Jj4" firstAttribute="top" secondItem="ze3-7g-Aef" secondAttribute="top" constant="5" id="E6N-gP-kt0"/>
+                                    <constraint firstItem="pTe-Je-Jj4" firstAttribute="leading" secondItem="ze3-7g-Aef" secondAttribute="leading" constant="5" id="PFh-sJ-Qac"/>
+                                    <constraint firstItem="XHZ-DY-7Vd" firstAttribute="top" secondItem="pTe-Je-Jj4" secondAttribute="bottom" constant="5" id="Uew-6Z-ONt"/>
+                                    <constraint firstItem="bRG-oc-del" firstAttribute="top" secondItem="ze3-7g-Aef" secondAttribute="top" constant="5" id="YZs-dD-yY7"/>
+                                    <constraint firstItem="XHZ-DY-7Vd" firstAttribute="leading" secondItem="ze3-7g-Aef" secondAttribute="leading" constant="5" id="Zgp-CH-a5p"/>
+                                    <constraint firstAttribute="trailing" secondItem="bRG-oc-del" secondAttribute="trailing" constant="5" id="bXH-mA-uIW"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="ze3-7g-Aef" secondAttribute="bottom" id="FUn-qh-a5p"/>
+                            <constraint firstItem="ze3-7g-Aef" firstAttribute="leading" secondItem="XKd-Zm-85D" secondAttribute="leading" id="k7s-Gt-gBy"/>
+                            <constraint firstItem="ze3-7g-Aef" firstAttribute="top" secondItem="XKd-Zm-85D" secondAttribute="top" id="xjv-8S-0q8"/>
+                            <constraint firstAttribute="trailing" secondItem="ze3-7g-Aef" secondAttribute="trailing" id="xv2-NR-azY"/>
+                        </constraints>
                     </view>
                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="f25-Xf-leh" userLabel="right">
                         <rect key="frame" x="160.5" y="0.0" width="159.5" height="168"/>
+                        <subviews>
+                            <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0NR-dA-7MW" userLabel="control_view">
+                                <rect key="frame" x="-0.5" y="0.0" width="159.5" height="167.5"/>
+                                <subviews>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hPN-dJ-mCQ" userLabel="camera">
+                                        <rect key="frame" x="5" y="42" width="32" height="32"/>
+                                        <state key="normal" image="room_camera"/>
+                                        <connections>
+                                            <action selector="cameraBtnAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="pc0-YK-ZHz"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ui0-n2-bZB" userLabel="speaker">
+                                        <rect key="frame" x="5" y="5" width="32" height="32"/>
+                                        <state key="normal" image="room_speaker"/>
+                                        <connections>
+                                            <action selector="speakerBtnAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="E7b-i8-XpC"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4lN-oj-Snp">
+                                        <rect key="frame" x="124.5" y="5" width="30" height="34"/>
+                                        <state key="normal" title="x"/>
+                                        <connections>
+                                            <action selector="closeBtnAction:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="iH8-Cr-w11"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="hPN-dJ-mCQ" firstAttribute="top" secondItem="ui0-n2-bZB" secondAttribute="bottom" constant="5" id="13Y-nx-HMf"/>
+                                    <constraint firstItem="ui0-n2-bZB" firstAttribute="leading" secondItem="0NR-dA-7MW" secondAttribute="leading" constant="5" id="EUy-gy-Eqy"/>
+                                    <constraint firstAttribute="trailing" secondItem="4lN-oj-Snp" secondAttribute="trailing" constant="5" id="T6U-8E-8rU"/>
+                                    <constraint firstItem="ui0-n2-bZB" firstAttribute="top" secondItem="0NR-dA-7MW" secondAttribute="top" constant="5" id="TKf-Bn-dGs"/>
+                                    <constraint firstItem="4lN-oj-Snp" firstAttribute="top" secondItem="0NR-dA-7MW" secondAttribute="top" constant="5" id="di5-8S-vVN"/>
+                                    <constraint firstItem="hPN-dJ-mCQ" firstAttribute="leading" secondItem="0NR-dA-7MW" secondAttribute="leading" constant="5" id="nns-88-94H"/>
+                                </constraints>
+                            </view>
+                        </subviews>
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstAttribute="bottom" secondItem="0NR-dA-7MW" secondAttribute="bottom" constant="0.5" id="36e-Ld-WU2"/>
+                            <constraint firstAttribute="trailing" secondItem="0NR-dA-7MW" secondAttribute="trailing" constant="0.5" id="JBv-vm-De9"/>
+                            <constraint firstItem="0NR-dA-7MW" firstAttribute="leading" secondItem="f25-Xf-leh" secondAttribute="leading" constant="-0.5" id="WWf-Pc-LNA"/>
+                            <constraint firstItem="0NR-dA-7MW" firstAttribute="top" secondItem="f25-Xf-leh" secondAttribute="top" id="j6r-Jh-ZeA"/>
+                        </constraints>
                     </view>
                 </subviews>
                 <color key="backgroundColor" red="0.1764705882352941" green="0.15686274509803921" blue="0.15686274509803921" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -43,10 +129,18 @@
                 <constraint firstAttribute="bottom" secondItem="f25-Xf-leh" secondAttribute="bottom" id="WHa-vx-be0"/>
             </constraints>
             <connections>
+                <outlet property="_leftCloseBtn" destination="bRG-oc-del" id="UWJ-tm-vqy"/>
+                <outlet property="_leftControlView" destination="ze3-7g-Aef" id="MAa-4Q-46q"/>
                 <outlet property="_leftView" destination="XKd-Zm-85D" id="jxC-UC-BgV"/>
+                <outlet property="_rightCloseBtn" destination="4lN-oj-Snp" id="Qra-mP-4qG"/>
+                <outlet property="_rightControlView" destination="0NR-dA-7MW" id="kwx-OR-Eu2"/>
                 <outlet property="_rightView" destination="f25-Xf-leh" id="maz-yw-gBX"/>
             </connections>
             <point key="canvasLocation" x="34" y="116"/>
         </tableViewCell>
     </objects>
+    <resources>
+        <image name="room_camera" width="32" height="32"/>
+        <image name="room_speaker" width="32" height="32"/>
+    </resources>
 </document>

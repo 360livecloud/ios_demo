@@ -333,4 +333,11 @@
  */
 + (NSDictionary *)statisticsInfo;
 
+/**
+ 更新H264转码状态
+ @param sid 会话id
+ @param isTrans 是否开启
+ */
++ (void)notify_set_trans264:(NSString *)sid transH264:(BOOL)isTrans;
+
 @end

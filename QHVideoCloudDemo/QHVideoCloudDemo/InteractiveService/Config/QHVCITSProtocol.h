@@ -19,5 +19,9 @@
 #define QHVCITSPROTOCOL_USER_LEAVE_ROOM                   @"/api/userLeaveRoom"//用户离开房间
 #define QHVCITSPROTOCOL_DISMISS_ROOM                      @"/api/dismissRoom"//主播解散房间
 #define QHVCITSPROTOCOL_USER_HEART                        @"/api/userHeart"//用户心跳(暂未实现)
+#define QHVCITSPROTOCOL_JOIN_LINK_ROOM                    @"/api/joinLinkRoom"//加入互动房间
+#define QHVCITSPROTOCOL_LEAVE_LINK_ROOM                   @"/api/leaveLinkRoom"//退出互动房间
+#define QHVCITSPROTOCOL_SEND_USER_MESSAGE                 @"/api/sendUserMessage"//给单个用户推送消息
+#define QHVCITSPROTOCOL_SEND_ROOM_MESSAGE                 @"/api/sendRoomMessage"//给房间用户推送消息
 
 #endif /* QHVCITSProtocol_h */

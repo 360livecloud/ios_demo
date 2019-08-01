@@ -13,6 +13,10 @@
 {
     IBOutlet UIView *_leftView;
     IBOutlet UIView *_rightView;
+    IBOutlet UIView *_leftControlView;
+    IBOutlet UIView *_rightControlView;
+    IBOutlet UIButton *_leftCloseBtn;
+    IBOutlet UIButton *_rightCloseBtn;
 }
 
 @end
@@ -38,6 +42,21 @@
     if (items.count > 1) {
         [_rightView addSubview:items[1].videoView];
     }
+}
+
+- (IBAction)closeBtnAction:(id)sender
+{
+    
+}
+
+- (IBAction)speakerBtnAction:(id)sender
+{
+    
+}
+
+- (IBAction)cameraBtnAction:(id)sender
+{
+    
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

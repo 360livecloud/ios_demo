@@ -7,12 +7,13 @@
 //
 
 #import "ViewController.h"
+#import "QHVCShortVideoVC.h"
 #import "QHVCTabTableViewCell.h"
-#import "QHVCEditViewController.h"
 #import "QHVCPlayerServiceViewController.h"
 #import "QHVCLocalServerViewController.h"
 #import "QHVCUploadingViewController.h"
 #import "QHVCInteractiveViewController.h"
+#import "QHVCRecordViewController.h"
 
 @interface ViewController ()<UITableViewDelegate, UITableViewDataSource>
 {
@@ -61,7 +62,7 @@
         make.width.equalTo(@100);
     }];
     
-    UILabel *titleLabel = [self labelWithTitle:@"直播云SDK DEMO" fontName:kBoldFontName fontSize:25];
+    UILabel *titleLabel = [self labelWithTitle:@"智汇云SDK工具包" fontName:kBoldFontName fontSize:25];
     [_headerView addSubview:titleLabel];
     [titleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_headerView);
@@ -70,7 +71,7 @@
         make.height.equalTo(@25);
     }];
     
-    UILabel *descriptionOne = [self labelWithTitle:@"本demo以最简单的代码展示直播云sdk的" fontName:kDefaultFontName fontSize:14];
+    UILabel *descriptionOne = [self labelWithTitle:@"本工具包以最简单的代码展示直播云sdk的" fontName:kDefaultFontName fontSize:14];
     [_headerView addSubview:descriptionOne];
     [descriptionOne mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(_headerView);
@@ -169,7 +170,11 @@
     }
     else if (indexPath.row == 4)
     {
-        viewController = [[QHVCEditViewController alloc]initWithNibName:@"QHVCEditViewController" bundle:nil];
+        viewController = [QHVCShortVideoVC new];
+    }
+    else if (indexPath.row == 5)
+    {
+        viewController = [[QHVCRecordViewController alloc]initWithNibName:@"QHVCRecordViewController" bundle:nil];
     }
     [self.navigationController pushViewController:viewController animated:YES];
 }
@@ -206,9 +211,9 @@
                             },
                         @{
                             @"leftImage":@"tab_videoEdit",
-                            @"title":@"剪辑",
+                            @"title":@"短视频",
                             @"rightImage":@"jiantou"
-                            }
+                            },
                         ];
     }
     

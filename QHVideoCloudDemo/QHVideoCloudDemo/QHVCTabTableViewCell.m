@@ -48,7 +48,7 @@
         make.left.equalTo(_logoImageView.mas_right).offset(15);
         make.centerY.equalTo(_logoImageView);
         make.height.equalTo(@20);
-        make.width.equalTo(@100);
+        make.width.equalTo(@200);
     }];
     
     _rigitImage = [UIImageView new];

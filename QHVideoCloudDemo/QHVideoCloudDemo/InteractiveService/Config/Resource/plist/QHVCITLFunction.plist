@@ -12,6 +12,14 @@
 	</dict>
 	<dict>
 		<key>image</key>
+		<string>live_cid</string>
+		<key>title</key>
+		<string>主播VS主播</string>
+		<key>value</key>
+		<string>test_waterbear_mic</string>
+	</dict>
+	<dict>
+		<key>image</key>
 		<string>upload_bucket</string>
 		<key>title</key>
 		<string>开趴大厅</string>

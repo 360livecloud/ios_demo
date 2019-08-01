@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<array>
+		<string>正常</string>
+		<string>edit_overlay_normal</string>
+		<real>1</real>
+	</array>
+	<array>
+		<string>叠加</string>
+		<string>edit_overlay_overlay</string>
+		<real>1</real>
+	</array>
+	<array>
+		<string>多倍</string>
+		<string>edit_overlay_multiply</string>
+		<real>1</real>
+	</array>
+	<array>
+		<string>屏幕</string>
+		<string>edit_overlay_screen</string>
+		<real>1</real>
+	</array>
+	<array>
+		<string>柔光</string>
+		<string>edit_overlay_softLight</string>
+		<real>1</real>
+	</array>
+	<array>
+		<string>强光</string>
+		<string>edit_overlay_hardLight</string>
+		<real>1</real>
+	</array>
+	<array>
+		<string>变暗</string>
+		<string>edit_overlay_darken</string>
+		<real>1</real>
+	</array>
+	<array>
+		<string>颜色加深</string>
+		<string>edit_overlay_colorBurn</string>
+		<real>1</real>
+	</array>
+	<array>
+		<string>变亮</string>
+		<string>edit_overlay_lighten</string>
+		<real>1</real>
+	</array>
+	<array>
+		<string>更亮</string>
+		<string>edit_overlay_linearDodge</string>
+		<real>1</real>
+	</array>
+	<array>
+		<string>更暗</string>
+		<string>edit_overlay_linearBurn</string>
+		<real>1</real>
+	</array>
+</array>
+</plist>

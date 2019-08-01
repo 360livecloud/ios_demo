@@ -8,9 +8,11 @@
 
 #import "QHVCITSModelListViewController.h"
 #import "QHVCITSSettingViewController.h"
-#import "QHVCConfig.h"
+#import "QHVCGlobalConfig.h"
 #import "QHVCITSRoomListViewController.h"
 #import "QHVCITSUserSystem.h"
+#import "QHVCITSChatManager.h"
+#import "QHVCTool.h"
 
 static NSString *functionCellIdentifier = @"functionCellIdentifier";
 
@@ -27,7 +29,7 @@ static NSString *functionCellIdentifier = @"functionCellIdentifier";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    [QHVCTool setStatusBarBackgroundColor:[QHVCGlobalConfig getStatusBarColor]];
     NSString *path = [[NSBundle mainBundle] pathForResource:@"QHVCITLFunction" ofType:@"plist"];
     _functionArray = [NSMutableArray arrayWithContentsOfFile:path];
     
@@ -35,8 +37,10 @@ static NSString *functionCellIdentifier = @"functionCellIdentifier";
 }
 
 #pragma mark Action
-- (IBAction)clickedBack:(id)sender
+
+- (IBAction)clickedBackAction:(id)sender
 {
+    [[QHVCITSChatManager sharedManager] disconnectChatServer];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -95,15 +99,5 @@ static NSString *functionCellIdentifier = @"functionCellIdentifier";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

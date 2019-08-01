@@ -1,0 +1,6 @@
+framework module QHPushSdk {
+  umbrella header "QHPushSdk.h"
+
+  export *
+  module * { export * }
+}

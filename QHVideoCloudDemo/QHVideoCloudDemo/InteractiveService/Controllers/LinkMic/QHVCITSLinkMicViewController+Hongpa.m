@@ -8,7 +8,7 @@
 
 #import "QHVCITSLinkMicViewController+Hongpa.h"
 #import "UIViewAdditions.h"
-#import "QHVCConfig.h"
+#import "QHVCGlobalConfig.h"
 #import "QHVCITSHongpaCell.h"
 
 static NSString * const hongpaCellIdentifier = @"QHVCITSHongpaCell";

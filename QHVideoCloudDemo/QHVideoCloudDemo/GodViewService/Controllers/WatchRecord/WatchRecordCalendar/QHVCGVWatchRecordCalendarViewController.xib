@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14313.18"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="QHVCGVWatchRecordCalendarViewController">
+            <connections>
+                <outlet property="FSCalendarHoursView" destination="TeJ-R6-Dxf" id="xKa-OI-fHk"/>
+                <outlet property="calendar" destination="h8p-sE-IdX" id="j0Z-3d-qAt"/>
+                <outlet property="calendarHeightConstraint" destination="VOB-34-HbM" id="9Yu-by-HcL"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="TeJ-R6-Dxf">
+                    <rect key="frame" x="0.0" y="300" width="375" height="367"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="h8p-sE-IdX" customClass="FSCalendar">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="300"/>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="300" id="VOB-34-HbM"/>
+                    </constraints>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="pagingEnabled" value="YES"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="scrollEnabled" value="YES"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="fakeSubtitles" value="YES"/>
+                        <userDefinedRuntimeAttribute type="boolean" keyPath="showsPlaceholders" value="YES"/>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <outlet property="dataSource" destination="-1" id="zAf-9d-8nb"/>
+                        <outlet property="delegate" destination="-1" id="91a-EG-EXB"/>
+                    </connections>
+                </view>
+            </subviews>
+            <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <constraints>
+                <constraint firstItem="TeJ-R6-Dxf" firstAttribute="top" secondItem="h8p-sE-IdX" secondAttribute="bottom" id="00r-Mi-6QC"/>
+                <constraint firstItem="h8p-sE-IdX" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="6yd-84-QSI"/>
+                <constraint firstItem="TeJ-R6-Dxf" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="8Nk-Zp-2np"/>
+                <constraint firstAttribute="bottom" secondItem="TeJ-R6-Dxf" secondAttribute="bottom" id="Ca2-VE-TjK"/>
+                <constraint firstAttribute="trailing" secondItem="TeJ-R6-Dxf" secondAttribute="trailing" id="Gx0-oW-lQh"/>
+                <constraint firstItem="h8p-sE-IdX" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="NbX-jC-nJk"/>
+                <constraint firstAttribute="trailing" secondItem="h8p-sE-IdX" secondAttribute="trailing" id="ci2-5O-mam"/>
+            </constraints>
+            <point key="canvasLocation" x="55.200000000000003" y="48.125937031484263"/>
+        </view>
+    </objects>
+</document>

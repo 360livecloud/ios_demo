@@ -16,23 +16,25 @@
 #import "QHVCITSConfig.h"
 #import "QHVCITSHTTPSessionManager.h"
 #import "QHVCITSProtocolMonitor.h"
-#import "QHVCITSLog.h"
 #import "QHVCITSUserSystem.h"
 #import "QHVCITSUserModel.h"
 #import "QHVCITSSettingViewController.h"
-#import "QHVCConfig.h"
+#import "QHVCGlobalConfig.h"
 #import "QHVCToast.h"
 #import "QHVCITSModelListViewController.h"
-#import "QHVCITSLog.h"
+#import "QHVCITSChatManager.h"
+#import "QHVCLogger.h"
+#import "QHVCTool.h"
 
 #define kNum 4
 
 static NSString *mainCellIdenitifer = @"QHVCLiveMainCellOne";
 
-@interface QHVCInteractiveViewController ()<UITableViewDelegate,UITableViewDataSource>
+@interface QHVCInteractiveViewController ()<UITableViewDelegate,UITableViewDataSource,QHVCITSChatMessageDelegate>
 {
     IBOutlet UITableView *generalTableView;
     NSMutableArray<NSMutableDictionary *> *_configsArray;
+    __weak IBOutlet NSLayoutConstraint *loginContraintBottom;
 }
 
 @property (nonatomic, strong) QHVCITSHTTPSessionManager* httpManager;
@@ -44,8 +46,8 @@ static NSString *mainCellIdenitifer = @"QHVCLiveMainCellOne";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [QHVCTool setStatusBarBackgroundColor:[QHVCGlobalConfig getStatusBarColor]];
     
-    [QHVCITSLog setLoggerLevel:QHVCITS_LOG_LEVEL_DEBUG];
     [[QHVCITSConfig sharedInstance] setSessionId:[NSString stringWithFormat:@"session_yk_test_%lld",[QHVCToolUtils getCurrentDateBySecond]]];
     [[QHVCITSConfig sharedInstance] setDeviceId:[QHVCToolDeviceModel getDeviceUUID]];
     
@@ -81,37 +83,83 @@ static NSString *mainCellIdenitifer = @"QHVCLiveMainCellOne";
                forCellReuseIdentifier:mainCellIdenitifer];
         cell = [tableView dequeueReusableCellWithIdentifier:mainCellIdenitifer];
     }
-    [cell updateCell:dic];
+    NSString* encryptString = nil;
+    if (indexPath.row == 2)
+    {
+        encryptString = kQHVCInteractiveAppKey;
+    }else if (indexPath.row == 3)
+    {
+        encryptString = kQHVCInteractiveAppSecret;
+    }
+    [cell updateCell:dic encryptProcesString:encryptString];
     return cell;
 }
 
-#pragma mark Action
-- (IBAction)clickedBack:(id)sender
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
+}
+
+
+#pragma mark Action
+
+- (IBAction)clickedBackAction:(id)sender
+{
+    [[QHVCITSChatManager sharedManager] disconnectChatServer];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-- (IBAction)login:(UIButton *)sender
+- (IBAction)clickedSettingAction:(id)sender
+{
+    QHVCITSSettingViewController *vc = [[QHVCITSSettingViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
+- (IBAction)clickedLoginAction:(UIButton *)sender
 {
     for (NSInteger i = 0; i < kNum; i++) {
-        NSString *value = _configsArray[i][@"value"];
+        NSString *value = _configsArray[i][QHVCITS_KEY_VALUE];
         if (value.length <= 0) {
-            [QHVCToast makeToast:[NSString stringWithFormat:@"请输入有效的%@",_configsArray[i][@"title"]]];
+            [QHVCToast makeToast:[NSString stringWithFormat:@"请输入有效的%@",_configsArray[i][QHVCITS_KEY_TITLE]]];
             return;
         }
     }
-    [QHVCITSConfig sharedInstance].businessId = _configsArray[0][@"value"];
-    [QHVCITSConfig sharedInstance].channelId = _configsArray[1][@"value"];
-    [QHVCITSConfig sharedInstance].appKey = _configsArray[2][@"value"];
-    [QHVCITSConfig sharedInstance].appSecret = _configsArray[3][@"value"];
     
-    __weak typeof(self) weakSelf = self;
+    [QHVCITSConfig sharedInstance].businessId = _configsArray[0][QHVCITS_KEY_VALUE];
+    [QHVCITSConfig sharedInstance].channelId = _configsArray[1][QHVCITS_KEY_VALUE];
+    [QHVCITSConfig sharedInstance].appKey = _configsArray[2][QHVCITS_KEY_VALUE];
+    [QHVCITSConfig sharedInstance].appSecret = _configsArray[3][QHVCITS_KEY_VALUE];
+    //启动长链服务
+    [[QHVCITSChatManager sharedManager] setDelegate:self];
+    [[QHVCITSChatManager sharedManager] connectChatServer];
+}
+
+#pragma mark - QHVCITSChatMessageDelegate -
+- (void)onChatDidRegisterClient:(NSString *)clientId
+{
+    NSString* tmpClientId = nil;
+    NSRange range = [clientId rangeOfString:[NSString stringWithFormat:@"@%@",QHVCITS_QHPUSH_APPKEY]];
+    if (range.location == NSNotFound)
+    {
+        tmpClientId = clientId;
+    }else
+    {
+        tmpClientId = [clientId substringToIndex:range.location];
+    }
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"QHVCITSChatDidRegisterClient, clientId:%@",tmpClientId]];
+    [QHVCITSConfig sharedInstance].clientId = tmpClientId;
+    WEAK_SELF_LINKMIC
     [QHVCITSProtocolMonitor getUserLogin:_httpManager
                                     dict:nil
                                 complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
-                                    NSLog(@"dict %@",dict);
-                                    [weakSelf handleLoginResponse:success dict:dict];
+                                    STRONG_SELF_LINKMIC
+                                    [self handleLoginResponse:success dict:dict];
                                 }];
+}
+
+- (void)onChatDidOccurError:(NSError *)error
+{
+    [QHVCToast makeToast:[NSString stringWithFormat:@"登录失败，长链错误：%@",error.description]];
 }
 
 - (void)handleLoginResponse:(BOOL)success dict:(NSDictionary *)dict
@@ -143,20 +191,9 @@ static NSString *mainCellIdenitifer = @"QHVCLiveMainCellOne";
     [self.navigationController pushViewController:vc animated:YES];
 }
 
-- (IBAction)setting:(id)sender
-{
-    QHVCITSSettingViewController *vc = [[QHVCITSSettingViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-}
-
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-}
-
-- (void)dealloc
-{
-    NSLog(@"%s", __func__);
 }
 
 @end

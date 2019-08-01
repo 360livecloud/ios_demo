@@ -1,0 +1,6 @@
+framework module QHVCNetKit {
+  umbrella header "QHVCNetKit.h"
+
+  export *
+  module * { export * }
+}

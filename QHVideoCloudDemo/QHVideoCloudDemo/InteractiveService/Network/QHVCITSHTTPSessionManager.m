@@ -9,7 +9,7 @@
 #import "QHVCITSHTTPSessionManager.h"
 #import "QHVCITSConfig.h"
 #import "QHVCITSDefine.h"
-#import "QHVCITSLog.h"
+#import "QHVCLogger.h"
 #import "QHVCITSUserSystem.h"
 
 @interface QHVCITSHTTPSessionManager ()
@@ -73,7 +73,7 @@
 {
     if ([QHVCToolUtils isNullString:URLString])
     {
-        [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_ERROR content:@"requestDataWithGet URLString is nil" dict:parameterDict];
+        [QHVCLogger printLogger:QHVC_LOG_LEVEL_ERROR content:@"requestDataWithGet URLString is nil" dict:parameterDict];
         return nil;
     }
     //合并参数并签名构成完成的URL地址
@@ -83,10 +83,10 @@
     NSString* sign = [QHVCToolUtils getStringFromDictionary:urlDict key:QHVCITS_KEY_SIGN defaultValue:nil];
     if ([QHVCToolUtils isNullString:sign])
     {
-        [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_ERROR content:@"requestDataWithGet sign is nil" dict:urlDict];
+        [QHVCLogger printLogger:QHVC_LOG_LEVEL_ERROR content:@"requestDataWithGet sign is nil" dict:urlDict];
         return nil;
     }
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"requestDataWithGet" dict:urlDict];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"requestDataWithGet" dict:urlDict];
     //设置请求头
     [[_httpSessionManager requestSerializer] setValue:sign forHTTPHeaderField:@"Authorization"];
     NSString* requestUrl = [NSString stringWithFormat:@"%@%@",[config interactiveServerUrl], url];
@@ -97,7 +97,7 @@
                                                           
                                                       } success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObject) {
                                                           STRONG_SELF_LINKMIC
-                                                          [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"request URL success: %@",requestUrl] dict:responseObject];
+                                                          [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"request URL success: %@",requestUrl] dict:responseObject];
                                                           NSDictionary * dict = [self dealwithSuccessData:responseObject];
                                                           NSInteger errNum = [QHVCToolUtils getLongFromDictionary:dict key:QHVCITS_KEY_ERROR_NUMBER defaultValue:QHVCITS_Error_Failed];
                                                           if (errNum == QHVCITS_Error_NoError)
@@ -118,7 +118,7 @@
                                                           [QHVCToolUtils setLongToDictionary:errDict key:QHVCITS_KEY_ERROR_NUMBER value:error.code];
                                                           [QHVCToolUtils setStringToDictionary:errDict key:QHVCITS_KEY_ERROR_MESSAGE value:error.domain];
                                                           [QHVCToolUtils setObjectToDictionary:errDict key:QHVCITS_KEY_DATA value:error.localizedDescription];
-                                                          [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_ERROR content:[NSString stringWithFormat:@"request URL failed: %@",requestUrl] dict:errDict];
+                                                          [QHVCLogger printLogger:QHVC_LOG_LEVEL_ERROR content:[NSString stringWithFormat:@"request URL failed: %@",requestUrl] dict:errDict];
                                                           if (failure)
                                                           {
                                                               failure(task, errDict);
@@ -134,7 +134,7 @@
 {
     if ([QHVCToolUtils isNullString:URLString])
     {
-        [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_ERROR content:@"requestDataWithPost URLString is nil" dict:parameterDict];
+        [QHVCLogger printLogger:QHVC_LOG_LEVEL_ERROR content:@"requestDataWithPost URLString is nil" dict:parameterDict];
         return nil;
     }
     //合并参数并签名构成完成的URL地址
@@ -145,10 +145,10 @@
     NSString* sign = [QHVCToolUtils getStringFromDictionary:urlDict key:QHVCITS_KEY_SIGN defaultValue:nil];
     if ([QHVCToolUtils isNullString:sign])
     {
-        [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_ERROR content:@"requestDataWithPost sign is nil" dict:urlDict];
+        [QHVCLogger printLogger:QHVC_LOG_LEVEL_ERROR content:@"requestDataWithPost sign is nil" dict:urlDict];
         return nil;
     }
-    [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"requestDataWithPost" dict:urlDict];
+    [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"requestDataWithPost" dict:urlDict];
     //设置请求头
     [[_httpSessionManager requestSerializer] setValue:sign forHTTPHeaderField:@"Authorization"];
     NSString* requestUrl = [NSString stringWithFormat:@"%@%@",[config interactiveServerUrl], url];
@@ -161,7 +161,7 @@
                                           
                                       } success:^(NSURLSessionDataTask * _Nonnull task, id _Nullable responseObject) {
                                           STRONG_SELF_LINKMIC
-                                          [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"request URL success: %@",requestUrl] dict:responseObject];
+                                          [QHVCLogger printLogger:QHVC_LOG_LEVEL_INFO content:[NSString stringWithFormat:@"request URL success: %@",requestUrl] dict:responseObject];
                                           NSDictionary * dict = [self dealwithSuccessData:responseObject];
                                           NSInteger errNum = [QHVCToolUtils getLongFromDictionary:dict key:QHVCITS_KEY_ERROR_NUMBER defaultValue:QHVCITS_Error_Failed];
                                           if (errNum == QHVCITS_Error_NoError)
@@ -182,7 +182,7 @@
                                           [QHVCToolUtils setLongToDictionary:errDict key:QHVCITS_KEY_ERROR_NUMBER value:error.code];
                                           [QHVCToolUtils setStringToDictionary:errDict key:QHVCITS_KEY_ERROR_MESSAGE value:error.domain];
                                           [QHVCToolUtils setObjectToDictionary:errDict key:QHVCITS_KEY_DATA value:error.localizedDescription];
-                                          [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_ERROR content:[NSString stringWithFormat:@"request URL failed: %@",requestUrl] dict:errDict];
+                                          [QHVCLogger printLogger:QHVC_LOG_LEVEL_ERROR content:[NSString stringWithFormat:@"request URL failed: %@",requestUrl] dict:errDict];
                                           if (failure)
                                           {
                                               failure(task, errDict);

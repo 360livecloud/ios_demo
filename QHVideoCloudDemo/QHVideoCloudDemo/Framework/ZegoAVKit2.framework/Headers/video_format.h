@@ -14,8 +14,8 @@ namespace AVE
         PIXEL_FORMAT_ARGB32 = 6,
         PIXEL_FORMAT_ABGR32 = 7,
 		PIXEL_FORMAT_I422 = 8,
-		PIXEL_FORMAT_AVC_AVCC = 9,
-		PIXEL_FORMAT_AVC_ANNEXB = 10,
+        PIXEL_FORMAT_AVC_AVCC = 9,
+        PIXEL_FORMAT_AVC_ANNEXB = 10,
     };
     
     struct VideoDataFormat

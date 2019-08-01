@@ -10,6 +10,8 @@
 #import "QHVCITSHTTPSessionManager.h"
 #import <QHVCCommonKit/QHVCCommonKit.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 #pragma mark - 网络队请求C方法实现 -
 void runSynchronouslyOnProtocolProcessingQueue_ITS(void (^ _Nonnull block)(void));
 void runAsynchronouslyOnProtocolProcessingQueue_ITS(void (^ _Nonnull block)(void));
@@ -102,4 +104,25 @@ typedef void (^QHVCITSProtocolMonitorDataCompleteWithErrorCode)(NSURLSessionData
                         dict:(NSMutableDictionary *_Nullable)dict
                     complete:(QHVCITSProtocolMonitorDataCompleteWithDictionary _Nullable )complete;
 
+//加入互动房间
++ (void)joinLinkRoom:(QHVCITSHTTPSessionManager * _Nonnull)httpManager
+                dict:(NSMutableDictionary *_Nullable)dict
+            complete:(QHVCITSProtocolMonitorDataCompleteWithDictionary _Nullable )complete;
+
+//退出互动房间
++ (void)leaveLinkRoom:(QHVCITSHTTPSessionManager * _Nonnull)httpManager
+                 dict:(NSMutableDictionary *_Nullable)dict
+             complete:(QHVCITSProtocolMonitorDataCompleteWithDictionary _Nullable )complete;
+
+//给单个用户推送消息
++ (void)sendUserMessage:(QHVCITSHTTPSessionManager *)httpManager
+                   dict:(NSMutableDictionary *)dict
+               complete:(QHVCITSProtocolMonitorDataCompleteWithDictionary)complete;
+
+//给房间用户推送消息
++ (void)sendRoomMessage:(QHVCITSHTTPSessionManager *)httpManager
+                   dict:(NSMutableDictionary *)dict
+               complete:(QHVCITSProtocolMonitorDataCompleteWithDictionary)complete;
 @end
+
+NS_ASSUME_NONNULL_END

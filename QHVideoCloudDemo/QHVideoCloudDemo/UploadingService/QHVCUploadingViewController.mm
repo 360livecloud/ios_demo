@@ -56,11 +56,13 @@ static NSString *LiveMainCellOneCellIdenitifer = @"QHVCLiveMainCellOne";
 //      选择上海地区上传地址：up-shanghai.oss.yunpan.360.cn）
     [QHVCUploader setUploadDomain:@"up-beijing.oss.yunpan.360.cn"];
     
+#ifdef DEBUG
     //debug阶段辅助开发调试，根据实际情况使用
     [QHVCUploader openLogWithLevel:QHVCUploadLogLevelDebug];
     [QHVCUploader setLogOutputCallBack:^(int loggerID, QHVCUploadLogLevel level, const char * _Nonnull data) {
         NSLog(@"log %@", [NSString stringWithUTF8String:data]);
     }];
+#endif
 }
 
 - (void)dealloc
@@ -98,7 +100,7 @@ static NSString *LiveMainCellOneCellIdenitifer = @"QHVCLiveMainCellOne";
                forCellReuseIdentifier:LiveMainCellOneCellIdenitifer];
         cell = [tableView dequeueReusableCellWithIdentifier:LiveMainCellOneCellIdenitifer];
     }
-    [cell updateCell:dic];
+    [cell updateCell:dic encryptProcesString:nil];
     return cell;
 }
 

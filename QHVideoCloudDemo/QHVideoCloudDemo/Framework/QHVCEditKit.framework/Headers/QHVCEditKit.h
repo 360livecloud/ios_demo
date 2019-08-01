@@ -7,12 +7,17 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "QHVCEditDefinitions.h"
+#import "QHVCEditTimeline.h"
+#import "QHVCEditTrack.h"
+#import "QHVCEditTrackClip.h"
+#import "QHVCEditEffect.h"
+#import "QHVCEditEffect+Advanced.h"
 #import "QHVCEditPlayer.h"
-#import "QHVCEditCommand.h"
+#import "QHVCEditProducer.h"
 #import "QHVCEditThumbnail.h"
-#import "QHVCEditMaker.h"
-#import "QHVCEditAudioProducer.h"
-#import "QHVCEditReverseMaker.h"
+#import "QHVCEditTools.h"
+#import "QHVCEditConfig.h"
 
 //! Project version number for QHVCEditKit.
 FOUNDATION_EXPORT double QHVCEditKitVersionNumber;

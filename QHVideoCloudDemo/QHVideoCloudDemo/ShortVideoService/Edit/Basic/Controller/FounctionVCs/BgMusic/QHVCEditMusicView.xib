@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="iN0-l3-epB" customClass="QHVCEditMusicView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="170"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="O0w-UD-uRX" userLabel="timeline_view">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="170"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                </view>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zfe-US-g60">
+                    <rect key="frame" x="0.0" y="0.0" width="375" height="170"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="音乐文件:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="g9y-MD-MVT">
+                            <rect key="frame" x="8" y="59" width="62" height="17"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="17" id="8Le-Ie-ZAu"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="音量:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Aas-60-LVb">
+                            <rect key="frame" x="8" y="96" width="33" height="17"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="17" id="vjg-kp-JAN"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hZc-CI-MKn">
+                            <rect key="frame" x="78" y="55" width="174" height="25"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="25" id="DFd-Du-AMQ"/>
+                                <constraint firstAttribute="width" constant="174" id="bas-Ml-RNM"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                            <state key="normal" title="--">
+                                <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <userDefinedRuntimeAttributes>
+                                <userDefinedRuntimeAttribute type="boolean" keyPath="layer.masksToBounds" value="YES"/>
+                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                    <integer key="value" value="5"/>
+                                </userDefinedRuntimeAttribute>
+                            </userDefinedRuntimeAttributes>
+                            <connections>
+                                <action selector="clickedMusicListBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="2e1-67-GhG"/>
+                            </connections>
+                        </button>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="淡入淡出:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ae3-wN-Xuh">
+                            <rect key="frame" x="8" y="133" width="62" height="17"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="17" id="QoJ-Iy-Cez"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="100" minValue="0.0" maxValue="200" translatesAutoresizingMaskIntoConstraints="NO" id="AWN-Zh-evo">
+                            <rect key="frame" x="74" y="90" width="232.5" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="29" id="DKc-xD-V3v"/>
+                            </constraints>
+                            <connections>
+                                <action selector="onMusicVolumeChanged:" destination="iN0-l3-epB" eventType="touchUpInside" id="1Tq-Z0-nry"/>
+                            </connections>
+                        </slider>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="0" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fYZ-bm-wE3">
+                            <rect key="frame" x="61" y="97" width="8" height="15"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="15" id="VG6-X2-gAi"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="200" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xX2-MY-NGE">
+                            <rect key="frame" x="312.5" y="97" width="22.5" height="15"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="15" id="ySt-2z-TiK"/>
+                            </constraints>
+                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                            <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Ayq-7Q-JEB">
+                            <rect key="frame" x="88" y="126" width="49" height="31"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="31" id="i8A-KF-hir"/>
+                                <constraint firstAttribute="width" constant="47" id="uz3-sp-KrK"/>
+                            </constraints>
+                            <connections>
+                                <action selector="onMusicFIFOValueChanged:" destination="iN0-l3-epB" eventType="valueChanged" id="F16-HA-QDC"/>
+                            </connections>
+                        </switch>
+                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="GRn-cY-iCF">
+                            <rect key="frame" x="322" y="8" width="45" height="30"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="pyc-11-6ad"/>
+                                <constraint firstAttribute="width" constant="45" id="tcd-bI-GzT"/>
+                            </constraints>
+                            <state key="normal" title="完成">
+                                <color key="titleColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </state>
+                            <connections>
+                                <action selector="clickedEditMusicCompleteBtn:" destination="iN0-l3-epB" eventType="touchUpInside" id="euP-JR-3Oy"/>
+                            </connections>
+                        </button>
+                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="acR-Kl-8Dd" customClass="QHVCEditAudioWaveView">
+                            <rect key="frame" x="8" y="9" width="298" height="30"/>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="30" id="E8o-fy-gRI"/>
+                            </constraints>
+                        </view>
+                    </subviews>
+                    <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstItem="GRn-cY-iCF" firstAttribute="leading" secondItem="acR-Kl-8Dd" secondAttribute="trailing" constant="16" id="095-gk-S7Y"/>
+                        <constraint firstItem="g9y-MD-MVT" firstAttribute="leading" secondItem="zfe-US-g60" secondAttribute="leading" constant="8" id="1VL-Kl-EGT"/>
+                        <constraint firstItem="fYZ-bm-wE3" firstAttribute="leading" secondItem="Aas-60-LVb" secondAttribute="trailing" constant="20" id="2hy-43-WbF"/>
+                        <constraint firstAttribute="trailing" secondItem="GRn-cY-iCF" secondAttribute="trailing" constant="8" id="9tt-nC-uKV"/>
+                        <constraint firstItem="ae3-wN-Xuh" firstAttribute="leading" secondItem="zfe-US-g60" secondAttribute="leading" constant="8" id="BQv-jC-8bJ"/>
+                        <constraint firstItem="xX2-MY-NGE" firstAttribute="leading" secondItem="AWN-Zh-evo" secondAttribute="trailing" constant="8" id="GZ0-Pk-fLa"/>
+                        <constraint firstAttribute="trailing" secondItem="xX2-MY-NGE" secondAttribute="trailing" constant="40" id="KJe-Iy-XoR"/>
+                        <constraint firstItem="hZc-CI-MKn" firstAttribute="leading" secondItem="g9y-MD-MVT" secondAttribute="trailing" constant="8" id="LtB-5B-Re5"/>
+                        <constraint firstItem="acR-Kl-8Dd" firstAttribute="top" secondItem="zfe-US-g60" secondAttribute="top" constant="9" id="P72-hX-k8Q"/>
+                        <constraint firstItem="Aas-60-LVb" firstAttribute="leading" secondItem="zfe-US-g60" secondAttribute="leading" constant="8" id="USJ-pj-elo"/>
+                        <constraint firstItem="AWN-Zh-evo" firstAttribute="leading" secondItem="fYZ-bm-wE3" secondAttribute="trailing" constant="7" id="UVI-ga-Ji4"/>
+                        <constraint firstItem="ae3-wN-Xuh" firstAttribute="top" secondItem="Aas-60-LVb" secondAttribute="bottom" constant="20" id="XEC-hZ-zvJ"/>
+                        <constraint firstItem="hZc-CI-MKn" firstAttribute="centerY" secondItem="g9y-MD-MVT" secondAttribute="centerY" id="XEH-Tr-j0b"/>
+                        <constraint firstItem="xX2-MY-NGE" firstAttribute="centerY" secondItem="Aas-60-LVb" secondAttribute="centerY" id="XRN-bb-hBd"/>
+                        <constraint firstItem="acR-Kl-8Dd" firstAttribute="leading" secondItem="zfe-US-g60" secondAttribute="leading" constant="8" id="auQ-Iv-axZ"/>
+                        <constraint firstItem="Aas-60-LVb" firstAttribute="top" secondItem="g9y-MD-MVT" secondAttribute="bottom" constant="20" id="e8k-CG-SZ6"/>
+                        <constraint firstItem="AWN-Zh-evo" firstAttribute="centerY" secondItem="Aas-60-LVb" secondAttribute="centerY" id="jvR-Du-EpK"/>
+                        <constraint firstAttribute="bottom" secondItem="ae3-wN-Xuh" secondAttribute="bottom" constant="20" id="peW-Bb-1sf"/>
+                        <constraint firstItem="GRn-cY-iCF" firstAttribute="top" secondItem="zfe-US-g60" secondAttribute="top" constant="8" id="s2Q-yj-kbg"/>
+                        <constraint firstItem="xX2-MY-NGE" firstAttribute="leading" secondItem="AWN-Zh-evo" secondAttribute="trailing" constant="8" id="wPM-ye-LtQ"/>
+                        <constraint firstItem="Ayq-7Q-JEB" firstAttribute="centerY" secondItem="ae3-wN-Xuh" secondAttribute="centerY" id="xN4-Wb-Cxs"/>
+                        <constraint firstItem="fYZ-bm-wE3" firstAttribute="centerY" secondItem="Aas-60-LVb" secondAttribute="centerY" id="zIq-JQ-e1t"/>
+                        <constraint firstItem="Ayq-7Q-JEB" firstAttribute="leading" secondItem="ae3-wN-Xuh" secondAttribute="trailing" constant="18" id="zqq-M6-hR2"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" cocoaTouchSystemColor="darkTextColor"/>
+            <constraints>
+                <constraint firstAttribute="bottom" secondItem="zfe-US-g60" secondAttribute="bottom" id="4jx-52-c4i"/>
+                <constraint firstAttribute="trailing" secondItem="zfe-US-g60" secondAttribute="trailing" id="DTC-aa-i0g"/>
+                <constraint firstAttribute="bottom" secondItem="O0w-UD-uRX" secondAttribute="bottom" id="PLR-gO-bTF"/>
+                <constraint firstItem="zfe-US-g60" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="a8h-5c-6Zu"/>
+                <constraint firstAttribute="trailing" secondItem="O0w-UD-uRX" secondAttribute="trailing" id="kDg-Xg-RbN"/>
+                <constraint firstItem="O0w-UD-uRX" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" id="liq-z1-tx7"/>
+                <constraint firstItem="O0w-UD-uRX" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="pDE-D3-TTS"/>
+                <constraint firstItem="zfe-US-g60" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" id="q6f-vK-Qxk"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="musicContentView" destination="zfe-US-g60" id="r5Q-6E-8nf"/>
+                <outlet property="musicFIFOSwitch" destination="Ayq-7Q-JEB" id="qhJ-Hu-ecG"/>
+                <outlet property="musicListButton" destination="hZc-CI-MKn" id="0cE-0c-zl0"/>
+                <outlet property="musicVolumeSlider" destination="AWN-Zh-evo" id="FUb-Fh-6fE"/>
+                <outlet property="timelineContentView" destination="O0w-UD-uRX" id="Ood-T1-yIK"/>
+                <outlet property="waveView" destination="acR-Kl-8Dd" id="MUH-vn-aBn"/>
+            </connections>
+            <point key="canvasLocation" x="53.600000000000001" y="48.575712143928037"/>
+        </view>
+    </objects>
+</document>

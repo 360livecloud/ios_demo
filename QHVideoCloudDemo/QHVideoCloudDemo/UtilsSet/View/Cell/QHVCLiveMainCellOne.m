@@ -7,33 +7,38 @@
 //
 
 #import "QHVCLiveMainCellOne.h"
+#import "QHVCGlobalConfig.h"
+#import "QHVCITSDefine.h"
+#import <QHVCCommonKit/QHVCCommonKit.h>
 
 @interface QHVCLiveMainCellOne ()<UITextFieldDelegate>
 {
     IBOutlet UIImageView *_logoImageView;
     IBOutlet UILabel *_titleLabel;
     IBOutlet UITextField *_textField;
+    NSString* _encryptString;
 }
-
-@property (nonatomic, strong) NSMutableDictionary *liveItem;
 
 @end
 
 @implementation QHVCLiveMainCellOne
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
-    // Initialization code
 }
 
-- (void)updateCell:(NSMutableDictionary *)item
+- (void)updateCell:(NSMutableDictionary *)item encryptProcesString:(NSString *)encryptString
 {
     self.liveItem = item;
+    _encryptString = encryptString;
     
-    _logoImageView.image = [UIImage imageNamed:item[@"image"]];
-    _titleLabel.text = item[@"title"];
-    _textField.text = item[@"value"];
+    _logoImageView.image = [UIImage imageNamed:item[QHVCITS_KEY_IMAGE]];
+    _titleLabel.text = item[QHVCITS_KEY_TITLE];
+    _textField.text = item[QHVCITS_KEY_VALUE];
     _textField.enabled = YES;
+    
+    [self processTextFieldEncrypt:_textField];
     
     if ([[item allKeys] containsObject:@"edit"]) {
         BOOL isEdit = [[item valueForKey:@"edit"] boolValue];
@@ -41,19 +46,51 @@
     }
 }
 
-#pragma mark UITextFieldDelegate
-- (BOOL)textFieldShouldReturn:(UITextField *)textField
+- (void) processTextFieldEncrypt:(UITextField *)textField
 {
-    [textField resignFirstResponder];
-    [self.liveItem setObject:textField.text forKey:@"value"];
-    
+    if (![QHVCToolUtils isNullString:_encryptString])
+    {
+        if ([textField.text isEqualToString:_encryptString])
+        {
+            textField.secureTextEntry = YES;
+        } else
+        {
+            textField.secureTextEntry = NO;
+        }
+    }
+}
+
+#pragma mark UITextFieldDelegate
+
+- (BOOL)textField:(UITextField *)textField shouldChangeCharactersInRange:(NSRange)range replacementString:(NSString *)string
+{
+    if (![QHVCToolUtils isNullString:_encryptString])
+    {
+        if (textField.isSecureTextEntry && [textField.text isEqualToString:_encryptString])
+        {
+            textField.text = string;
+            textField.secureTextEntry = NO;
+            return NO;
+        }
+    }
     return YES;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
+- (BOOL)textFieldShouldEndEditing:(UITextField *)textField
+{
+    [self.liveItem setObject:textField.text forKey:QHVCITS_KEY_VALUE];
+    return YES;
+}
 
-    // Configure the view for the selected state
+- (BOOL)textFieldShouldReturn:(UITextField *)textField
+{
+    [textField resignFirstResponder];
+    return YES;
+}
+
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
+    [super setSelected:selected animated:animated];
 }
 
 @end

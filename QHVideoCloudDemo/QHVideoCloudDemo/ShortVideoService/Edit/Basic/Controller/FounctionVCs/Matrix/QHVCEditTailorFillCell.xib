@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="QHVCEditTailorFillCell">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="375" height="30"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="q5e-vI-7JP">
+                        <rect key="frame" x="15" y="0.0" width="35.5" height="30"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                        <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="edit_format_fill_cell" translatesAutoresizingMaskIntoConstraints="NO" id="QV8-MC-HbZ">
+                        <rect key="frame" x="345" y="0.0" width="15" height="30"/>
+                    </imageView>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="QV8-MC-HbZ" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="DSu-Go-3Pu"/>
+                <constraint firstAttribute="trailing" secondItem="QV8-MC-HbZ" secondAttribute="trailing" constant="15" id="Kk6-rh-NCj"/>
+                <constraint firstItem="q5e-vI-7JP" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="Vgr-Io-c3p"/>
+                <constraint firstItem="q5e-vI-7JP" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="15" id="lPA-Is-SPy"/>
+                <constraint firstAttribute="bottom" secondItem="QV8-MC-HbZ" secondAttribute="bottom" id="onv-fc-4nH"/>
+                <constraint firstAttribute="bottom" secondItem="q5e-vI-7JP" secondAttribute="bottom" id="qy4-Zl-mif"/>
+            </constraints>
+            <size key="customSize" width="285" height="70"/>
+            <connections>
+                <outlet property="_fillImageView" destination="QV8-MC-HbZ" id="TD1-Ki-uqL"/>
+                <outlet property="_fillLabel" destination="q5e-vI-7JP" id="XXc-EG-8Ae"/>
+            </connections>
+            <point key="canvasLocation" x="151.19999999999999" y="84.557721139430285"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="edit_format_fill_cell" width="15" height="15"/>
+    </resources>
+</document>

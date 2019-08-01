@@ -1,39 +1,16 @@
 //
-//  QHVCEdit.h
+//  QHVCEditPlayer.h
 //  QHVCEditKit
 //
-//  Created by liyue-g on 2017/9/11.
-//  Copyright © 2017年 liyue-g. All rights reserved.
+//  Created by liyue-g on 2018/4/20.
+//  Copyright © 2018年 liyue-g. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
+#import "QHVCEditDefinitions.h"
 
-@class QHVCEditCommandFactory;
-
-typedef NS_ENUM(NSUInteger, QHVCEditPlayerError)
-{
-    QHVCEditPlayerError_NoError       = 1, //无错误
-    QHVCEditPlayerError_ParamError    = 2, //参数错误
-    QHVCEditPlayerError_InitError     = 3, //初始化失败
-    QHVCEditPlayerError_StatusError   = 4, //播放状态错误
-};
-
-typedef NS_ENUM(NSUInteger, QHVCEditPlayerErrorInfo)
-{
-    QHVCEditPlayerErrorInfo_NoError             = 1, //无错误
-    QHVCEditPlayerErrorInfo_CommandFactoryError = 2, //edit handle错误
-    QHVCEditPlayerErrorInfo_PlayerHandleError   = 3, //播放器handle错误
-    QHVCEditPlayerErrorInfo_ConnectFailed       = 4, //连接错误
-    QHVCEditPlayerErrorInfo_OpenFailed          = 5, //打开失败
-};
-
-typedef NS_ENUM(NSUInteger, QHVCEditPlayerPreviewFillMode)
-{
-    QHVCEditPlayerPreviewFillMode_AspectFit,    //视频内容完全填充，可能会有黑边
-    QHVCEditPlayerPreviewFillMode_AspectFill,   //视频内容铺满画布，视频内容可能会被裁剪
-    QHVCEditPlayerPreviewFillMode_ScaleToFill,  //视频内容铺满画布，视频内容可能会被拉伸
-};
+#pragma mark - 代理方法
 
 @protocol QHVCEditPlayerDelegate <NSObject>
 @optional
@@ -42,231 +19,194 @@ typedef NS_ENUM(NSUInteger, QHVCEditPlayerPreviewFillMode)
  播放器错误回调
 
  @param error 错误类型
- @param info 详细错误信息
  */
-- (void)onPlayerError:(QHVCEditPlayerError)error detailInfo:(QHVCEditPlayerErrorInfo)info;
+- (void)onPlayerError:(QHVCEditError)error detail:(NSString *)detail;
+
 
 /**
  播放完成回调
  */
 - (void)onPlayerPlayComplete;
 
+
 /**
- 播放器第一帧已渲染
+ 播放器第一帧已渲染回调
  */
 - (void)onPlayerFirstFrameDidRendered;
 
 @end
 
+#pragma mark - 播放器方法
+
+@class QHVCEditTimeline;
+
 @interface QHVCEditPlayer : NSObject
 
 
 /**
- 初始化播放器
+ 初始化
 
- @return 播放器对象
+ @param timeline 时间线对象
+ @return 预览播放器实例对象
  */
-- (instancetype)initPlayerWithCommandFactory:(QHVCEditCommandFactory *)commandFactory;
+- (instancetype)initWithTimeline:(QHVCEditTimeline *)timeline;
 
 
 /**
- 设置播放器代理对象
+ 设置代理
 
  @param delegate 代理对象
- @return 是否设置成功
+ @return 返回值
  */
-- (QHVCEditPlayerError)setPlayerDelegate:(id<QHVCEditPlayerDelegate>)delegate;
+- (QHVCEditError)setDelegate:(id<QHVCEditPlayerDelegate>)delegate;
 
 
 /**
- 关闭播放器
+ 释放
 
- @return 是否关闭成功
+ @return 返回值
  */
-- (QHVCEditPlayerError)free;
+- (QHVCEditError)free;
 
 
 /**
- 关闭播放器
+ 是否正在播放
 
- @param complete 关闭完成回调
- @return 是否调用成功
+ @return 是否正在播放
  */
-- (QHVCEditPlayerError)free:(void(^)(void))complete;
-
-
-/**
- 播放器是否处于播放状态
-
- @return 是否处于播放状态
- */
-- (BOOL)isPlayerPlaying;
+- (BOOL)isPlaying;
 
 
 /**
  设置预览画布
 
  @param preview 预览画布
- @return 是否设置成功
+ @return 返回值
  */
-- (QHVCEditPlayerError)setPlayerPreview:(UIView *)preview;
+- (QHVCEditError)setPreview:(UIView *)preview;
 
 
 /**
- 设置预览画布填充模式
- 默认使用 QHVCEditPlayerPreviewFillMode_AspectFit
+ 设置预览画布填充样式
 
- @param mode 填充模式
- @return 是否设置成功
+ @param fillMode 填充样式，默认QHVCEditFillMode_AspectFit（视频内容完全填充，可能会有黑边）
+ @return 返回值
  */
-- (QHVCEditPlayerError)setPreviewFillMode:(QHVCEditPlayerPreviewFillMode)mode;
+- (QHVCEditError)setPreviewFillMode:(QHVCEditFillMode)fillMode;
 
 
 /**
- 设置预览画布填充背景色
+ 设置预览画布背景填充色
  默认黑色
 
- @param color 填充背景色 (16进制值, ARGB)
- @return 是否设置成功
+ @param color 背景填充色（16进制ARGB值）
+ @return 返回值
  */
-- (QHVCEditPlayerError)setPreviewBackgroudColor:(NSString *)color;
+- (QHVCEditError)setPreviewBgColor:(NSString *)color;
 
 
 /**
  重置播放器
- 若播放器初始化之后有文件操作均需重置播放器（移序、删除、添加文件、添加背景音）
+ 若播放器初始化之后有素材文件操作均需重置播放器
+ 需重置播放器的场景包括：
+ * 添加、删除轨道
+ * 添加、删除文件
+ * 变速
+ * 变声
+ * 添加、删除转场，修改转场时长
 
- @param seekTimestampMs 重置并将播放器跳转至某时间点
- @return 是否设置成功
+ @param seekTimestamp 重置播放器并跳转至相对timeline的某个时间点（单位：毫秒），默认跳转0点
+ @return 返回值
  */
-- (QHVCEditPlayerError)resetPlayer:(NSTimeInterval)seekTimestampMs;
+- (QHVCEditError)resetPlayer:(NSInteger)seekTimestamp;
 
 /**
  刷新播放器
- 若播放器初始化之后有效果添加需刷新播放器（字幕、贴纸、水印、滤镜、画质等）
+ 播放器初始化之后有效果变动需刷新播放器，例如添加、删除、修改贴纸特效
  
- @return 是否调用成功
+ @param forceRefresh 是否强制刷新，建议基础属性变动时、频繁更新效果结束时置为true，频繁更新过程中置为false
+ @param completion 刷新完成回调
+ @return 返回值
  */
-- (QHVCEditPlayerError)refreshPlayerWithCompletion:(void(^)(void))completion;
-
-/**
- 刷新播放器
- 若播放器初始化之后有效果添加需刷新播放器（字幕、贴纸、水印、滤镜、画质等）
- 此接口多用于需要频繁刷新播放器的场景，频繁刷新过程中旋转非强制刷新，频繁刷新结束时强制刷新
-
- @param forceRefresh 是否强制刷新
- @return 是否调用成功
- */
-- (QHVCEditPlayerError)refreshPlayerWithForceRefresh:(BOOL)forceRefresh completion:(void(^)(void))completion;
+- (QHVCEditError)refreshPlayer:(BOOL)forceRefresh completion:(void(^)(void))completion;
 
 /**
  播放
 
- @return 是否调用成功
+ @return 返回值
  */
-- (QHVCEditPlayerError)playerPlay;
+- (QHVCEditError)playerPlay;
 
 
 /**
  停止
 
- @return 是否调用成功
+ @return 返回值
  */
-- (QHVCEditPlayerError)playerStop;
+- (QHVCEditError)playerStop;
 
-
-/**
- 跳转回调
-
- @param currentTime 当前跳转时间点（单位：毫秒）
- */
-typedef void(^QHVCEditPlayerSeekCallback)(NSTimeInterval currentTime);
 
 /**
  跳转至某个时间点
 
- @param time 跳转时间点（相对所有文件时间轴，单位：毫秒）
+ @param timestamp 跳转至相对timeline的某个时间点（单位：毫秒）
  @param forceRequest 是否强制请求
  @param block 跳转完成回调
- @return 是否调用成功
+ @return 返回值
  */
-- (QHVCEditPlayerError)playerSeekToTime:(NSTimeInterval)time forceRequest:(BOOL)forceRequest complete:(QHVCEditPlayerSeekCallback)block;
+- (QHVCEditError)playerSeekToTime:(NSInteger)timestamp
+                     forceRequest:(BOOL)forceRequest
+                         complete:(void(^)(NSInteger currentTimeMs))block;
+
+/**
+ 设置播放器静音状态
+ 
+ @param isMute 是否静音
+ @return 返回值
+ */
+- (QHVCEditError)setMute:(BOOL)isMute;
+
+/**
+ 获取播放器当前时间戳
+
+ @return 播放器当前时间戳
+ */
+- (NSInteger)getCurrentTimestamp;
 
 
 /**
- 跳转至某个片段第一帧
+ 获取播放器当前播放时长
 
- @param index 片段序号
- @param block 跳转完成回调
- @return 是否调用成功
+ @return 播放时长
  */
-- (QHVCEditPlayerError)playerSeekToSegment:(NSInteger)index complete:(QHVCEditPlayerSeekCallback)block;
-
-
-/**
- 获取当前时间戳
-
- @return 当前时间戳
- */
-- (NSTimeInterval)getCurrentTimestamp;
+- (NSInteger)getPlayerDuration;
 
 
 /**
  获取当前视频帧（带所有效果）
- 
+
  @return 视频帧
  */
 - (UIImage *)getCurrentFrame;
 
 
 /**
- 获取当前时间点某个文件的视频帧，带添加到该文件的所有效果
+ 批量获取当前时间点指定视频帧（带所有效果）
+ 
+ @param trackIds 轨道id数组，默认timeline的trackId=-1
+ @return @{指令id,视频帧}
+ */
+- (NSDictionary<NSNumber*, UIImage*>*)getCurrentFrameOfTrackIds:(NSArray<NSNumber *>*)trackIds;
 
- @param overlayCommandId 文件指令id
+
+/**
+ 获取当前时间点指定视频帧（排除某些效果)
+ 
+ @param trackId 轨道id，默认timeline的trackId=-1
+ @param excludeEffectIds 排除的特效数组
  @return 视频帧
  */
-- (UIImage *)getCurrentFrameOfOverlayCommandId:(NSInteger)overlayCommandId;
+- (UIImage *)getCurrentFrameOfTrackId:(NSInteger)trackId excludeEffectCommandIds:(NSArray<NSNumber *> *)excludeEffectIds;
 
-
-/**
- 获取当前时间点某个文件的视频帧，带添加到文件的所有效果，支持排除某些效果
-
- @param overlayCommandId 文件指令id
- @param excludeCommandIds 排除的指令数组
- @return 视频帧
- */
-- (UIImage *)getCurrentFrameOfOverlayCommandId:(NSInteger)overlayCommandId excludeEffectCommandIds:(NSArray<NSNumber *> *)excludeCommandIds;
-
-/**
- 批量获取主视频当前视频帧按某些效果处理后对应的缩略图，回调接口
-
- @param thumbnails 缩略图对象数组
- @param clutImagePaths 查色图路径数组
- */
-typedef void(^QHVCEditCLUTFilterThumbnailsCallback)(NSArray<UIImage *>* thumbnails, NSArray<NSString *>* clutImagePaths);
-
-/**
- 批量获取主视频当前视频帧按某些效果处理后对应的缩略图
-
- @param clutImageInfo 查色图信息数组，image和path同时存在优先读取path，image和path均为空（@“”）时返回不带任何特效的缩略图
- 例如：
- @[
- @{
- @"path":path,
- @"image":image,
- @"progress":@1.0,
- }];
- @param size 生成缩略图尺寸
- @param block 数据回调
- @return 返回值
- */
-- (QHVCEditPlayerError)generateCLUTFilterThumbnails:(NSArray<NSDictionary *>*)clutImageInfo
-                                             toSize:(CGSize)size
-                                           callback:(QHVCEditCLUTFilterThumbnailsCallback)block;
 
 @end
-
-
-
-
-

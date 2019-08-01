@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<array>
+	<dict>
+		<key>image</key>
+		<string>live_bid</string>
+		<key>title</key>
+		<string>应用名称</string>
+		<key>value</key>
+		<string>videocloud_demo</string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>Interactive_key</string>
+		<key>title</key>
+		<string>AppKey</string>
+		<key>value</key>
+		<string>2f7a4e8d9e340f9b33c8685ce254a7da</string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>Interactive_key</string>
+		<key>title</key>
+		<string>AppSecret</string>
+		<key>value</key>
+		<string>ec29fc5f48831bc8d0391fa894094276</string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>URL</string>
+		<key>title</key>
+		<string>用户名</string>
+		<key>value</key>
+		<string></string>
+	</dict>
+	<dict>
+		<key>image</key>
+		<string>URL</string>
+		<key>title</key>
+		<string>密码</string>
+		<key>value</key>
+		<string></string>
+	</dict>
+</array>
+</plist>

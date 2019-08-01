@@ -10,6 +10,8 @@
 
 @interface QHVCLiveMainCellOne : UITableViewCell
 
-- (void)updateCell:(NSMutableDictionary *)item;
+@property (nonatomic, strong) NSMutableDictionary *liveItem;
+
+- (void)updateCell:(NSMutableDictionary *)item encryptProcesString:(NSString *)encryptString;
 
 @end

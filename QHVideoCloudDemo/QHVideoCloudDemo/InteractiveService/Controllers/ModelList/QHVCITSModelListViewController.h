@@ -7,7 +7,6 @@
 //
 
 #import <UIKit/UIKit.h>
-
 @interface QHVCITSModelListViewController : UIViewController
 
 @end

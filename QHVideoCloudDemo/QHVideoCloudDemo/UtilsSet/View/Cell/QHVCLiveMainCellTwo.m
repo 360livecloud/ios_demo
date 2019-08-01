@@ -7,6 +7,7 @@
 //
 
 #import "QHVCLiveMainCellTwo.h"
+#import "QHVCITSDefine.h"
 
 @interface QHVCLiveMainCellTwo()
 {
@@ -28,23 +29,22 @@
 {
     self.liveItem = item;
     
-    _titleLabel.text = item[@"title"];
+    _titleLabel.text = item[QHVCITS_KEY_TITLE];
 }
 
 - (IBAction)switchAction:(UISwitch *)sender
 {
     if (sender.on) {
-        [self.liveItem setObject:@"1" forKey:@"value"];
+        [self.liveItem setObject:@"1" forKey:QHVCITS_KEY_VALUE];
     }
     else
     {
-        [self.liveItem setObject:@"0" forKey:@"value"];
+        [self.liveItem setObject:@"0" forKey:QHVCITS_KEY_VALUE];
     }
     if (_switchAction)
     {
         _switchAction(sender.isOn);
     }
-    NSLog(@"main cell two %@",self.liveItem);
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

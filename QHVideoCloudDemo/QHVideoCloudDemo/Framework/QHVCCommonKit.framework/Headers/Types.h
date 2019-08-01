@@ -108,6 +108,8 @@ struct ServerAddrs
     const char *encodeType; ///< 转码标识 h265或其他值
     const char *mainAddr; ///< 推流或看流地址
     const char *backAddr[c_maxBackAddr + 1]; ///< 备用地址
+    const char *sn_alias;
+    const char *publicMainAddr;
 
     int isRTC; ///< 是否rtc 1表示是 0表示不是
     int isMerge; ///< 是否合流 -1为无效值
@@ -248,6 +250,7 @@ typedef struct
     unsigned int m_switchCount; ///< 切换次数 暂时不使用
     unsigned int m_width; ///< 编码宽
     unsigned int m_height; ///< 编码高
+    int m_trans264; ///< 转码264开关 0表示关闭 1表示开启 默认值为1
 } StreamStatus;
 
 // 一些可选参数
@@ -263,7 +266,7 @@ typedef struct
  */
 static __inline const char *transport_version(void)
 {
-    return "0.0.0.0";
+    return "2.5.0.19072201";
 }
 
 #ifdef __cplusplus

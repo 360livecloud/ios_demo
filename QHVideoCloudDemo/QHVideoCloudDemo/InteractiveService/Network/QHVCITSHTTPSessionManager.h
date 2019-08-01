@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <QHVCCommonKit/QHVCCommonTool.h>
+#import <QHVCCommonKit/QHVCCommonKit.h>
 
 /**
  * 本类只是提供访问的便利，只是对请求数据提供文件头信息，比如：请求超时时间、userAgent、参数转换等服务

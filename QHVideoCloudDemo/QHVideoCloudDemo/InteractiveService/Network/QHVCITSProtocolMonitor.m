@@ -107,7 +107,7 @@ void runAsynchronouslyOnProtocolProcessingQueue_ITS(void (^block)(void))
         dict = [NSMutableDictionary dictionary];
     }
     [QHVCToolUtils setStringToDictionary:dict key:QHVCITS_KEY_DEVICE_ID value:[[QHVCITSConfig sharedInstance] deviceId]];
-    
+    [QHVCToolUtils setStringToDictionary:dict key:QHVCITS_KEY_CLIENT_ID value:[[QHVCITSConfig sharedInstance] clientId]];
     runAsynchronouslyOnProtocolProcessingQueue_ITS(^{
         [httpManager requestDataWithPost:QHVCITSPROTOCOL_USER_LOGIN
                           parameterDict:dict
@@ -390,5 +390,126 @@ void runAsynchronouslyOnProtocolProcessingQueue_ITS(void (^block)(void))
                                 }];
     });
 }
+
++ (void)joinLinkRoom:(QHVCITSHTTPSessionManager * _Nonnull)httpManager
+                dict:(NSMutableDictionary *_Nullable)dict
+            complete:(QHVCITSProtocolMonitorDataCompleteWithDictionary _Nullable )complete
+{
+    if (httpManager == nil)
+    {
+        return;
+    }
+    if ([QHVCToolUtils dictionaryIsNull:dict])
+    {
+        dict = [NSMutableDictionary dictionary];
+    }
+    runAsynchronouslyOnProtocolProcessingQueue_ITS(^{
+        
+        [httpManager requestDataWithPost:QHVCITSPROTOCOL_JOIN_LINK_ROOM
+                           parameterDict:dict
+                                 success:^(NSURLSessionDataTask *dataTask, NSDictionary *dict) {
+                                     if (complete)
+                                     {
+                                         complete(dataTask, true, dict);
+                                     }
+                                 } failure:^(NSURLSessionDataTask *dataTask, NSDictionary *dict) {
+                                     if (complete)
+                                     {
+                                         complete(dataTask, false, dict);
+                                     }
+                                 }];
+    });
+}
+
++ (void)leaveLinkRoom:(QHVCITSHTTPSessionManager * _Nonnull)httpManager
+                 dict:(NSMutableDictionary *_Nullable)dict
+             complete:(QHVCITSProtocolMonitorDataCompleteWithDictionary _Nullable )complete
+{
+    if (httpManager == nil)
+    {
+        return;
+    }
+    if ([QHVCToolUtils dictionaryIsNull:dict])
+    {
+        dict = [NSMutableDictionary dictionary];
+    }
+    runAsynchronouslyOnProtocolProcessingQueue_ITS(^{
+        
+        [httpManager requestDataWithPost:QHVCITSPROTOCOL_LEAVE_LINK_ROOM
+                           parameterDict:dict
+                                 success:^(NSURLSessionDataTask *dataTask, NSDictionary *dict) {
+                                     if (complete)
+                                     {
+                                         complete(dataTask, true, dict);
+                                     }
+                                 } failure:^(NSURLSessionDataTask *dataTask, NSDictionary *dict) {
+                                     if (complete)
+                                     {
+                                         complete(dataTask, false, dict);
+                                     }
+                                 }];
+    });
+}
+
++ (void)sendUserMessage:(QHVCITSHTTPSessionManager *)httpManager
+                   dict:(NSMutableDictionary *)dict
+               complete:(QHVCITSProtocolMonitorDataCompleteWithDictionary)complete
+{
+    if (httpManager == nil)
+    {
+        return;
+    }
+    if ([QHVCToolUtils dictionaryIsNull:dict])
+    {
+        dict = [NSMutableDictionary dictionary];
+    }
+    runAsynchronouslyOnProtocolProcessingQueue_ITS(^{
+        
+        [httpManager requestDataWithPost:QHVCITSPROTOCOL_SEND_USER_MESSAGE
+                           parameterDict:dict
+                                 success:^(NSURLSessionDataTask *dataTask, NSDictionary *dict) {
+                                     if (complete)
+                                     {
+                                         complete(dataTask, true, dict);
+                                     }
+                                 } failure:^(NSURLSessionDataTask *dataTask, NSDictionary *dict) {
+                                     if (complete)
+                                     {
+                                         complete(dataTask, false, dict);
+                                     }
+                                 }];
+    });
+}
+
++ (void)sendRoomMessage:(QHVCITSHTTPSessionManager *)httpManager
+                   dict:(NSMutableDictionary *)dict
+               complete:(QHVCITSProtocolMonitorDataCompleteWithDictionary)complete
+{
+    if (httpManager == nil)
+    {
+        return;
+    }
+    if ([QHVCToolUtils dictionaryIsNull:dict])
+    {
+        dict = [NSMutableDictionary dictionary];
+    }
+    runAsynchronouslyOnProtocolProcessingQueue_ITS(^{
+        
+        [httpManager requestDataWithPost:QHVCITSPROTOCOL_SEND_ROOM_MESSAGE
+                           parameterDict:dict
+                                 success:^(NSURLSessionDataTask *dataTask, NSDictionary *dict) {
+                                     if (complete)
+                                     {
+                                         complete(dataTask, true, dict);
+                                     }
+                                 } failure:^(NSURLSessionDataTask *dataTask, NSDictionary *dict) {
+                                     if (complete)
+                                     {
+                                         complete(dataTask, false, dict);
+                                     }
+                                 }];
+    });
+}
+
 
 @end

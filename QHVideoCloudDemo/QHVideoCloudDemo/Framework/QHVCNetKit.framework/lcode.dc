@@ -1,0 +1,10 @@
+lcode.o: schedule/jni/lua/src/lcode.c schedule/jni/lua/src/lprefix.h \
+ schedule/jni/lua/src/lua.h schedule/jni/lua/src/luaconf.h \
+ schedule/jni/lua/src/lcode.h schedule/jni/lua/src/llex.h \
+ schedule/jni/lua/src/lobject.h schedule/jni/lua/src/llimits.h \
+ schedule/jni/lua/src/lzio.h schedule/jni/lua/src/lmem.h \
+ schedule/jni/lua/src/lopcodes.h schedule/jni/lua/src/lparser.h \
+ schedule/jni/lua/src/ldebug.h schedule/jni/lua/src/lstate.h \
+ schedule/jni/lua/src/ltm.h schedule/jni/lua/src/ldo.h \
+ schedule/jni/lua/src/lgc.h schedule/jni/lua/src/lstring.h \
+ schedule/jni/lua/src/ltable.h schedule/jni/lua/src/lvm.h

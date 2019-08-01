@@ -8,7 +8,7 @@
 
 #import "QHVCITRoleView.h"
 #import "UIViewAdditions.h"
-#import "QHVCConfig.h"
+#import "QHVCGlobalConfig.h"
 #import "QHVCITSUserSystem.h"
 
 @interface QHVCITRoleView()

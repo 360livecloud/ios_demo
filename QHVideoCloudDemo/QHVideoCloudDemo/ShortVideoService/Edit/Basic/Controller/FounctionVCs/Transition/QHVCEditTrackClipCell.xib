@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="QHVCEditTrackClipCell">
+            <rect key="frame" x="0.0" y="0.0" width="115" height="80"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="115" height="80"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BVK-iu-swT">
+                        <rect key="frame" x="25" y="30" width="90" height="50"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="LIl-6i-7K7">
+                                <rect key="frame" x="1" y="1" width="88" height="48"/>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.46666666670000001" green="0.7725490196" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                        <constraints>
+                            <constraint firstItem="LIl-6i-7K7" firstAttribute="leading" secondItem="BVK-iu-swT" secondAttribute="leading" constant="1" id="118-uo-kHa"/>
+                            <constraint firstAttribute="trailing" secondItem="LIl-6i-7K7" secondAttribute="trailing" constant="1" id="Z3p-ST-atZ"/>
+                            <constraint firstItem="LIl-6i-7K7" firstAttribute="top" secondItem="BVK-iu-swT" secondAttribute="top" constant="1" id="dZV-NE-Jpg"/>
+                            <constraint firstAttribute="bottom" secondItem="LIl-6i-7K7" secondAttribute="bottom" constant="1" id="nVd-Ed-60M"/>
+                        </constraints>
+                    </view>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VhC-to-Rrn" userLabel="begin">
+                        <rect key="frame" x="25" y="7" width="27" height="11"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5YW-Hd-FGV" userLabel="transfer_btn">
+                        <rect key="frame" x="0.0" y="43" width="25" height="22"/>
+                        <constraints>
+                            <constraint firstAttribute="width" constant="25" id="hdl-KJ-m6T"/>
+                            <constraint firstAttribute="height" constant="22" id="ng0-Sh-gxF"/>
+                        </constraints>
+                        <state key="normal" image="edit_transfer_transition_none"/>
+                        <connections>
+                            <action selector="transferBtnAction:" destination="gTV-IL-0wX" eventType="touchUpInside" id="oE7-Hp-4qO"/>
+                        </connections>
+                    </button>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZxV-gt-4GD" userLabel="end">
+                        <rect key="frame" x="87" y="7" width="27" height="11"/>
+                        <fontDescription key="fontDescription" type="system" pointSize="9"/>
+                        <color key="textColor" red="0.59999999999999998" green="0.59999999999999998" blue="0.59999999999999998" alpha="1" colorSpace="calibratedRGB"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+            </view>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+            <constraints>
+                <constraint firstItem="BVK-iu-swT" firstAttribute="leading" secondItem="5YW-Hd-FGV" secondAttribute="trailing" id="A3T-Gv-8us"/>
+                <constraint firstAttribute="trailing" secondItem="ZxV-gt-4GD" secondAttribute="trailing" constant="1" id="BZj-uU-y2x"/>
+                <constraint firstItem="5YW-Hd-FGV" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="Bgm-zU-g2h"/>
+                <constraint firstAttribute="trailing" secondItem="BVK-iu-swT" secondAttribute="trailing" id="DKX-mC-4FZ"/>
+                <constraint firstItem="BVK-iu-swT" firstAttribute="top" secondItem="ZxV-gt-4GD" secondAttribute="bottom" constant="12" id="dRE-DT-kbS"/>
+                <constraint firstAttribute="bottom" secondItem="5YW-Hd-FGV" secondAttribute="bottom" constant="15" id="fJY-bC-35I"/>
+                <constraint firstItem="ZxV-gt-4GD" firstAttribute="bottom" secondItem="VhC-to-Rrn" secondAttribute="bottom" id="hS3-Zd-iG2"/>
+                <constraint firstAttribute="bottom" secondItem="BVK-iu-swT" secondAttribute="bottom" id="luV-yR-0Fq"/>
+                <constraint firstItem="ZxV-gt-4GD" firstAttribute="top" secondItem="VhC-to-Rrn" secondAttribute="top" id="nJ6-G9-8dH"/>
+                <constraint firstItem="VhC-to-Rrn" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="25" id="qx2-Yj-59B"/>
+                <constraint firstItem="VhC-to-Rrn" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="7" id="yGK-ch-L0X"/>
+            </constraints>
+            <size key="customSize" width="111" height="100"/>
+            <connections>
+                <outlet property="_beginLabel" destination="VhC-to-Rrn" id="azT-ig-xI4"/>
+                <outlet property="_endLabel" destination="ZxV-gt-4GD" id="gbW-9h-BTf"/>
+                <outlet property="_thumbImageView" destination="LIl-6i-7K7" id="mx3-17-qti"/>
+                <outlet property="_transferBtn" destination="5YW-Hd-FGV" id="t0U-bd-jvT"/>
+            </connections>
+            <point key="canvasLocation" x="46.5" y="61"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <image name="edit_transfer_transition_none" width="25" height="20"/>
+    </resources>
+</document>

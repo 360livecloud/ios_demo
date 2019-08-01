@@ -39,7 +39,7 @@ static NSString *KCellTypeThree = @"IdenitiferCellThree";
     _bid = @"demo_bid";
     _cid = @"demo";
 //    _url = @"http://static.s3.huajiao.com/Object.access/hj-video/NTg1NzY5ODgxNDgxNjM2MzM5OTUxMjcwNjg1MDUzNy5tcDQ=";
-    _url = @"http://static.s3.huajiao.com/Object.access/hj-video/NTg1NzY5ODgxNDgxNjM2MzM5OTUxMjcwNjg1MDUzNy5tcDQ=";
+    _url = @"http://vod.che.360.cn/vod-car-bj/112470524_2-1523501461-dfd4df59-831e-4634.mp4";
     [self.view addSubview:self.tableView];
     [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.equalTo(self.view);

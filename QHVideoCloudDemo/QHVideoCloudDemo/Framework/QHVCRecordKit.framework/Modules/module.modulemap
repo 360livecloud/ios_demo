@@ -1,0 +1,6 @@
+framework module QHVCRecordKit {
+  umbrella header "QHVCRecordKit.h"
+
+  export *
+  module * { export * }
+}

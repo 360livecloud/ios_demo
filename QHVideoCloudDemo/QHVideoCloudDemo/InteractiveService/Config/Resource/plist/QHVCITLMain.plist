@@ -8,7 +8,7 @@
 		<key>title</key>
 		<string>业务标识</string>
 		<key>value</key>
-		<string></string>
+		<string>demo</string>
 	</dict>
 	<dict>
 		<key>image</key>
@@ -16,7 +16,7 @@
 		<key>title</key>
 		<string>服务标识</string>
 		<key>value</key>
-		<string></string>
+		<string>ilive_demo</string>
 	</dict>
 	<dict>
 		<key>image</key>

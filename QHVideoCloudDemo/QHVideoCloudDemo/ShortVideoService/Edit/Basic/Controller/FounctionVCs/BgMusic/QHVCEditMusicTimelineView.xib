@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view contentMode="scaleToFill" id="00i-Wx-BqC" customClass="QHVCEditMusicTimelineView">
+            <rect key="frame" x="0.0" y="0.0" width="375" height="160"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Rhn-qw-V4n">
+                    <rect key="frame" x="162.5" y="105" width="50" height="50"/>
+                    <constraints>
+                        <constraint firstAttribute="width" constant="50" id="ihj-9R-DlG"/>
+                        <constraint firstAttribute="height" constant="50" id="scC-VZ-vRn"/>
+                    </constraints>
+                    <state key="normal" image="edit_add"/>
+                    <connections>
+                        <action selector="onAddBtnClicked:" destination="00i-Wx-BqC" eventType="touchUpInside" id="iPm-WS-qS4"/>
+                    </connections>
+                </button>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jeb-BN-6lf">
+                    <rect key="frame" x="0.0" y="25" width="375" height="70"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="70" id="2qg-NM-3fX"/>
+                    </constraints>
+                </view>
+            </subviews>
+            <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="jeb-BN-6lf" secondAttribute="trailing" id="7h9-fA-jOc"/>
+                <constraint firstItem="jeb-BN-6lf" firstAttribute="top" secondItem="00i-Wx-BqC" secondAttribute="top" constant="25" id="9FH-S6-gNN"/>
+                <constraint firstItem="jeb-BN-6lf" firstAttribute="leading" secondItem="00i-Wx-BqC" secondAttribute="leading" id="cRo-CF-gU9"/>
+                <constraint firstAttribute="bottom" secondItem="Rhn-qw-V4n" secondAttribute="bottom" constant="5" id="hRe-Cm-VyZ"/>
+                <constraint firstItem="Rhn-qw-V4n" firstAttribute="centerX" secondItem="00i-Wx-BqC" secondAttribute="centerX" id="u14-zU-jIm"/>
+            </constraints>
+            <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+            <connections>
+                <outlet property="timelineContainer" destination="jeb-BN-6lf" id="gB0-za-xeO"/>
+            </connections>
+            <point key="canvasLocation" x="53.600000000000001" y="48.575712143928037"/>
+        </view>
+    </objects>
+    <resources>
+        <image name="edit_add" width="50" height="50"/>
+    </resources>
+</document>

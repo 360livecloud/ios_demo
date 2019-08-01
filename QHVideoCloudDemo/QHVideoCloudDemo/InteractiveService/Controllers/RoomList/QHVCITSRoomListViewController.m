@@ -10,12 +10,14 @@
 #import "QHVCITSRoomListCell.h"
 #import "QHVCITSProtocolMonitor.h"
 #import "QHVCITSUserSystem.h"
-#import "QHVCITSLog.h"
 #import "QHVCITSCreateRoomViewController.h"
 #import "QHVCITSLinkMicViewController.h"
 #import "QHVCITSDefine.h"
 #import "QHVCITSChatManager.h"
 #import "QHVCToast.h"
+#import "QHVCLogger.h"
+#import "QHVCTool.h"
+#import "QHVCGlobalConfig.h"
 
 static NSString *roomListCellIdentifier = @"QHVCITSRoomListCell";
 
@@ -33,48 +35,31 @@ static NSString *roomListCellIdentifier = @"QHVCITSRoomListCell";
 
 @implementation QHVCITSRoomListViewController
 
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
-    if (_roomType == QHVCITFunctionTypeOwnerAndGuest) {
+    [QHVCTool setStatusBarBackgroundColor:[QHVCGlobalConfig getStatusBarColor]];
+    if (_roomType == QHVCITFunctionTypeOwnerAndGuest)
+    {
         _titleLabel.text = @"主播&嘉宾";
         _serverRoomType = QHVCITS_Room_Type_Guest;
-    }
-    else if (_roomType == QHVCITFunctionTypeOwnerVSOwner)
+    } else if (_roomType == QHVCITFunctionTypeOwnerVSOwner)
     {
         _titleLabel.text = @"主播vs主播";
         _serverRoomType = QHVCITS_Room_Type_PK;
-    }
-    else if (_roomType == QHVCITFunctionTypeHongpa)
+    } else if (_roomType == QHVCITFunctionTypeHongpa)
     {
         _titleLabel.text = @"开趴大厅";
         _serverRoomType = QHVCITS_Room_Type_Party;
     }
     _dataArray = [NSMutableArray array];
     _httpManager = [QHVCITSHTTPSessionManager new];
-    
-    [self connectIM];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self fetchRoomList];
-}
-
-- (void)connectIM
-{
-    [QHVCITSChatManager connect:^(NSString *userId) {
-        
-    } error:^(QHVCIMConnectErrorCode status) {
-        
-    }];
-}
-
-- (void)disconnectIM
-{
-    [QHVCITSChatManager disconnect];
 }
 
 - (void)fetchRoomList
@@ -87,7 +72,7 @@ static NSString *roomListCellIdentifier = @"QHVCITSRoomListCell";
     [QHVCITSProtocolMonitor getRoomList:_httpManager
                                    dict:roomListDict
                                complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
-                                   [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"getRoomList" dict:dict];
+                                   [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"getRoomList" dict:dict];
                                    [weakSelf handleRoomListResponse:success dict:dict];
                                }];
 }
@@ -158,7 +143,7 @@ static NSString *roomListCellIdentifier = @"QHVCITSRoomListCell";
     [QHVCITSProtocolMonitor getRoomInfo:_httpManager
                                    dict:roomInfoDict
                                complete:^(NSURLSessionDataTask * _Nullable taskData, BOOL success, NSDictionary * _Nullable dict) {
-                                   [QHVCITSLog printLogger:QHVCITS_LOG_LEVEL_DEBUG content:@"getRoomInfo" dict:dict];
+                                   [QHVCLogger printLogger:QHVC_LOG_LEVEL_DEBUG content:@"getRoomInfo" dict:dict];
                                    STRONG_SELF_LINKMIC
                                    //TODO:取消菊花
                                    if (success)
@@ -194,7 +179,6 @@ static NSString *roomListCellIdentifier = @"QHVCITSRoomListCell";
 
 - (IBAction)clickedBack:(id)sender
 {
-    [self disconnectIM];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
@@ -209,15 +193,5 @@ static NSString *roomListCellIdentifier = @"QHVCITSRoomListCell";
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

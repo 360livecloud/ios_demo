@@ -12,7 +12,7 @@
 #import "QHVCHUDManager.h"
 #import "AppDelegate.h"
 #import <QHVCPlayerKit/QHVCPlayerKit.h>
-#import <QHVCLocalServerKit/QHVCLocalServerKit.h>
+#import <QHVCNetKit/QHVCNetKit.h>
 #import "QHVCLocalServerSettingViewController.h"
 #import "AFNetworkReachabilityManager.h"
 #import "QHVCLocalServerDownloadManager.h"
@@ -47,10 +47,10 @@
     NSLog(@"palyingRid:%@", rid);
     NSLog(@"playingUrl:%@", url);
     NSString *urlString;
-    if ([[QHVCLocalServerKit sharedInstance] isStartLocalServer])
+    if ([[QHVCNet sharedInstance] isStartLocalServer])
     {
-        [[QHVCLocalServerKit sharedInstance] enableCache:YES];
-        urlString = [[QHVCLocalServerKit sharedInstance] getPlayUrl:rid url:url];
+        [[QHVCNet sharedInstance] enableNetwork:YES];
+        urlString = [[QHVCNet sharedInstance] getLocalServerPlayUrl:rid url:url];
         NSLog(@"playingUrl-localServer:%@", urlString);
     }
     else
@@ -69,7 +69,9 @@
         make.edges.equalTo(_currrentPlayerView);
     }];
     [_player prepare];
+#ifdef DEBUG
     [QHVCPlayer setLogLevel:QHVCPlayerLogLevelInfo];//注意要在player初始化之后设置
+#endif
 }
 
 - (void)stopPlayer
@@ -99,9 +101,11 @@
     {
         [fileManager createDirectoryAtPath:defaultPath withIntermediateDirectories:YES attributes:nil error:nil];
     }
-    [[QHVCLocalServerKit sharedInstance] setLogLevel:QHVC_LOCALSERVER_LOG_LEVEL_DEBUG detailInfo:0 callback:^(const char *buf, size_t buf_size) {
+#ifdef DEBUG
+    [[QHVCNet sharedInstance] setLogLevel:QHVCNetLogLevelDebug detailInfo:0 callback:^(const char *buf, size_t buf_size) {
         NSLog(@"-----:%@", [NSString stringWithUTF8String:buf]);
     }];
+#endif
     __weak typeof(self) weakSelf = self;
     [[QHVCLocalServerDownloadManager sharedInstance] msgCallBack:^(NSString *msg) {
         [weakSelf.hudManager showTextOnlyAlertViewOnView:weakSelf.view message:msg hideFlag:YES];
@@ -160,7 +164,7 @@
     NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
     if ([defaults valueForKey:@"localServerKey"] == nil)
     {
-        [[QHVCLocalServerKit sharedInstance] setCacheSize:500];
+        [[QHVCNet sharedInstance] setCacheSize:500];
         NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         path = [path stringByAppendingPathComponent:@"videoCache"];
         NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -168,14 +172,14 @@
         {
             [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
         }
-        [[QHVCLocalServerKit sharedInstance] startServer:path deviceId:[self getUUIDString] appId:@"Demo" cacheSize:200];
-        
+        [[QHVCNet sharedInstance] startLocalServer:path deviceId:[self getUUIDString] appId:@"Demo" cacheSize:200 options:nil];
+
         [defaults setBool:YES forKey:@"localServerKey"];
         [defaults synchronize];
     }
     else if ([defaults boolForKey:@"localServerKey"] == YES)
     {
-        [[QHVCLocalServerKit sharedInstance] setCacheSize:500];
+        [[QHVCNet sharedInstance] setCacheSize:500];
         NSString *path = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) firstObject];
         path = [path stringByAppendingPathComponent:@"videoCache"];
         NSFileManager *fileManager = [NSFileManager defaultManager];
@@ -183,17 +187,17 @@
         {
             [fileManager createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:nil];
         }
-        [[QHVCLocalServerKit sharedInstance] startServer:path deviceId:[self getUUIDString] appId:@"Demo" cacheSize:200];
+        [[QHVCNet sharedInstance] startLocalServer:path deviceId:[self getUUIDString] appId:@"Demo" cacheSize:200 options:nil];
     }
     
     if ([defaults valueForKey:@"enableCache"] != nil )
     {
         BOOL enable = [defaults boolForKey:@"enableCache"];
-        [[QHVCLocalServerKit sharedInstance] enableCache:enable];
+        [[QHVCNet sharedInstance] enableNetwork:enable];
     }
     else
     {
-        [[QHVCLocalServerKit sharedInstance] enableCache:YES];
+        [[QHVCNet sharedInstance] enableNetwork:YES];
         [defaults setBool:YES forKey:@"enableCache"];
         [defaults synchronize];
     }
@@ -201,7 +205,7 @@
     if ([defaults valueForKey:@"mobilePreloadKey"] != nil )
     {
         BOOL enable = [defaults boolForKey:@"mobilePreloadKey"];
-        [[QHVCLocalServerKit sharedInstance] enablePrecacheForMobileNetwork:enable];
+        [[QHVCNet sharedInstance] enablePrecacheForMobileNetwork:enable];
     }
 }
 
@@ -254,17 +258,17 @@
     {
         if ([_player playerStatus] == QHVCPlayerStatusPaused)
         {
-            if ([[QHVCLocalServerKit sharedInstance] isStartLocalServer])
+            if ([[QHVCNet sharedInstance] isStartLocalServer])
             {
-                [[QHVCLocalServerKit sharedInstance] enableCache:YES];
+                [[QHVCNet sharedInstance] enableNetwork:YES];
             }
             [_player play];
         }
         else
         {
-            if ([[QHVCLocalServerKit sharedInstance] isStartLocalServer] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"enableCache"])
+            if ([[QHVCNet sharedInstance] isStartLocalServer] && ![[NSUserDefaults standardUserDefaults] boolForKey:@"enableCache"])
             {
-                [[QHVCLocalServerKit sharedInstance] enableCache:NO];
+                [[QHVCNet sharedInstance] enableNetwork:NO];
             }
             [_player pause];
         }
@@ -344,9 +348,9 @@
         for (int i = 0; i < _preloadArray.count; i ++)
         {
             NSIndexPath *indexPath = _preloadArray[i];
-            NSLog(@"isStartLocalServer = %i", [[QHVCLocalServerKit sharedInstance] isStartLocalServer]);
-            NSLog(@"isEnableCache = %i", [[QHVCLocalServerKit sharedInstance] isEnableCache]);
-            [[QHVCLocalServerKit sharedInstance] preloadCacheFile:[_dataSource[indexPath.row] valueForKey:@"rid"] url:[_dataSource[indexPath.row] valueForKey:@"playUrl"] preCacheSize:800];
+            NSLog(@"isStartLocalServer = %i", [[QHVCNet sharedInstance] isStartLocalServer]);
+            NSLog(@"isEnableCache = %i", [[QHVCNet sharedInstance] isEnableNetwork]);
+            [[QHVCNet sharedInstance] preloadCacheFile:[_dataSource[indexPath.row] valueForKey:@"rid"] url:[_dataSource[indexPath.row] valueForKey:@"playUrl"] preCacheSize:800];
             NSLog(@"preload:%@----url:%@", [_dataSource[indexPath.row] valueForKey:@"rid"], [_dataSource[indexPath.row] valueForKey:@"playUrl"]);
         }
     }
@@ -359,7 +363,7 @@
         for (int i = 0; i < _preloadArray.count; i ++)
         {
             NSIndexPath *indexPath = _preloadArray[i];
-            [[QHVCLocalServerKit sharedInstance] cancelPreCache:[_dataSource[indexPath.row] valueForKey:@"rid"]];
+            [[QHVCNet sharedInstance] cancelPreCache:[_dataSource[indexPath.row] valueForKey:@"rid"]];
             NSLog(@"canclereload:%@", [_dataSource[indexPath.row] valueForKey:@"rid"]);
         }
     }

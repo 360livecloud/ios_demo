@@ -808,19 +808,19 @@ static NSString * const APP_SIGN = @"";
     
     [alertController addAction:[UIAlertAction actionWithTitle:@"0.5x" style:multipleRateIndex == 0 ?  UIAlertActionStyleDestructive : UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         multipleRateIndex = 0;
-        [_player setPlayBackRate:0.5];
+        [_player setPlaybackRate:0.5];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"2x" style:multipleRateIndex == 1 ?  UIAlertActionStyleDestructive : UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         multipleRateIndex = 1;
-        [_player setPlayBackRate:2];
+        [_player setPlaybackRate:2];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"3x" style:multipleRateIndex == 2 ?  UIAlertActionStyleDestructive : UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         multipleRateIndex = 2;
-        [_player setPlayBackRate:3];
+        [_player setPlaybackRate:3];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"正常" style:multipleRateIndex == 3 ?  UIAlertActionStyleDestructive : UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         multipleRateIndex = 3;
-        [_player setPlayBackRate:1];
+        [_player setPlaybackRate:1];
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
@@ -857,7 +857,7 @@ static NSString * const APP_SIGN = @"";
 
     [alertController addAction:[UIAlertAction actionWithTitle:@"mp4" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         path = [path stringByAppendingPathComponent:@"test.mp4"];
-        if ([_player startRecorder:path recorderFormat:QHVCRecorderFormat_MP4 recordConfig:NULL])
+        if ([_player startRecorder:path recorderFormat:QHVCRecordFormatDefault recordConfig:NULL])
         {
             isRecording = YES;
             [button setTitle:@"结束" forState: UIControlStateNormal];
@@ -866,7 +866,7 @@ static NSString * const APP_SIGN = @"";
     }]];
     [alertController addAction:[UIAlertAction actionWithTitle:@"mov" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
         path = [path stringByAppendingPathComponent:@"test.mov"];
-        if ([_player startRecorder:path recorderFormat:QHVCRecorderFormat_MOV recordConfig:NULL])
+        if ([_player startRecorder:path recorderFormat:QHVCRecordFormatDefault recordConfig:NULL])
         {
             isRecording = YES;
             [button setTitle:@"结束" forState: UIControlStateNormal];
@@ -1198,8 +1198,9 @@ static NSString * const APP_SIGN = @"";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(statusBarOrientationChange:) name:UIApplicationDidChangeStatusBarOrientationNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willResignAction:) name:UIApplicationWillResignActiveNotification object:nil];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(becomeActive:) name:UIApplicationDidBecomeActiveNotification object:nil];
-    
+#ifdef DEBUG
     [QHVCPlayer setLogLevel:QHVCPlayerLogLevelInfo];
+#endif
     
     __weak typeof(self) weakSelf = self;
     __weak typeof(QHVCHUDManager) *weakHud = hudManager;

@@ -13,6 +13,8 @@
 #import "QHVCToast.h"
 #import "QHVCSettingCellStyleThree.h"
 #import "UIViewAdditions.h"
+#import "QHVCTool.h"
+#import "QHVCGlobalConfig.h"
 
 static NSString *SettingCellOneCellIdenitifer = @"QHVCLiveSettingCellOne";
 static NSString *SettingCellStyleThreeIdenitifer = @"QHVCSettingCellStyleThree";
@@ -35,7 +37,7 @@ static NSString *SettingCellStyleThreeIdenitifer = @"QHVCSettingCellStyleThree";
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
+    [QHVCTool setStatusBarBackgroundColor:[QHVCGlobalConfig getStatusBarColor]];
     [self initData];
 }
 

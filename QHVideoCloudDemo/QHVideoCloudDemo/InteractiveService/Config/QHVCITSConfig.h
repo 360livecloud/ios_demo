@@ -12,17 +12,6 @@
 
 #pragma mark - 枚举定义
 
-typedef NS_ENUM(NSInteger, QHVCITSLogLevel){//日志等级
-    QHVCITS_LOG_LEVEL_TRACE = 0,
-    QHVCITS_LOG_LEVEL_DEBUG = 1,
-    QHVCITS_LOG_LEVEL_INFO  = 2,
-    QHVCITS_LOG_LEVEL_WARN  = 3,
-    QHVCITS_LOG_LEVEL_ERROR = 4,
-    QHVCITS_LOG_LEVEL_ALARM = 5,
-    QHVCITS_LOG_LEVEL_FATAL = 6,
-    QHVCITS_LOG_LEVEL_NONE  = 7,
-};
-
 typedef NS_ENUM(NSInteger, QHVCITSErrorCode) {//错误码，代码中必须处理该消息
     QHVCITS_Error_NoError = 0,
     QHVCITS_Error_Failed = 1,
@@ -76,6 +65,8 @@ typedef NS_ENUM(NSInteger, QHVCITSRoomLifeCycle)
 
 //正式环境地址
 #define QHVCITS_RELEASE_ENV_INTERACTIVE_SERVER_URL   @"http://livedemo.vcloud.360.cn"//房间服务地址
+//测试环境地址
+#define QHVCITS_TEST_ENV_INTERACTIVE_SERVER_URL      @"http://k0106v.add.lfyc.qihoo.net:9908"//房间服务地址
 
 #define QHVCITS_HTTP_TIMEOUT_INTERTVAL               30//网络请求超时时间（秒）
 #define QHVCITS_HEART_TIME_INTERTVAL                 10//心跳上报时间间隔（秒）
@@ -103,6 +94,9 @@ typedef NS_ENUM(NSInteger, QHVCITSRoomLifeCycle)
 #define QHVCITS_ADUIO_BITRATE                        48
 #define QHVCITS_ADUIO_CHANNEL                        1
 
+#pragma mark - 长链
+#define QHVCITS_QHPUSH_APPKEY       @"e87xskczbbw3"
+
 NS_ASSUME_NONNULL_BEGIN
 
 @interface QHVCITSConfig : NSObject
@@ -118,6 +112,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nonnull) NSString* appSecret;//appSecret
 @property (nonatomic, strong, nonnull) NSString* sessionId;//会话ID
 @property (nonatomic, strong, nonnull) NSString* deviceId;//设备ID
+@property (nonatomic, strong, nonnull) NSString* clientId;//客户端ID，长链用
 @property (nonatomic, strong, nonnull) NSString* appVersion;//应用版本号
 @property (nonatomic, assign) long long serverTimeDeviation;//服务器时间差
 @property (nonatomic, assign) NSInteger userHeartInterval;//用户心跳间隔

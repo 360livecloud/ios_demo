@@ -42,6 +42,11 @@
 + (BOOL)isDeviceBelowModel:(NSString *)modelPlatform;
 
 /**
+ 是否是ARM64架构
+ */
++ (BOOL)isARM64;
+
+/**
  获取userAgent
  
  @return 需要统计的本机参数信息
